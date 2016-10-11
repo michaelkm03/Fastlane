@@ -58,12 +58,23 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    fileprivate(set) var pendingItems = [ChatFeedContent]()
+    private var pendingItems = [ChatFeedContent]()
+    
+    /// Returns all of the content that is pending publishing for the given `chatRoomID`.
+    func pendingItems(forChatRoomWithID chatRoomID: ChatRoom.ID?) -> [ChatFeedContent] {
+        return pendingItems.filter { $0.pendingChatRoomID == chatRoomID }
+    }
     
     /// Queues `content` for publishing.
-    func publish(_ content: Content, withWidth width: CGFloat) {
+    func publish(_ content: Content, withWidth width: CGFloat, toChatRoomWithID chatRoomID: ChatRoom.ID?) {
         if optimisticPostingEnabled {
-            guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
+            guard let chatFeedContent = ChatFeedContent(
+                content: content,
+                width: width,
+                dependencyManager: dependencyManager,
+                creationState: .waiting,
+                pendingChatRoomID: chatRoomID
+            ) else {
                 assertionFailure("Failed to calculate height for chat feed content")
                 return
             }
@@ -79,13 +90,12 @@ class ContentPublisher {
             publishNextContent()
         }
         else {
-            upload(content)
+            upload(content, toChatRoomWithID: chatRoomID)
         }
     }
     
     /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
     func remove(_ itemsToRemove: [ChatFeedContent]) -> [Int] {
-        
         let indices = pendingItems.enumerated().filter { index, item in
             itemsToRemove.contains { itemToRemove in
                  itemToRemove.matches(item)
@@ -108,7 +118,7 @@ class ContentPublisher {
         
         pendingItems[index].creationState = .sending
 
-        upload(pendingItems[index].content) { [weak self] error in
+        upload(pendingItems[index].content, toChatRoomWithID: pendingItems[index].pendingChatRoomID) { [weak self] error in
             // The content's index will have changed by now if a preceding item was confirmed while this one was being
             // sent, so we need to get an updated index.
             guard let strongSelf = self, let updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
@@ -134,10 +144,10 @@ class ContentPublisher {
     /// - Parameter content: The content that should be uploaded.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
-    fileprivate func upload(_ content: Content, completion: ((Error?) -> Void)? = nil) {
+    private func upload(_ content: Content, toChatRoomWithID chatRoomID: ChatRoom.ID?, completion: ((Error?) -> Void)? = nil) {
         if content.type == .sticker {
             guard
-                let apiPath = dependencyManager.stickerCreationAPIPath(for: content),
+                let apiPath = dependencyManager.stickerCreationAPIPath(for: content, chatRoomID: chatRoomID),
                 let operation = CreateStickerOperation(apiPath: apiPath, content: content)
             else {
                 completion?(ContentPublisherError.invalidNetworkResources)
@@ -146,12 +156,8 @@ class ContentPublisher {
             
             operation.queue { result in
                 switch result {
-                    case .success:
-                        completion?(nil)
-                    case .failure(let error):
-                        completion?(error)
-                    case .cancelled:
-                        break
+                    case .success, .cancelled: completion?(nil)
+                    case .failure(let error): completion?(error)
                 }
             }
         }
@@ -162,7 +168,7 @@ class ContentPublisher {
             }
             
             guard
-                let apiPath = dependencyManager.mediaCreationAPIPath(for: content),
+                let apiPath = dependencyManager.mediaCreationAPIPath(for: content, chatRoomID: chatRoomID),
                 let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.shared())
             else {
                 completion?(ContentPublisherError.invalidNetworkResources)
@@ -171,18 +177,14 @@ class ContentPublisher {
             
             operation.queue { result in
                 switch result {
-                    case .success:
-                        completion?(nil)
-                    case .failure(let error):
-                        completion?(error)
-                    case .cancelled:
-                        break
+                    case .success, .cancelled: completion?(nil)
+                    case .failure(let error): completion?(error)
                 }
             }
         }
         else if let text = content.text {
             guard
-                let apiPath = dependencyManager.textCreationAPIPath(for: content),
+                let apiPath = dependencyManager.textCreationAPIPath(for: content, chatRoomID: chatRoomID),
                 let request = ChatMessageCreateRequest(apiPath: apiPath, text: text)
             else {
                 completion?(ContentPublisherError.invalidNetworkResources)
@@ -211,7 +213,7 @@ class ContentPublisher {
         
         pendingItems[index].creationState = .sending
         
-        upload(chatFeedContent.content) { [weak self] error in
+        upload(chatFeedContent.content, toChatRoomWithID: chatFeedContent.pendingChatRoomID) { [weak self] error in
             guard let strongSelf = self, let updatedIndex = strongSelf.index(of: chatFeedContent) else {
                 return
             }
@@ -248,26 +250,29 @@ enum ContentPublisherError: Error {
 }
 
 private extension VDependencyManager {
-    func mediaCreationAPIPath(for content: Content) -> APIPath? {
+    func mediaCreationAPIPath(for content: Content, chatRoomID: ChatRoom.ID?) -> APIPath? {
         return apiPath(forKey: "mediaCreationURL", macroReplacements: [
-            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
-            ])
+            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
+            "%%ROOM_ID%%": chatRoomID ?? ""
+        ])
     }
     
-    func stickerCreationAPIPath(for content: Content) -> APIPath? {
+    func stickerCreationAPIPath(for content: Content, chatRoomID: ChatRoom.ID?) -> APIPath? {
         guard let externalID = content.assets.first?.externalID else {
             return nil
         }
         
         return apiPath(forKey: "sticker.creation.URL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
-            "%%CONTENT_ID%%": externalID
-            ])
+            "%%CONTENT_ID%%": externalID,
+            "%%ROOM_ID%%": chatRoomID ?? ""
+        ])
     }
     
-    func textCreationAPIPath(for content: Content) -> APIPath? {
+    func textCreationAPIPath(for content: Content, chatRoomID: ChatRoom.ID?) -> APIPath? {
         return apiPath(forKey: "textCreationURL", macroReplacements: [
-            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
+            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
+            "%%ROOM_ID%%": chatRoomID ?? ""
         ])
     }
 }

@@ -36,4 +36,8 @@ class TutorialCollectionViewDataSourceTests: XCTestCase, ForumEventReceiver {
         let cell = dataSource.collectionView(collectionView, cellForItemAt: IndexPath(item: 0, section: 0)) as! ChatFeedMessageCell
         XCTAssertFalse(cell.showsReplyButton)
     }
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {}
 }

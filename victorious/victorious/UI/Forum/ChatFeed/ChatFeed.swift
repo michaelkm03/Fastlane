@@ -17,6 +17,7 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
     var delegate: ChatFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
+    var activeChatRoomID: ChatRoom.ID? { get set }
     
     var newItemsController: NewItemsController? { get }
     var collectionView: UICollectionView! { get }

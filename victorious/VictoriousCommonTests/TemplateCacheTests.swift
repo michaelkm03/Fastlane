@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import VictoriousCommon
+@testable import VictoriousCommon
 import XCTest
 
 class TemplateCacheTests: XCTestCase {

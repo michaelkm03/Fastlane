@@ -123,7 +123,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             removeMediaContentView()
             
             // Header
-            userNameButton.setTitle(author.displayName, for: .normal)
+            userNameButton.setTitle(author.username, for: .normal)
             avatarView.user = author
             
             createdAtLabel.text = Date(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)

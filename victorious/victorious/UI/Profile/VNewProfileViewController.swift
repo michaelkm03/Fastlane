@@ -69,6 +69,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         fetchUser(using: dependencyManager)
         
         NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidUpdate), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidChange), name: .loggedInChanged, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -310,6 +311,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         setUser(user: VCurrentUser.user, using: dependencyManager)
     }
     
+    private dynamic func currentUserDidChange() {
+        setUser(user: VCurrentUser.user, using: dependencyManager)
+    }
+    
     private func fetchUser(using dependencyManager: VDependencyManager) {
         if let userRemoteID = dependencyManager.templateValue(ofType: NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
             fetchUser(withRemoteID: userRemoteID.intValue)
@@ -321,7 +326,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     private func setUser(user: UserModel?, using dependencyManager: VDependencyManager) {
         guard let user = user else {
-            assertionFailure("Failed to fetch user for profile view controller.")
             return
         }
         

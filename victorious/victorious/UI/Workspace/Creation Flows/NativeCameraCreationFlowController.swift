@@ -74,7 +74,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
     }
     
-    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         defer {
             dependencyManager.trackViewWillDisappear(for: self)
             let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)

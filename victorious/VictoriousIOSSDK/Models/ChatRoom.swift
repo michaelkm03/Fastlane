@@ -7,18 +7,27 @@
 //
 
 public struct ChatRoom {
-    public let name: String
+    public typealias ID = String
+    
+    public var id: ID
+    public var name: String
 
-    public init(name: String) {
+    public init(id: ID, name: String) {
+        self.id = id
         self.name = name
     }
 }
 
 extension ChatRoom {
     public init?(json: JSON) {
-        guard let name = json["name"].string else {
+        guard
+            let id = json["id"].string,
+            let name = json["name"].string
+        else {
             return nil
         }
+        
+        self.id = id
         self.name = name
     }
 }

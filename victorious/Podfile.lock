@@ -16,7 +16,6 @@ PODS:
   - KVOController (1.0.3)
   - MBProgressHUD (0.9.2)
   - Nocilla (0.10.0)
-  - OAStackView (1.0.1)
   - OCMock (3.2.2)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
@@ -31,7 +30,6 @@ DEPENDENCIES:
   - KVOController
   - MBProgressHUD
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`)
-  - OAStackView
   - OCMock
   - SDWebImage
 
@@ -54,8 +52,9 @@ SPEC CHECKSUMS:
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   Nocilla: dccf5666770bd2edafffa23333362dec66001e4a
-  OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
   OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: d98f224702d300c2d7d0ac0a14e4733f02239568
+
+COCOAPODS: 1.1.0.rc.2

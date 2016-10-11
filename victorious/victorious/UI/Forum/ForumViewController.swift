@@ -99,6 +99,20 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return forumVC
     }
     
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
+    }
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
@@ -124,10 +138,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
                 InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
-            case .filterContent(let path):
-                // FUTURE: the composer should listen to these events and hide itself so everything component in the forum handles it's own state
-                // path will be nil for home feed, and non nil for filtered feed
-                composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
                 onClose(sender: nil)
             case .refreshStage(_):
@@ -152,12 +162,19 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
+    /// The ID of the chat room that the user is currently in, or nil if the user is not in a chat room.
+    private var activeChatRoomID: ChatRoom.ID? {
+        didSet {
+            chatFeed?.activeChatRoomID = activeChatRoomID
+        }
+    }
+    
     private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
         
-        publisher?.publish(content, withWidth: width)
+        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeChatRoomID)
     }
 
     // MARK: - ForumEventSender
@@ -183,12 +200,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
 
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
-        if let context = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.context {
-            chatFeedContext = context
-        }
-        else {
-            chatFeedContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
-        }
+        let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
+        chatFeedContext = selectedItem?.context ?? DeeplinkContext(value: DeeplinkContext.mainFeed)
+        activeChatRoomID = selectedItem?.chatRoomID
     }
 
     func setStageHeight(_ value: CGFloat) {
@@ -273,9 +287,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
-
+        
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
         
@@ -533,8 +545,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
             return
         }
+        
+        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeChatRoomID)
 
-        chatFeed?.collectionView.reloadItems(at: contentPublisher.pendingItems.indices.map {
+        chatFeed?.collectionView.reloadItems(at: pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
         })
     }

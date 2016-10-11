@@ -6,8 +6,9 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import VictoriousIOSSDK
 import MBProgressHUD
+import VictoriousIOSSDK
 
 /// A view controller that displays a side-scrolling single-row of gifs that play in-line
 class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LoadingCancellableViewDelegate {
