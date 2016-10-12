@@ -28,7 +28,10 @@ class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
             return
         }
         
-        RequestOperation(request: request).queue { result in
+        RequestOperation(request: request).queue { [weak self] result in
+            if let notifications = result.output {
+                self?.visibleItems = notifications
+            }
             completion?(result)
         }
     }
@@ -58,6 +61,6 @@ class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
 
 private extension VDependencyManager {
     var notificationListApiPath: APIPath? {
-        return apiPath(forKey: "notification.list.URL")
+        return networkResources?.apiPath(forKey: "notification.list.URL")
     }
 }

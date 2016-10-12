@@ -113,18 +113,25 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
-        switch dataSource.state {
-            case .noResults where isAlreadyShowingNoContent, .loading where isAlreadyShowingNoContent:
-                if !isAlreadyShowingNoContent {
-                    noContentView.resetInitialAnimationState()
-                    noContentView.animateTransitionIn()
-                }
-                
-                tableView.backgroundView = noContentView
-            
-            default:
-                tableView.backgroundView = nil
+        if dataSource.visibleItems.isEmpty {
+            tableView.backgroundView = noContentView
         }
+        else {
+            tableView.backgroundView = nil
+
+        }
+//        switch dataSource.state {
+//            case .noResults where isAlreadyShowingNoContent, .loading where isAlreadyShowingNoContent:
+//                if !isAlreadyShowingNoContent {
+//                    noContentView.resetInitialAnimationState()
+//                    noContentView.animateTransitionIn()
+//                }
+//                
+//                tableView.backgroundView = noContentView
+//            
+//            default:
+//                tableView.backgroundView = nil
+//        }
     }
     
     // MARK: - Loading content
@@ -132,12 +139,12 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     fileprivate dynamic func refresh() {
         refreshControl.beginRefreshing()
         
-        dataSource.loadNotifications(.first) { [weak self] error in
+        dataSource.load() { [weak self] result in
             self?.refreshControl.endRefreshing()
             self?.updateTableView()
             self?.redecorateVisibleCells()
             
-            if error == nil {
+            if result.error == nil {
                 BadgeCountManager.shared.resetBadgeCount(for: .unreadNotifications)
             }
         }
@@ -156,7 +163,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     // MARK: - Notifications
     
     fileprivate dynamic func loggedInStatusDidChange(_ notification: Notification?) {
-        dataSource.unload()
+//        dataSource.unload()
     }
     
     // MARK: - Deep links
@@ -174,7 +181,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row])?.deeplink, !deepLink.isEmpty else {
+        guard let deepLink = (dataSource.visibleItems[indexPath.row]).deeplink, !deepLink.isEmpty else {
             return
         }
         
@@ -207,7 +214,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
             return
         }
         
-        let notification = dataSource.visibleItems[indexPath.row] as! InAppNotification
+        let notification = dataSource.visibleItems[indexPath.row]
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         router.navigate(to: .profile(userID: notification.user.id), from: nil)
     }
