@@ -51,6 +51,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
+@property (nonatomic, strong) FBSDKLoginManager *facebookLoginManager;
 
 @property (nonatomic, strong) NSOperation *currentOperation;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
@@ -95,6 +96,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
         
         _appTimingTracker = [DefaultTimingTracker sharedInstance];
+        _facebookLoginManager = [[FBSDKLoginManager alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
@@ -307,8 +309,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         self.actionsDisabled = YES;
         self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
-        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        [loginManager logInWithReadPermissions:FacebookHelper.readPermissions
+        [self.facebookLoginManager logInWithReadPermissions:FacebookHelper.readPermissions
                             fromViewController:self
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
          {
