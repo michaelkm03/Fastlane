@@ -46,12 +46,11 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="o3m-XP-KC0" secondAttribute="bottom" constant="7" id="DaH-Ny-FBv"/>
-                                            <constraint firstItem="Y4C-Kw-xXV" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="7" id="I9E-fc-z3Q"/>
                                             <constraint firstItem="o3m-XP-KC0" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="7" id="Mag-FX-DOz"/>
                                             <constraint firstAttribute="trailing" secondItem="o3m-XP-KC0" secondAttribute="trailing" constant="12" id="Nkz-Zb-7ye"/>
                                             <constraint firstItem="o3m-XP-KC0" firstAttribute="leading" secondItem="Y4C-Kw-xXV" secondAttribute="trailing" constant="10" id="P1p-Et-1QH"/>
+                                            <constraint firstItem="Y4C-Kw-xXV" firstAttribute="centerY" secondItem="ufT-VK-ejn" secondAttribute="centerY" id="XU9-ub-ZE2"/>
                                             <constraint firstItem="ICo-zj-eCQ" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" id="g2M-Z9-XjO"/>
-                                            <constraint firstAttribute="bottom" secondItem="Y4C-Kw-xXV" secondAttribute="bottom" constant="7" id="hmU-zk-4nw"/>
                                             <constraint firstAttribute="bottom" secondItem="ICo-zj-eCQ" secondAttribute="bottom" id="o4l-xE-pFl"/>
                                             <constraint firstAttribute="trailing" secondItem="ICo-zj-eCQ" secondAttribute="trailing" id="qmw-SM-uIt"/>
                                             <constraint firstItem="ICo-zj-eCQ" firstAttribute="leading" secondItem="ufT-VK-ejn" secondAttribute="leading" id="xt3-Jt-JYm"/>
