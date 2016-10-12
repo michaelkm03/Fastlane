@@ -10,7 +10,6 @@ import UIKit
 import VictoriousIOSSDK
 
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
-    
     @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet fileprivate weak var continueButton: UIButton! {
         didSet {
@@ -31,7 +30,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
-    var activeChatRoomID: ChatRoom.ID?
+    var activeFeedDelegate: ActiveFeedDelegate? = nil
     
     @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
         didSet {

@@ -9,6 +9,7 @@
 import VictoriousIOSSDK
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
+
     fileprivate struct Layout {
         fileprivate static let bottomMargin: CGFloat = 20.0
     }
@@ -25,7 +26,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - ChatFeed
     
-    weak var delegate: ChatFeedDelegate?
+    weak var chatFeedDelegate: ChatFeedDelegate?
+    weak var activeFeedDelegate: ActiveFeedDelegate?
     var dependencyManager: VDependencyManager!
     
     @IBOutlet fileprivate(set) weak var collectionView: UICollectionView!
@@ -258,7 +260,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent] {
-        guard let publisher = delegate?.publisher(for: self) else {
+        guard let publisher = chatFeedDelegate?.publisher(for: self) else {
             return []
         }
         
@@ -266,7 +268,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     fileprivate func removePendingContent(_ contentToRemove: [ChatFeedContent]) -> [Int] {
-        guard let publisher = delegate?.publisher(for: self) else {
+        guard let publisher = chatFeedDelegate?.publisher(for: self) else {
             return []
         }
         
@@ -284,7 +286,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelectUserWithID: userID)
+        chatFeedDelegate?.chatFeed(self, didSelectUserWithID: userID)
     }
     
     func messageCellDidSelectMedia(_ messageCell: ChatFeedMessageCell) {
@@ -292,7 +294,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelect: content)
+        chatFeedDelegate?.chatFeed(self, didSelect: content)
     }
     
     func messageCellDidLongPressContent(_ messageCell: ChatFeedMessageCell) {
@@ -300,7 +302,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didLongPress: content)
+        chatFeedDelegate?.chatFeed(self, didLongPress: content)
     }
     
     func messageCellDidToggleLikeContent(_ messageCell: ChatFeedMessageCell, completion: @escaping () -> Void) {
@@ -308,7 +310,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
 
-        delegate?.chatFeed(self, didToggleLikeFor: content, completion: completion)
+        chatFeedDelegate?.chatFeed(self, didToggleLikeFor: content, completion: completion)
     }
 
     func messageCellDidSelectFailureButton(_ messageCell: ChatFeedMessageCell) {
@@ -316,7 +318,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelectFailureButtonFor: content)
+        chatFeedDelegate?.chatFeed(self, didSelectFailureButtonFor: content)
     }
     
     func messageCellDidSelectReplyButton(_ messageCell: ChatFeedMessageCell) {
@@ -324,7 +326,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelectReplyButtonFor: content)
+        chatFeedDelegate?.chatFeed(self, didSelectReplyButtonFor: content)
         dependencyManager.trackButtonEvent(.tap, for: "reply.tracking", with: activeChatRoomID.map { ["%%ROOM_ID%%": $0] })
     }
     
@@ -355,15 +357,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         focusHelper.updateFocus()
         
-        delegate?.chatFeed(self, didScroll: scrollView)
+        chatFeedDelegate?.chatFeed(self, didScroll: scrollView)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        delegate?.chatFeed(self, willBeginDragging: scrollView)
+        chatFeedDelegate?.chatFeed(self, willBeginDragging: scrollView)
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        delegate?.chatFeed(self, willEndDragging: scrollView, withVelocity: velocity)
+        chatFeedDelegate?.chatFeed(self, willEndDragging: scrollView, withVelocity: velocity)
     }
     
     // MARK: - Timestamp update timer

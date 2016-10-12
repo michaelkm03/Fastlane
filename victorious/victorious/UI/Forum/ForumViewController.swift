@@ -13,9 +13,13 @@ private struct Constants {
     static let coachmarkDisplayDelay = 1.0
 }
 
+protocol ActiveFeedDelegate: class {
+    var activeFeed: Feed { get }
+}
+
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer, ActiveFeedDelegate {
     private struct EndVIPButtonConfiguration {
         let title: String
         let titleColor: UIColor
@@ -162,10 +166,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
-    /// The ID of the chat room that the user is currently in, or nil if the user is not in a chat room.
-    private var activeChatRoomID: ChatRoom.ID? {
+    /// Encapsulates information about the currently active feed
+    var activeFeed = Feed() {
         didSet {
-            chatFeed?.activeChatRoomID = activeChatRoomID
+            send(.activeFeedChanged)
         }
     }
     
@@ -174,7 +178,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeChatRoomID)
+        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeFeed.roomID)
     }
 
     // MARK: - ForumEventSender
@@ -202,7 +206,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
         chatFeedContext = selectedItem?.context ?? DeeplinkContext(value: DeeplinkContext.mainFeed)
-        activeChatRoomID = selectedItem?.chatRoomID
+        activeFeed.roomID = selectedItem?.chatRoomID
     }
 
     func setStageHeight(_ value: CGFloat) {
@@ -379,7 +383,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             
         } else if let chatFeed = destination as? ChatFeed {
             chatFeed.dependencyManager = dependencyManager.chatFeedDependency
-            chatFeed.delegate = self
+            chatFeed.chatFeedDelegate = self
+            chatFeed.activeFeedDelegate = self
             self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
@@ -546,7 +551,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeChatRoomID)
+        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeFeed.roomID)
 
         chatFeed?.collectionView.reloadItems(at: pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
@@ -580,7 +585,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     // MARK: - ComposerDelegate
 
     func didSelectNavigationMenuItem(_ navigationMenuItem: VNavigationMenuItem) {
-        navigationMenuItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with:  activeChatRoomID.map { ["%%ROOM_ID%%": $0] })
+        navigationMenuItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with:  activeFeed.roomID.map { ["%%ROOM_ID%%": $0] })
     }
 
     // MARK: - VFocusable

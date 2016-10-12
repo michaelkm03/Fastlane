@@ -15,9 +15,9 @@ private struct Constants {
 
 protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
-    var delegate: ChatFeedDelegate? { get set }
+    var chatFeedDelegate: ChatFeedDelegate? { get set }
+    var activeFeedDelegate: ActiveFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
-    var activeChatRoomID: ChatRoom.ID? { get set }
     
     var newItemsController: NewItemsController? { get }
     var collectionView: UICollectionView! { get }
@@ -45,7 +45,7 @@ protocol ChatFeedDelegate: class {
 }
 
 extension ChatFeed {
-    var delegate: ChatFeedDelegate? {
+    var chatFeedDelegate: ChatFeedDelegate? {
         get {
             return nil
         }
