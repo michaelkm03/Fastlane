@@ -9,7 +9,7 @@
 import UIKit
 import VictoriousIOSSDK
 
-class InAppNotificationsViewController: UIViewController, UITableViewDelegate, InAppNotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
+class InAppNotificationsViewController: UIViewController, UITableViewDelegate, InAppNotificationCellDelegate, VBackgroundContainer {
     fileprivate struct Constants {
         static let contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
         static let estimatedRowHeight = CGFloat(64.0)
@@ -24,6 +24,25 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         
         super.init(nibName: nil, bundle: nil)
         
+        
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
+
+//        loggedInStatusDidChange(nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - View lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = true
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = false
@@ -46,36 +65,23 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         tableView.contentInset = Constants.contentInset
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        tableView.insertSubview(refreshControl, at: 0)
         view.addSubview(tableView)
         view.v_addFitToParentConstraints(toSubview: tableView)
         
+        tableView.addSubview(refreshControl)
+        
         dependencyManager.addBackground(toBackgroundHost: self)
         dependencyManager.configureNavigationItem(navigationItem)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
-
-        loggedInStatusDidChange(nil)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    // MARK: - View lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(for: self)
-        updateTableView()
+//        updateTableView()
         
         // Setting the content offset is a hack to work around a bug where the refresh control's tint color won't take
         // effect initially.
-        tableView.contentOffset.y = -refreshControl.frame.height
+//        tableView.contentOffset.y = -refreshControl.frame.height
         refresh()
     }
     
@@ -140,6 +146,8 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         refreshControl.beginRefreshing()
         
         dataSource.load() { [weak self] result in
+            self?.tableView.reloadData()
+            
             self?.refreshControl.endRefreshing()
             self?.updateTableView()
             self?.redecorateVisibleCells()
@@ -193,19 +201,19 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         (cell as? InAppNotificationCell)?.delegate = self
     }
     
-    // MARK: - VPaginatedDataSourceDelegate
-    
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
-    }
-    
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        updateTableView()
-    }
-    
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: Error) {
-        (navigationController ?? self).v_showErrorDefaultError()
-    }
+//    // MARK: - VPaginatedDataSourceDelegate
+//    
+//    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+//        tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
+//    }
+//    
+//    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
+//        updateTableView()
+//    }
+//    
+//    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: Error) {
+//        (navigationController ?? self).v_showErrorDefaultError()
+//    }
     
     // MARK: - VCellWithProfileDelegate
     
