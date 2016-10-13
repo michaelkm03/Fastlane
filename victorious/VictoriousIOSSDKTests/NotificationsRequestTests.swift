@@ -19,9 +19,8 @@ class InAppNotificationsRequestTests: XCTestCase {
         }
         
         do {
-            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-            let notifications = InAppNotificationsRequest(paginator: paginator)
-            let results = try notifications.parseResponse(URLResponse(), toRequest: notifications.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let notificationRequest = InAppNotificationsRequest(apiPath: APIPath(templatePath: "https://www.abc.com"))!
+            let results = try notificationRequest.parseResponse(URLResponse(), toRequest: notificationRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 1)
             XCTAssertEqual(results[0].subject, "Ryan Higa sent you a message")
             XCTAssertEqual(results[0].deeplink, "officialryanhiga://inbox/1379901")
@@ -31,8 +30,10 @@ class InAppNotificationsRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-        let notifications = InAppNotificationsRequest(paginator: paginator)
-        XCTAssertEqual(notifications.urlRequest.url?.absoluteString, "/api/notification/notifications_list/1/100")
+        let request1 = InAppNotificationsRequest(apiPath: APIPath(templatePath: ""))
+        XCTAssertNil(request1)
+        
+        let request2 = InAppNotificationsRequest(apiPath: APIPath(templatePath: "/api/notification/notifications_list"))
+        XCTAssertEqual(request2?.urlRequest.url?.absoluteString, "/api/notification/notifications_list")
     }
 }
