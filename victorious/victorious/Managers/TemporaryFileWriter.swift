@@ -9,8 +9,12 @@
 import Foundation
 import VictoriousIOSSDK
 
+enum TemporaryFileWriterError: Error {
+    case ZeroDataError
+}
+
 struct TemporaryFileWriter {
-    private static var temporaryWrittenFiles: [NSURL] = []
+    private static var temporaryWrittenFiles: [URL] = []
 
     /// Forces all temporary written files to be removed from disk.
     static func removeTemporaryFiles() {
@@ -26,8 +30,13 @@ struct TemporaryFileWriter {
 
     /// Writes the raw data to disk atomically with a file extension and a fileName. If no extension is specified none is used, if no filename is specified a new unique one is generated.
     /// If the file write succeeds a path is returned else nil is returned.
-    static func writeTemporaryData(_ data: Data, fileExtension: String = "", fileName: String = ProcessInfo.processInfo.globallyUniqueString) throws -> NSURL {
-        let fileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(fileName).\(fileExtension)") as NSURL? ?? NSURL()
+    static func writeTemporaryData(_ data: Data, fileExtension: String = "", fileName: String = ProcessInfo.processInfo.globallyUniqueString) throws -> URL {
+        guard data.count > 0 else {
+            throw TemporaryFileWriterError.ZeroDataError
+        }
+
+        let fileEnding = fileExtension.isEmpty ? "" : ".\(fileExtension)"
+        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(fileName)\(fileEnding)")
 
         do {
             try data.write(to: fileURL as URL, options: .atomicWrite)

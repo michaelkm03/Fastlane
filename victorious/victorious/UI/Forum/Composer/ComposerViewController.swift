@@ -928,7 +928,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         do {
             let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: imageType.fileExtension)
             
-            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl, source: nil, size: image.imageObject.size)
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl as NSURL, source: nil, size: image.imageObject.size)
             if let pastedImageAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
                 selectedAsset = pastedImageAsset
                 
