@@ -75,10 +75,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
         
         showCreatorLogoTitle()
-        
-        if dependencyManager.shouldShowLeftNavOnLaunch {
-            sideMenuController.openSideViewController(on: .left, animated: false)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +100,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         if presentedViewController == nil {
             let _ = InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
+        }
+        
+        if dependencyManager.shouldShowLeftNavOnLaunch {
+            sideMenuController.openSideViewController(on: .left, animated: true)
         }
     }
     
