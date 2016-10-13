@@ -9,8 +9,8 @@
 import UIKit
 import VictoriousIOSSDK
 
-class InAppNotificationsViewController: UIViewController, UITableViewDelegate, InAppNotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
-    fileprivate struct Constants {
+class InAppNotificationsViewController: UIViewController, UITableViewDelegate, InAppNotificationCellDelegate, VBackgroundContainer {
+    private struct Constants {
         static let contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
         static let estimatedRowHeight = CGFloat(64.0)
     }
@@ -23,13 +23,21 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         noContentView = VNoContentView(fromNibWithFrame: tableView.bounds)
         
         super.init(nibName: nil, bundle: nil)
-        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    // MARK: - View lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = true
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = false
         
         dataSource.registerCells(for: tableView)
-        dataSource.delegate = self
         
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = dependencyManager.refreshControlColor
@@ -47,36 +55,19 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         tableView.contentInset = Constants.contentInset
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        tableView.insertSubview(refreshControl, at: 0)
+        tableView.addSubview(refreshControl)
+        
         view.addSubview(tableView)
         view.v_addFitToParentConstraints(toSubview: tableView)
         
+        
         dependencyManager.addBackground(toBackgroundHost: self)
         dependencyManager.configureNavigationItem(navigationItem)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
-
-        loggedInStatusDidChange(nil)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    // MARK: - View lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(for: self)
-        updateTableView()
-        
-        // Setting the content offset is a hack to work around a bug where the refresh control's tint color won't take
-        // effect initially.
-        tableView.contentOffset.y = -refreshControl.frame.height
         refresh()
     }
     
@@ -101,50 +92,44 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     
     // MARK: - Data source
     
-    fileprivate let dataSource: InAppNotificationsDataSource
+    private let dataSource: InAppNotificationsDataSource
     
     // MARK: - Views
     
-    fileprivate let tableView = UITableView()
-    fileprivate let refreshControl = UIRefreshControl()
-    fileprivate let noContentView: VNoContentView
+    private let tableView = UITableView()
+    private let refreshControl = UIRefreshControl()
+    private let noContentView: VNoContentView
     
-    fileprivate func updateTableView() {
+    private func updateTableView() {
         tableView.separatorStyle = dataSource.visibleItems.count > 0 ? .singleLine : .none
         
-        let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
-        
-        switch dataSource.state {
-            case .noResults where isAlreadyShowingNoContent, .loading where isAlreadyShowingNoContent:
-                if !isAlreadyShowingNoContent {
-                    noContentView.resetInitialAnimationState()
-                    noContentView.animateTransitionIn()
-                }
-                
-                tableView.backgroundView = noContentView
-            
-            default:
-                tableView.backgroundView = nil
+        if dataSource.visibleItems.isEmpty {
+            tableView.backgroundView = noContentView
+        }
+        else {
+            tableView.backgroundView = nil
         }
     }
     
     // MARK: - Loading content
     
-    fileprivate dynamic func refresh() {
+    private dynamic func refresh() {
         refreshControl.beginRefreshing()
         
-        dataSource.loadNotifications(.first) { [weak self] error in
+        dataSource.load() { [weak self] result in
+            self?.tableView.reloadData()
+            
             self?.refreshControl.endRefreshing()
             self?.updateTableView()
             self?.redecorateVisibleCells()
             
-            if error == nil {
+            if result.error == nil {
                 BadgeCountManager.shared.resetBadgeCount(for: .unreadNotifications)
             }
         }
     }
     
-    fileprivate func redecorateVisibleCells() {
+    private func redecorateVisibleCells() {
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
             guard let cell = tableView.cellForRow(at: indexPath) as? InAppNotificationCell else {
                 continue
@@ -154,15 +139,9 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         }
     }
     
-    // MARK: - Notifications
-    
-    fileprivate dynamic func loggedInStatusDidChange(_ notification: Notification?) {
-        dataSource.unload()
-    }
-    
     // MARK: - Deep links
     
-    func showDeepLink(_ deepLink: String) {
+    private func showDeepLink(_ deepLink: String) {
         guard let url = URL(string: deepLink) else {
             return
         }
@@ -175,7 +154,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? InAppNotification)?.deeplink, !deepLink.isEmpty else {
+        guard let deepLink = dataSource.visibleItems[indexPath.row].deeplink, !deepLink.isEmpty else {
             return
         }
         
@@ -187,20 +166,6 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         (cell as? InAppNotificationCell)?.delegate = self
     }
     
-    // MARK: - VPaginatedDataSourceDelegate
-    
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
-    }
-    
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
-        updateTableView()
-    }
-    
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: Error) {
-        (navigationController ?? self).v_showErrorDefaultError()
-    }
-    
     // MARK: - VCellWithProfileDelegate
     
     func notificationCellDidSelectUser(_ cell: InAppNotificationCell) {
@@ -208,7 +173,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
             return
         }
         
-        let notification = dataSource.visibleItems[indexPath.row] as! InAppNotification
+        let notification = dataSource.visibleItems[indexPath.row]
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         router.navigate(to: .profile(userID: notification.user.id), from: nil)
     }

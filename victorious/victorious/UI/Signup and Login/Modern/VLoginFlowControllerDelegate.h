@@ -74,7 +74,7 @@
 /**
  *  The user has entered an appropriate username.
  */
-- (void)setUsername:(NSString *)username;
+- (void)setUsername:(NSString *)username completion:(void (^)(BOOL, NSError *))completion;
 
 /**
  *  The user forgot their password.
