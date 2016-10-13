@@ -9,20 +9,31 @@
 import Foundation
 import VictoriousIOSSDK
 
-class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
+class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
     let dependencyManager: VDependencyManager
     
-    required init(dependencyManager: VDependencyManager) {
+    private(set) var visibleItems: [InAppNotification] = []
+    
+    init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        super.init()
     }
     
-    func loadNotifications(_ pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
-        loadPage( pageType,
-            createOperation: { NotificationsOperation() },
-            completion: { (results, error, cancelled) in
-                completion?(error)
+    func load(_ completion: ((OperationResult<[InAppNotification]>) -> Void)? = nil) {
+        guard
+            let notificationAPIPath = dependencyManager.notificationListAPIPath,
+            let request = InAppNotificationsRequest(apiPath: notificationAPIPath)
+        else {
+            Log.warning("Unable to initialize a InAppNotificationRequest")
+            return
+        }
+        
+        RequestOperation(request: request).queue { [weak self] result in
+            if let notifications = result.output {
+                self?.visibleItems = notifications
             }
-        )
+            completion?(result)
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -43,7 +54,13 @@ class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func decorate(cell notificationCell: InAppNotificationCell, atIndexPath indexPath: IndexPath) {
-        let notification = visibleItems[indexPath.row] as! InAppNotification
+        let notification = visibleItems[indexPath.row]
         notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
+    }
+}
+
+private extension VDependencyManager {
+    var notificationListAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "notification.list.URL")
     }
 }

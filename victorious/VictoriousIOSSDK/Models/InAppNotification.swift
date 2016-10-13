@@ -9,11 +9,7 @@
 import Foundation
 
 /// A class representing an in-app notification.
-///
-/// A struct would be preferred, but is currently not compatible with our legacy pagination system.
-///
-public class InAppNotification {
-    
+public struct InAppNotification {
     public let subject: String
     public let user: User
     public let body: String?
@@ -25,32 +21,22 @@ public class InAppNotification {
     public let updatedAt: Date?
     
     public init?(json: JSON) {
-        
-        guard let createdAt     = DateFormatter.vsdk_defaultDateFormatter().date(from:json["created_at"].stringValue),
-            let subject         = json["subject"].string,
-            let user            = User(json: json["created_by"]) else {
-                return nil
+        guard
+            let createdAt = DateFormatter.vsdk_defaultDateFormatter().date(from:json["created_at"].stringValue),
+            let subject = json["subject"].string,
+            let user = User(json: json["created_by"])
+        else {
+            return nil
         }
-        self.createdAt          = createdAt
-        self.subject            = subject
-        self.user               = user
+        self.createdAt = createdAt
+        self.subject = subject
+        self.user = user
         
-        body                    = json["body"].string
-        deeplink                = json["deeplink"].string
-        imageURL                = json["creator_profile_image_url"].string
-        isRead                  = json["is_read"].v_boolFromAnyValue
-        type                    = json["type"].string
-        updatedAt               = DateFormatter.vsdk_defaultDateFormatter().date(from: json["updated_at"].stringValue)
-    }
-}
-
-extension JSON {
-    
-    var v_stringFromInt: String? {
-        if let integer = self.int {
-            return String(integer)
-        } else {
-            return self.string
-        }
+        body = json["body"].string
+        deeplink = json["deeplink"].string
+        imageURL = json["creator_profile_image_url"].string
+        isRead = json["is_read"].v_boolFromAnyValue
+        type = json["type"].string
+        updatedAt = DateFormatter.vsdk_defaultDateFormatter().date(from: json["updated_at"].stringValue)
     }
 }
