@@ -12,7 +12,7 @@ import Foundation
 ///
 /// A struct would be preferred, but is currently not compatible with our legacy pagination system.
 ///
-public class InAppNotification {
+public struct InAppNotification {
     
     public let subject: String
     public let user: User
@@ -41,16 +41,5 @@ public class InAppNotification {
         isRead                  = json["is_read"].v_boolFromAnyValue
         type                    = json["type"].string
         updatedAt               = DateFormatter.vsdk_defaultDateFormatter().date(from: json["updated_at"].stringValue)
-    }
-}
-
-extension JSON {
-    
-    var v_stringFromInt: String? {
-        if let integer = self.int {
-            return String(integer)
-        } else {
-            return self.string
-        }
     }
 }
