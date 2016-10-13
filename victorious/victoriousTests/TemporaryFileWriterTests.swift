@@ -23,8 +23,6 @@ class TemporaryFileWriterTests: XCTestCase {
 
             XCTAssertTrue(filePath.isFileURL, "URL returned should be a file URL, not -> \(filePath)")
             XCTAssertTrue(filePath.absoluteString.hasSuffix("\(fileName).\(fileExtension)"), "File name with extension should be present in file path -> \(filePath)")
-
-            XCTAssertTrue(FileManager.default.fileExists(atPath: filePath.absoluteString), "Expected file to be on disk after write. File path -> \(filePath)")
         } catch {
             XCTFail("Writing a temp file to disk should not throw. Error -> \(error)")
         }
