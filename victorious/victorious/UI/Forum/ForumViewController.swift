@@ -466,8 +466,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
         let context = chatFeedContext.value ?? "chat_feed"
         let isLikedByCurrentUser = content.content.isLikedByCurrentUser
-        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
-        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
+        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context, "%%ROOM_ID%%": activeFeed.roomID ?? ""])
+        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context, "%%ROOM_ID%%": activeFeed.roomID ?? ""])
 
         let toggleLikeOperation: SyncOperation<Void>? = isLikedByCurrentUser
             ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
