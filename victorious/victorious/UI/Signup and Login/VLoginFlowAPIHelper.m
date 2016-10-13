@@ -80,7 +80,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     [self queueUpdateProfileOperationWithUsername:username profileImageURL:nil completion:^(NSError *error)
      {
-         [hud hide:YES];
+         [hud hideAnimated: YES];
          completion( error == nil, error);
      }];
 }
@@ -167,12 +167,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          {
              self.deviceToken = deviceToken;
              self.resetPasswordEmail = email;
-             [hud hide:YES];
+             [hud hideAnimated: YES];
              completion(YES, nil);
          }
          else
          {
-             [hud hide:YES];
+             [hud hideAnimated: YES];
              NSString *message = NSLocalizedString(@"EmailNotFound", @"");
              NSString *title = NSLocalizedString(@"EmailValidation", @"");
              
@@ -217,13 +217,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self queuePasswordResetOperationWithUserToken:self.userToken deviceToken:self.deviceToken completion: ^(NSError *_Nullable error) {
         if (error == nil)
         {
-            [hud hide:YES];
+            [hud hideAnimated: YES];
             completion(YES, nil);
         }
         else
         {
             
-            [hud hide:YES];
+            [hud hideAnimated: YES];
             
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CannotVerify", nil)
                                                                                      message:NSLocalizedString(@"IncorrectCode", nil)
@@ -253,7 +253,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self queuePasswordResetOperationWithNewPassword:password userToken:self.userToken deviceToken:self.deviceToken completion: ^(NSError *_Nullable error) {
         if (error == nil)
         {
-            [hud hide:YES];
+            [hud hideAnimated: YES];
             
             [weakSelf queueLoginOperationWithEmail:self.resetPasswordEmail password:password completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
                 
@@ -269,7 +269,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         }
         else
         {
-            [hud hide:YES];
+            [hud hideAnimated: YES];
             completion(NO, error);
         }
     }];

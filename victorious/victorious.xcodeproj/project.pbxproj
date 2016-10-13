@@ -546,7 +546,6 @@
 		7A1DECCB1D80E075003F5C37 /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC61D80E075003F5C37 /* LogoutOperation.swift */; };
 		7A1DECCC1D80E075003F5C37 /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */; };
 		7A1DECCD1D80E075003F5C37 /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */; };
-		7A1DECD41D80E08B003F5C37 /* NotificationsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */; };
 		7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD91D80E09E003F5C37 /* Queueable.swift */; };
 		7A1DECDD1D80E09E003F5C37 /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */; };
 		7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */; };
@@ -1077,7 +1076,7 @@
 		C3E7C0E91BF3CCC500AFE545 /* InAppNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0E81BF3CCC500AFE545 /* InAppNotificationTests.swift */; };
 		C3E7C0EB1BF3CCF700AFE545 /* Notification.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0EA1BF3CCF700AFE545 /* Notification.json */; };
 		C3E7C0ED1BF3E1BD00AFE545 /* InAppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0EC1BF3E1BD00AFE545 /* InAppNotification.swift */; };
-		C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0EE1BF3ED9900AFE545 /* NotificationsRequestTests.swift */; };
+		C3E7C0EF1BF3ED9900AFE545 /* InAppNotificationsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0EE1BF3ED9900AFE545 /* InAppNotificationsRequestTests.swift */; };
 		C3E7C0F11BF3EFEB00AFE545 /* InAppNotificationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F01BF3EFEB00AFE545 /* InAppNotificationsRequest.swift */; };
 		C3E7C0F31BF3F16000AFE545 /* UnreadNotificationsCountResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0F21BF3F16000AFE545 /* UnreadNotificationsCountResponse.json */; };
 		C3E7C0F51BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F41BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift */; };
@@ -1926,7 +1925,6 @@
 		79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AcknowledgeAlertRequestTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7925A50C1BCDC20100BCA649 /* VCrashlyticsLogTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrashlyticsLogTracking.h; sourceTree = "<group>"; };
 		7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrashlyticsLogTracking.m; sourceTree = "<group>"; };
-		792D46C81BD953F500DE662A /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FriendFindByEmailResponse.json; sourceTree = "<group>"; };
 		7956D41C1D2D724A00BC14AB /* StageShrinkingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StageShrinkingAnimator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		795B758D1BFA66D100227647 /* TermsOfServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceRequest.swift; sourceTree = "<group>"; };
@@ -1977,7 +1975,6 @@
 		7A1DECC61D80E075003F5C37 /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
 		7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
-		7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsOperation.swift; sourceTree = "<group>"; };
 		7A1DECD91D80E09E003F5C37 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
 		7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
@@ -2636,7 +2633,7 @@
 		C3E7C0E81BF3CCC500AFE545 /* InAppNotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotificationTests.swift; sourceTree = "<group>"; };
 		C3E7C0EA1BF3CCF700AFE545 /* Notification.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Notification.json; sourceTree = "<group>"; };
 		C3E7C0EC1BF3E1BD00AFE545 /* InAppNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotification.swift; sourceTree = "<group>"; };
-		C3E7C0EE1BF3ED9900AFE545 /* NotificationsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRequestTests.swift; sourceTree = "<group>"; };
+		C3E7C0EE1BF3ED9900AFE545 /* InAppNotificationsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotificationsRequestTests.swift; sourceTree = "<group>"; };
 		C3E7C0F01BF3EFEB00AFE545 /* InAppNotificationsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotificationsRequest.swift; sourceTree = "<group>"; };
 		C3E7C0F21BF3F16000AFE545 /* UnreadNotificationsCountResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UnreadNotificationsCountResponse.json; sourceTree = "<group>"; };
 		C3E7C0F41BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadNotificationsCountRequestTests.swift; sourceTree = "<group>"; };
@@ -3372,7 +3369,7 @@
 				C3E7C0F81BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift */,
 				678C43C21C541D9F00EBE83A /* MediaUploadCreateRequestTests.swift */,
 				03314F461BE40F0100EE74FD /* Models */,
-				C3E7C0EE1BF3ED9900AFE545 /* NotificationsRequestTests.swift */,
+				C3E7C0EE1BF3ED9900AFE545 /* InAppNotificationsRequestTests.swift */,
 				67C2100F1BFA60580074E40E /* NSDictionary+URLEncodedStringTests.swift */,
 				0300AA621BF19CA4000A121D /* NSURL+MimeTypeTests.swift */,
 				A702C8521C124110001EE1D5 /* PageableTests.swift */,
@@ -4181,7 +4178,6 @@
 			children = (
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
-				792D46C81BD953F500DE662A /* Reveal.framework */,
 				03388EEC1C582F9A00D59A05 /* TestFairySDK */,
 				03F61E681C6ADF0700EEA8F9 /* youtube-ios-player-helper */,
 			);
@@ -4674,14 +4670,6 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		7A1DECCE1D80E080003F5C37 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
 		7A1DECD71D80E093003F5C37 /* Operation Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
@@ -5073,7 +5061,6 @@
 				A72C85AA1C977FF500E97D4F /* Launch */,
 				621320021D9DDA8700A1B5BD /* List Menu */,
 				7A1DECC31D80E06B003F5C37 /* Login */,
-				7A1DECCE1D80E080003F5C37 /* Notifications */,
 				7A1DECD71D80E093003F5C37 /* Operation Infrastructure */,
 				A72C85BE1C977FF500E97D4F /* Pagination */,
 				A72C85C01C977FF500E97D4F /* Purchase */,
@@ -7568,7 +7555,7 @@
 				BFE25A4D1D0B806E00F55653 /* ContentDeleteRequestTests.swift in Sources */,
 				C3E7C0F91BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift in Sources */,
 				0EC8ECF11D24488900A3272D /* WebSocketErrorTests.swift in Sources */,
-				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
+				C3E7C0EF1BF3ED9900AFE545 /* InAppNotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,
 				7A07385F1D9B2E570016D5D8 /* User+ValidationTests.swift in Sources */,
 				BF3CD8901D11E44100CB7764 /* UserUpvoteRequestTests.swift in Sources */,
@@ -7841,7 +7828,6 @@
 				6728F6DE1D3DADC000559A04 /* UIImageView+ImageAsset.swift in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
-				7A1DECD41D80E08B003F5C37 /* NotificationsOperation.swift in Sources */,
 				A72C864B1C977FF500E97D4F /* VStoredPassword.m in Sources */,
 				F087E5C31D93B27D00034146 /* CustomInputAreaState.swift in Sources */,
 				A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */,
@@ -10293,11 +10279,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					Reveal,
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DDEBUG -DV_BACKDOOR_ACCESS_TO_VIP -DV_ENABLE_WEBSOCKET_DEBUG_MENU -DV_FORUM_TEST_HARNESS -DV_FAKE_PURCHASES";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -104,7 +104,7 @@
         }
         
         @objc private func close() {
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         }
 
         @objc private func export() {
@@ -116,14 +116,14 @@
                 mailComposerViewController.setMessageBody(allMessagesString, isHTML: false)
 
                 self.mailComposerViewController = mailComposerViewController
-                present(mailComposerViewController, animated: true, completion: nil)
+                present(mailComposerViewController, animated: true)
             }
         }
 
         // MARK: - MFMailComposeViewControllerDelegate
 
         func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
     }
     

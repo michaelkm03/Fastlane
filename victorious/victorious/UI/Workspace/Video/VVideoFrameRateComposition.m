@@ -8,7 +8,7 @@
 
 #import "VVideoFrameRateComposition.h"
 
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 NSString * const VVideoFrameRateCompositionErrorDomain = @"VVideoFrameRateCompositionErrorDomain";
 

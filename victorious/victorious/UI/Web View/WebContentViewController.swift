@@ -140,7 +140,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     }
     
     func cancelButtonPressed() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     var webViewIsDisplayingInitialHTMLString: Bool {

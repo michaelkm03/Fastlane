@@ -15,6 +15,8 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
+@import KVOController;
+
 @interface VBulkDownloadOperationTests : XCTestCase
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;

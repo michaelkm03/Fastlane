@@ -14,7 +14,7 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,6 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         //This KVO allows view the contained view controller to update the
         //right bar button item of our navigation item
+        
         [self.KVOController observe:self.viewControllerToContain.navigationItem
                            keyPaths:@[@"rightBarButtonItems", @"rightBarButtonItem"]
                             options:NSKeyValueObservingOptionNew

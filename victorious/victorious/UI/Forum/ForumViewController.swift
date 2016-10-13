@@ -353,7 +353,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         alertController.addAction(confirm)
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
     
     private func confirmCloseVIPEvent() {
@@ -400,7 +400,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             closeButton?.dependencyManager?.trackButtonEvent(.tap)
         }
         
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true)
 
         // Close connection to network source when we close the forum.
         forumNetworkSource?.tearDown()
@@ -439,7 +439,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 case .cancel: break
             }
         }) {
-            present(alertController, animated: true, completion: nil)
+            present(alertController, animated: true)
         }
     }
     
@@ -517,7 +517,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 handler: nil
             )
         )
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
     
     func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {

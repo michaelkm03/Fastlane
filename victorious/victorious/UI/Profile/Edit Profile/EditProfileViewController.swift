@@ -186,7 +186,7 @@ class EditProfileViewController: UIViewController {
         profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
         profilePicturePresenter?.resultHandler = { [weak self] success, previewImage, mediaURL in
             defer {
-                self?.dismiss(animated: true, completion: nil)
+                self?.dismiss(animated: true)
             }
             
             guard success, let previewImage = previewImage, let mediaURL = mediaURL else {

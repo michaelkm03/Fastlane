@@ -21,8 +21,7 @@ extension VLoadingViewController {
         let loadingHelper = LoadingHelper()
         loadingHelper.completion = { [weak self] in
             self?.isLoading = false
-            self?.progressHUD.taskInProgress = false
-            self?.progressHUD.hide(true)
+            self?.progressHUD.hide(animated: true)
             guard let template = loadingHelper.template as? [AnyHashable: Any] else {
                 return
             }
@@ -33,7 +32,6 @@ extension VLoadingViewController {
         progressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         progressHUD.mode = .indeterminate
         progressHUD.graceTime = 2.0
-        progressHUD.taskInProgress = true
     }
 }
 

@@ -42,7 +42,7 @@ protocol CoachmarkDisplayer {
 
 extension CoachmarkDisplayer where Self: UIViewController {
     func presentCoachmark(from viewController: CoachmarkViewController) {
-        present(viewController, animated: true, completion: nil)
+        present(viewController, animated: true)
     }
     
     var screenIdentifier: String {

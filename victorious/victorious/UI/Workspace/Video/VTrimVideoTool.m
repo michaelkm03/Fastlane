@@ -10,7 +10,7 @@
 #import "VTrimmerViewController.h"
 #import "VDependencyManager.h"
 #import "VVideoFrameRateComposition.h"
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 #import "VAssetThumbnailDataSource.h"
 #import "VCVideoPlayerViewController.h"
 #import "victorious-Swift.h"

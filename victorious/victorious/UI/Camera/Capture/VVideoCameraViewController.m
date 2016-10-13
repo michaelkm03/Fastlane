@@ -446,7 +446,7 @@ static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
-                       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                       [MBProgressHUD hideHUDForView:self.view animated:YES];
                        if (error)
                        {
                            [self displayShortError:NSLocalizedString(@"VideoSaveFailed", @"")];
@@ -480,8 +480,8 @@ static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = errorText;
-    [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+    hud.label.text = errorText;
+    [hud hideAnimated:YES afterDelay:kErrorMessageDisplayDuration];
 }
 
 @end
