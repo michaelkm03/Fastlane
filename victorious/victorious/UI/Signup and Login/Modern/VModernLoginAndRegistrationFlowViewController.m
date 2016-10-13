@@ -458,7 +458,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
 
-- (void)setUsername:(NSString *)username
+- (void)setUsername:(NSString *)username completion:(void (^)(BOOL, NSError *))completion
 {
     if (self.actionsDisabled)
     {
@@ -469,13 +469,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.loginFlowHelper setUsername:username
                            completion:^(BOOL success, NSError *error)
      {
+         completion(success, error);
+         
          if (success)
          {
              [welf continueRegistrationFlow];
-         }
-         else
-         {
-             [welf v_showErrorDefaultError];
          }
      }];
     

@@ -18,6 +18,8 @@
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
 
+static NSString * const kUsernameAlreadyTakenErrorMessage = @"username not available";
+
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -111,7 +113,17 @@
         [self.view endEditing:YES];
         
         NSString *username = [self.nameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        [self.delegate setUsername:username];
+        
+        [self.delegate setUsername:username completion:^(BOOL success, NSError *error) {
+            if ([error.localizedDescription isEqualToString:kUsernameAlreadyTakenErrorMessage])
+            {
+                [self.nameField showInvalidText:NSLocalizedString(@"UsernameTaken", @"") animated:YES shake:YES forced:YES];
+            }
+            else if (!success)
+            {
+                [self v_showErrorDefaultError];
+            }
+        }];
     }
 }
 
