@@ -167,9 +167,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private var publisher: ContentPublisher?
     
     /// Encapsulates information about the currently active feed
-    var activeFeed = Feed() {
+    var activeFeed = Feed(roomID: nil) {
         didSet {
-            send(.activeFeedChanged)
+            broadcast(.activeFeedChanged)
         }
     }
     
@@ -206,7 +206,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
         chatFeedContext = selectedItem?.context ?? DeeplinkContext(value: DeeplinkContext.mainFeed)
-        activeFeed.roomID = selectedItem?.chatRoomID
+        activeFeed = Feed(roomID: selectedItem?.chatRoomID)
     }
 
     func setStageHeight(_ value: CGFloat) {
@@ -388,8 +388,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
+            composer.composerDelegate = self
             composer.dependencyManager = dependencyManager.composerDependency
-            composer.delegate = self
+            composer.activeFeedDelegate = self
             self.composer = composer
         
         } else {

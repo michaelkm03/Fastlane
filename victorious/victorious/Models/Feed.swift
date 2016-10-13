@@ -7,5 +7,5 @@
 //
 
 struct Feed {
-    var roomID: String? = nil
+    let roomID: String?
 }

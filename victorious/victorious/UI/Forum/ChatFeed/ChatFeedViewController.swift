@@ -108,15 +108,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     fileprivate func updateLoadingView() {
         loadingView?.isLoading = loadingViewEnabled && isLoading
     }
-    
-    // MARK: - Chat room support
-    
-    var activeChatRoomID: ChatRoom.ID? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    
+
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
@@ -127,6 +119,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         switch event {
             case .setChatActivityIndicatorEnabled(let enabled): loadingViewEnabled = enabled
             case .setLoadingContent(let isLoading, let loadingType): self.isLoading = isLoading && loadingType.showsLoadingState
+            case .activeFeedChanged: collectionView.reloadData()
             default: break
         }
     }
@@ -264,7 +257,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return []
         }
         
-        return publisher.pendingItems(forChatRoomWithID: activeChatRoomID)
+        return publisher.pendingItems(forChatRoomWithID: activeFeedDelegate?.activeFeed.roomID)
     }
     
     fileprivate func removePendingContent(_ contentToRemove: [ChatFeedContent]) -> [Int] {
@@ -272,7 +265,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return []
         }
         
-        if publisher.pendingItems(forChatRoomWithID: activeChatRoomID).isEmpty || contentToRemove.isEmpty {
+        if publisher.pendingItems(forChatRoomWithID: activeFeedDelegate?.activeFeed.roomID).isEmpty || contentToRemove.isEmpty {
             return []
         }
         
@@ -327,7 +320,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         chatFeedDelegate?.chatFeed(self, didSelectReplyButtonFor: content)
-        dependencyManager.trackButtonEvent(.tap, for: "reply.tracking", with: activeChatRoomID.map { ["%%ROOM_ID%%": $0] })
+        dependencyManager.trackButtonEvent(.tap, for: "reply.tracking", with: activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] })
     }
     
     func messageCell(_ messageCell: ChatFeedMessageCell, didSelectLinkURL url: URL) {

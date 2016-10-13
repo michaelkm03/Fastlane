@@ -10,14 +10,17 @@ import Foundation
 import VictoriousIOSSDK
 
 protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachmentTabBarDelegate, TrayDelegate {
-    
+
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
     var maximumTextInputHeight: CGFloat { get set }
     
     var creationFlowPresenter: VCreationFlowPresenter! { get }
     
-    weak var delegate: ComposerDelegate? { get set }
+    weak var composerDelegate: ComposerDelegate? { get set }
+
+    /// Delegate to get information about the currently active feed
+    weak var activeFeedDelegate: ActiveFeedDelegate? { get set }
     
     var topInset: CGFloat { get set }
     
