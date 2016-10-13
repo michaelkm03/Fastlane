@@ -21,7 +21,7 @@ class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
     
     func load(_ completion: ((OperationResult<[InAppNotification]>) -> Void)? = nil) {
         guard
-            let notificationAPIPath = dependencyManager.notificationListApiPath,
+            let notificationAPIPath = dependencyManager.notificationListAPIPath,
             let request = InAppNotificationsRequest(apiPath: notificationAPIPath)
         else {
             Log.warning("Unable to initialize a InAppNotificationRequest")
@@ -60,7 +60,7 @@ class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
 }
 
 private extension VDependencyManager {
-    var notificationListApiPath: APIPath? {
+    var notificationListAPIPath: APIPath? {
         return networkResources?.apiPath(forKey: "notification.list.URL")
     }
 }

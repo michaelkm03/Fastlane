@@ -154,7 +154,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row]).deeplink, !deepLink.isEmpty else {
+        guard let deepLink = dataSource.visibleItems[indexPath.row].deeplink, !deepLink.isEmpty else {
             return
         }
         
