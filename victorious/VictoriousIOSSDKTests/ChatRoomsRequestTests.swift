@@ -27,7 +27,7 @@ class ChatRoomsRequestTests: XCTestCase {
             XCTAssertEqual(room1.name, "Cupcakes")
             XCTAssertEqual(room1.id, "cupcakes")
             XCTAssertEqual(room2.name, "Cholocate")
-            XCTAssertEqual(room2.id, "cholocate")
+            XCTAssertEqual(room2.id, "chocolate")
         } catch {
             XCTFail("Oh nooo, exception thrown during json parsing 😔")
         }
