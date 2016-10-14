@@ -14,6 +14,11 @@ enum ButtonTrackingEvent: String {
 }
 
 extension VDependencyManager {
+    /// Track a button event
+    /// - parameter event: Event to track
+    /// - parameter for: Template key for tracking payload
+    /// - parameter with: An array of macro replacementes for tracking URL macro substitutions
+    /// - parameter eventTracker: Tracker used to send events
     func trackButtonEvent(_ event: ButtonTrackingEvent, for trackingKey: String = VDependencyManager.defaultTrackingKey, with macroReplacements: [String:String]? = nil, eventTracker: VEventTracker = VTrackingManager.sharedInstance()) {
         guard var apiPaths = trackingAPIPaths(forEventKey: event.rawValue, trackingKey: trackingKey) , !apiPaths.isEmpty else {
             return

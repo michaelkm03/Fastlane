@@ -583,12 +583,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
 
-    // MARK: - ComposerDelegate
-
-    func didSelectNavigationMenuItem(_ navigationMenuItem: VNavigationMenuItem) {
-        navigationMenuItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with:  activeFeed.roomID.map { ["%%ROOM_ID%%": $0] })
-    }
-
     // MARK: - VFocusable
     
     var focusType: VFocusType = .none {

@@ -60,8 +60,6 @@ extension Composer {
 /// Conformers will recieve messages when a composer's buttons are pressed and when
 /// a composer changes its height.
 protocol ComposerDelegate: class, ForumEventSender {
-    /// Communicates when a navigation menu item is selected from the composer
-    func didSelectNavigationMenuItem(_ navitionmenuItem: VNavigationMenuItem)
 
     func composer(_ composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType)
     

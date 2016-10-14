@@ -290,7 +290,7 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
             "%%CONTENT_ID%%": contentID,
             "%%CONTEXT%%" : childDependencyManager.context
-            ])
+        ])
 
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,

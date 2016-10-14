@@ -746,7 +746,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - ComposerAttachmentTabBarDelegate
     
     func composerAttachmentTabBar(_ composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem, fromButton button: UIButton) {
-        composerDelegate?.didSelectNavigationMenuItem(navigationItem)
+        let macroReplacement = activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] }
+        navigationItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with: macroReplacement)
 
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
