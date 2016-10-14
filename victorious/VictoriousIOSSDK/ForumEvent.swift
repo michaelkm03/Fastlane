@@ -51,4 +51,7 @@ public enum ForumEvent {
     
     /// Enables or disables the chat feed activity indicator for different forums.
     case setChatActivityIndicatorEnabled(Bool)
+
+    /// Notifies when the active feed changed
+    case activeFeedChanged
 }

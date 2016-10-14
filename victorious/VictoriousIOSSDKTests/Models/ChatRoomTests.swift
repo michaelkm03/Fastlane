@@ -27,7 +27,7 @@ class ChatRoomTests: XCTestCase {
 
     func testInitailizer() {
         let chatRoom = ChatRoom(id: "sea_salt", name: "Seasalt")
-        XCTAssertEqual(chatRoom.id, "sea_salt")
         XCTAssertEqual(chatRoom.name, "Seasalt")
+        XCTAssertEqual(chatRoom.id, "sea_salt")
     }
 }
