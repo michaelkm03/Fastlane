@@ -1,5 +1,5 @@
 //
-//  WebSocketControllerTests.swift
+//  VIPWebSocketControllerTests.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 15/3/16.
@@ -9,8 +9,8 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender {
-    fileprivate var controller: WebSocketController!
+class VIPWebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender {
+    fileprivate var controller: VIPWebSocketController!
     fileprivate var webSocket: StubbedWebSocket!
     
     // ForumEventSender
@@ -30,7 +30,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         super.setUp()
 
         webSocket = StubbedWebSocket()
-        controller = WebSocketController(webSocket: webSocket)
+        controller = VIPWebSocketController(webSocket: webSocket)
         webSocket.delegate = controller
     }
     
@@ -180,7 +180,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
                 if controller.isSetUp {
                     expectationConnectEvent.fulfill()
                 } else {
-                    XCTFail("Expected WebSocketController to be connected after the .connected event has been sent out.")
+                    XCTFail("Expected VIPWebSocketController to be connected after the .connected event has been sent out.")
                 }
             case .disconnected(webSocketError: _):
                 guard let expectationDisconnectedEvent = expectationDisconnectedEvent else {
@@ -189,7 +189,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
                 if !controller.isSetUp {
                     expectationDisconnectedEvent.fulfill()
                 } else {
-                    XCTFail("Expected WebSocketController to NOT be connected after the .disconnect event has been sent out.")
+                    XCTFail("Expected VIPWebSocketController to NOT be connected after the .disconnect event has been sent out.")
                 }
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(websocketEvent)")

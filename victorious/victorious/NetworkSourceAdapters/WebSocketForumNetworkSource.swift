@@ -17,7 +17,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         static let tokenExpander = "%%AUTH_TOKEN%%"
     }
     
-    fileprivate var webSocketController = WebSocketController.sharedInstance
+    fileprivate var webSocketController = VIPWebSocketController.sharedInstance
     
     fileprivate let dependencyManager: VDependencyManager
     

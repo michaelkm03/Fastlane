@@ -45,6 +45,8 @@ extension ForumNetworkSource {
 }
 
 public protocol ForumNetworkSourceWebSocket: ForumNetworkSource {
+    // TODO: replace with the configuration object
+
     /// Used for tracking trafic over the websocket to a particular device. Should be set before messages are sent.
     func setDeviceID(deviceID: String)
     
