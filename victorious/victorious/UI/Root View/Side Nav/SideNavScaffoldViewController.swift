@@ -101,6 +101,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         if presentedViewController == nil {
             let _ = InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
+        
+        if dependencyManager.shouldShowLeftNavOnLaunch {
+            sideMenuController.openSideViewController(on: .left, animated: true)
+        }
     }
     
     // MARK: - Setup
@@ -232,5 +236,11 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         allowsRightNavigation = navigationController.viewControllers.count <= 1
         sideMenuController.panningIsEnabled = navigationController.viewControllers.count <= 1
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+}
+
+private extension VDependencyManager {
+    var shouldShowLeftNavOnLaunch: Bool {
+        return bool(for: "show.list.menu.on.launch") ?? false
     }
 }
