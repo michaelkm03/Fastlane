@@ -16,7 +16,7 @@ private struct Constants {
 protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
     var chatFeedDelegate: ChatFeedDelegate? { get set }
-    var activeFeedDelegate: ActiveFeedDelegate? { get set }
+    weak var activeFeedDelegate: ActiveFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
     
     var newItemsController: NewItemsController? { get }

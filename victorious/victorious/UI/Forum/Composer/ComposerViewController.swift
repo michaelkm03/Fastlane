@@ -225,7 +225,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
 
-    var activeFeedDelegate: ActiveFeedDelegate?
+    weak var activeFeedDelegate: ActiveFeedDelegate?
 
     var text: String {
         get {
@@ -747,7 +747,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func composerAttachmentTabBar(_ composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem, fromButton button: UIButton) {
         let macroReplacement = activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] }
-        navigationItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with: macroReplacement)
+        navigationItem.dependencyManager.track(.tap, trackingKey: VDependencyManager.defaultTrackingKey, macroReplacements: macroReplacement)
 
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
