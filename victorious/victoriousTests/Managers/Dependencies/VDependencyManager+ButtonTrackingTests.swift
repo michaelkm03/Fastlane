@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+ButtonTrackingTests.swift
+//  VDependencyManager+TrackingTests.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 10/10/16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class VDependencyManagerButtonTrackingTests: XCTestCase {
+class VDependencyManagerTrackingTests: XCTestCase {
     func testTrackingButtonTap() {
         let macro = "%%AWESOME_MACRO%%"
         let replacementValue = "is_indeed_awesome"
@@ -22,7 +22,7 @@ class VDependencyManagerButtonTrackingTests: XCTestCase {
             ])
         let eventTracker = TestTrackingManager()
         let macroReplacements = [macro: "is_indeed_awesome"]
-        dependencyManager.trackButtonEvent(.tap, for: trackingKey, with: macroReplacements, eventTracker: eventTracker)
+        dependencyManager.track(.tap, trackingKey: trackingKey, macroReplacements: macroReplacements, eventTracker: eventTracker)
 
         let trackingCalls = eventTracker.trackEventCalls
         XCTAssertEqual(trackingCalls.count, 1)
