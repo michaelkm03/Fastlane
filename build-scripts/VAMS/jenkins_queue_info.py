@@ -22,7 +22,7 @@
                                                                 {u'name': u'ghprbPullTitle',
                                                                  u'value': u'Ios 3197 - Marquee refactor to work as a shelf'},
                                                                 {u'name': u'ghprbPullLink',
-                                                                 u'value': u'https://github.com/TouchFrame/VictoriousiOS/pull/1627'}]},
+                                                                 u'value': u'https://github.com/Victorious/VictoriousiOS/pull/1627'}]},
                                                {u'scmName': u'', u'buildsByBranchName': {
                                                    u'refs/remotes/origin/dev': {u'buildNumber': 2, u'buildResult': None,
                                                                                 u'marked': {
@@ -89,14 +89,14 @@
                                                                             u'branch': [{
                                                                                             u'SHA1': u'857397c8620c01b0c090cacf39a75364373a42e8',
                                                                                             u'name': u'origin/IOS-2539'}]}}},
-                                                u'remoteUrls': [u'https://github.com/TouchFrame/VictoriousiOS.git'],
+                                                u'remoteUrls': [u'https://github.com/Victorious/VictoriousiOS.git'],
                                                 u'lastBuiltRevision': {
                                                     u'SHA1': u'5d67f502bd2a6a27cfe1fd8087d8df3f90f7ede0', u'branch': [
                                                         {u'SHA1': u'5d67f502bd2a6a27cfe1fd8087d8df3f90f7ede0',
                                                          u'name': u'detached'}]}}, {u'causes': [
             {u'shortDescription': u'GitHub pull request #1627 of commit a49a853fdd87863a34e33c3d51437cc72361f229.'}]}],
   u'why': None, u'buildable': False,
-  u'params': u'\nAPP_NAMES=victorious\nSEND_NOTIFICATIONS=true\nsha1=a49a853fdd87863a34e33c3d51437cc72361f229\nghprbActualCommit=a49a853fdd87863a34e33c3d51437cc72361f229\nghprbActualCommitAuthor=feef\nghprbActualCommitAuthorEmail=fifihypnophonic@gmail.com\nghprbTriggerAuthor=\nghprbTriggerAuthorEmail=\nghprbPullId=1627\nghprbTargetBranch=dev\nghprbSourceBranch=IOS-3197\nGIT_BRANCH=IOS-3197\nghprbPullAuthorEmail=\nghprbPullDescription=GitHub pull request #1627 of commit a49a853fdd87863a34e33c3d51437cc72361f229.\nghprbPullTitle=Ios 3197 - Marquee refactor to work as a shelf\nghprbPullLink=https://github.com/TouchFrame/VictoriousiOS/pull/1627',
+  u'params': u'\nAPP_NAMES=victorious\nSEND_NOTIFICATIONS=true\nsha1=a49a853fdd87863a34e33c3d51437cc72361f229\nghprbActualCommit=a49a853fdd87863a34e33c3d51437cc72361f229\nghprbActualCommitAuthor=feef\nghprbActualCommitAuthorEmail=fifihypnophonic@gmail.com\nghprbTriggerAuthor=\nghprbTriggerAuthorEmail=\nghprbPullId=1627\nghprbTargetBranch=dev\nghprbSourceBranch=IOS-3197\nGIT_BRANCH=IOS-3197\nghprbPullAuthorEmail=\nghprbPullDescription=GitHub pull request #1627 of commit a49a853fdd87863a34e33c3d51437cc72361f229.\nghprbPullTitle=Ios 3197 - Marquee refactor to work as a shelf\nghprbPullLink=https://github.com/Victorious/VictoriousiOS/pull/1627',
   u'buildableStartMilliseconds': 1439000769547, u'id': 1131, u'blocked': True}, {
      u'task': {u'url': u'http://devs-imac.local:8080/job/iOS%20Stable%20Build/', u'color': u'red',
                u'name': u'iOS Stable Build'}, u'stuck': False, u'url': u'queue/item/1139/',
@@ -341,7 +341,7 @@
         {u'name': u'ghprbPullDescription',
          u'value': u'GitHub pull request #1628 of commit e89f0d1b08877a775064c3169fe6475c2dbbaac4 automatically merged.'},
         {u'name': u'ghprbPullTitle', u'value': u'added a nice animation when user leaves a comment'},
-        {u'name': u'ghprbPullLink', u'value': u'https://github.com/TouchFrame/VictoriousiOS/pull/1628'}]},
+        {u'name': u'ghprbPullLink', u'value': u'https://github.com/Victorious/VictoriousiOS/pull/1628'}]},
                                                                                {u'scmName': u'',
                                                                                 u'buildsByBranchName': {
                                                                                     u'refs/remotes/origin/dev': {
@@ -422,7 +422,7 @@
                                                                                                             u'SHA1': u'857397c8620c01b0c090cacf39a75364373a42e8',
                                                                                                             u'name': u'origin/IOS-2539'}]}}},
                                                                                 u'remoteUrls': [
-                                                                                    u'https://github.com/TouchFrame/VictoriousiOS.git'],
+                                                                                    u'https://github.com/Victorious/VictoriousiOS.git'],
                                                                                 u'lastBuiltRevision': {
                                                                                     u'SHA1': u'b868e71f5419311c3f921cf4ba443fb6d806baf1',
                                                                                     u'branch': [{
@@ -431,7 +431,7 @@
                                                                                {u'causes': [{
                                                                                                 u'shortDescription': u'GitHub pull request #1628 of commit e89f0d1b08877a775064c3169fe6475c2dbbaac4 automatically merged.'}]}],
      u'why': u'Waiting for next available executor', u'buildable': True,
-     u'params': u'\nAPP_NAMES=victorious\nSEND_NOTIFICATIONS=true\nsha1=origin/pr/1628/merge\nghprbActualCommit=e89f0d1b08877a775064c3169fe6475c2dbbaac4\nghprbActualCommitAuthor=Steven F Petteruti\nghprbActualCommitAuthorEmail=steven@stevens-mac-mini.local\nghprbTriggerAuthor=\nghprbTriggerAuthorEmail=\nghprbPullId=1628\nghprbTargetBranch=dev\nghprbSourceBranch=comment-animation\nGIT_BRANCH=comment-animation\nghprbPullAuthorEmail=\nghprbPullDescription=GitHub pull request #1628 of commit e89f0d1b08877a775064c3169fe6475c2dbbaac4 automatically merged.\nghprbPullTitle=added a nice animation when user leaves a comment\nghprbPullLink=https://github.com/TouchFrame/VictoriousiOS/pull/1628',
+     u'params': u'\nAPP_NAMES=victorious\nSEND_NOTIFICATIONS=true\nsha1=origin/pr/1628/merge\nghprbActualCommit=e89f0d1b08877a775064c3169fe6475c2dbbaac4\nghprbActualCommitAuthor=Steven F Petteruti\nghprbActualCommitAuthorEmail=steven@stevens-mac-mini.local\nghprbTriggerAuthor=\nghprbTriggerAuthorEmail=\nghprbPullId=1628\nghprbTargetBranch=dev\nghprbSourceBranch=comment-animation\nGIT_BRANCH=comment-animation\nghprbPullAuthorEmail=\nghprbPullDescription=GitHub pull request #1628 of commit e89f0d1b08877a775064c3169fe6475c2dbbaac4 automatically merged.\nghprbPullTitle=added a nice animation when user leaves a comment\nghprbPullLink=https://github.com/Victorious/VictoriousiOS/pull/1628',
      u'buildableStartMilliseconds': 1438992666800, u'id': 1130, u'pending': False, u'blocked': False},
  {u'task': {u'url': u'http://devs-imac.local:8080/job/iOS%20QA%20Build/', u'color': u'blue', u'name': u'iOS QA Build'},
   u'stuck': True, u'url': u'queue/item/1129/', u'inQueueSince': 1438992182105, u'actions': [{u'causes': [

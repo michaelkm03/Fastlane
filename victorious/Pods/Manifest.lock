@@ -30,19 +30,19 @@ DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
   - KVOController (~> 1.2.0)
   - MBProgressHUD (~> 1.0.0)
-  - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`)
+  - Nocilla (from `https://github.com/Victorious/Nocilla.git`)
   - OCMock (~> 3.3.1)
   - Reveal-SDK
   - SDWebImage (~> 3.8.2)
 
 EXTERNAL SOURCES:
   Nocilla:
-    :git: https://github.com/TouchFrame/Nocilla.git
+    :git: https://github.com/Victorious/Nocilla.git
 
 CHECKOUT OPTIONS:
   Nocilla:
     :commit: deaca36af6ef72ba48c194e127c30a82c13095f7
-    :git: https://github.com/TouchFrame/Nocilla.git
+    :git: https://github.com/Victorious/Nocilla.git
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322

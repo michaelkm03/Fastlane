@@ -9,8 +9,8 @@
 Posts a Test Fairy build url for a specific app to the Victorious backend.
 
 This script is used by the following Victorious repositories:
-https://github.com/TouchFrame/VictoriousAndroid
-https://github.com/TouchFrame/VictoriousiOS
+https://github.com/Victorious/VictoriousAndroid
+https://github.com/Victorious/VictoriousiOS
 """
 
 import requests

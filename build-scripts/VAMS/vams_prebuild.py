@@ -12,8 +12,8 @@ app assets and writes them to a temporary directory.
 This script assumes it is being run from the root of the code directory.
 
 This script is used by the following Victorious repositories:
-https://github.com/TouchFrame/VictoriousAndroid
-https://github.com/TouchFrame/VictoriousiOS
+https://github.com/Victorious/VictoriousAndroid
+https://github.com/Victorious/VictoriousiOS
 
 NOTE: Because this script returns a folder string for iOS, CONSOLE_OUTPUT for this script is isolated to Android only.
 """

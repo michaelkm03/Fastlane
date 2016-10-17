@@ -28,7 +28,7 @@
                                                                 u'branch': [{
                                                                                 u'SHA1': u'a4e546eac639714bdc8716b3f57358dbb2047ade',
                                                                                 u'name': u'refs/remotes/origin/master'}]}}},
-               u'remoteUrls': [u'https://github.com/TouchFrame/VictoriousiOS.git'],
+               u'remoteUrls': [u'https://github.com/Victorious/VictoriousiOS.git'],
                u'lastBuiltRevision': {u'SHA1': u'a4e546eac639714bdc8716b3f57358dbb2047ade', u'branch': [
                    {u'SHA1': u'a4e546eac639714bdc8716b3f57358dbb2047ade', u'name': u'refs/remotes/origin/master'}]}},
               {}, {}], u'id': u'607', u'keepLog': False,
