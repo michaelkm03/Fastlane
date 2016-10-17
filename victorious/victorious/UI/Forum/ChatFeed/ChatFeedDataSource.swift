@@ -170,7 +170,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cellForItem(for: collectionView, at: indexPath)
-        cell.showsReplyButton = shouldShowReplyButtons && dependencyManager.replyButtonsAreEnabled
+        let replyButtonEnabled = VCurrentUser.user?.accessLevel.isCreator == true ? dependencyManager.creatorReplyButtonEnabled : dependencyManager.userReplyButtonEnabled
+        cell.showsReplyButton = shouldShowReplyButtons && replyButtonEnabled
         return cell
     }
     
@@ -189,7 +190,11 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
 }
 
 private extension VDependencyManager {
-    var replyButtonsAreEnabled: Bool {
-        return bool(for: "show.reply.button") ?? false
+    var creatorReplyButtonEnabled: Bool {
+        return bool(for: "creator.show.reply.button") ?? false
+    }
+    
+    var userReplyButtonEnabled: Bool {
+        return bool(for: "user.show.reply.button") ?? false
     }
 }
