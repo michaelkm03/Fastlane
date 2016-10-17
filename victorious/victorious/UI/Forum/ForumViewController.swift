@@ -148,6 +148,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
+            case .handleContent(_, let loadingType):
+                if loadingType == .refresh {
+                    publisher?.removeAllPendingItems()
+                }
             default:
                 break
         }

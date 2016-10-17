@@ -111,6 +111,10 @@ class ContentPublisher {
         return indices
     }
     
+    func removeAllPendingItems() {
+        pendingItems = []
+    }
+    
     fileprivate func publishNextContent() {
         guard let index = indexOfContent(withState: .waiting) else {
             return
