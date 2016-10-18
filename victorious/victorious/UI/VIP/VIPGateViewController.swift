@@ -89,12 +89,12 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
     // MARK: - IBActions
     
     @IBAction func onSubscribe(_ sender: UIButton? = nil) {
-        subscribeButton.dependencyManager?.trackButtonEvent(.tap)
+        subscribeButton.dependencyManager?.track(.tap)
         vipSubscriptionHelper?.subscribe()
     }
     
     @IBAction func onRestore(_ sender: UIButton? = nil) {
-        restoreButton.dependencyManager?.trackButtonEvent(.tap)
+        restoreButton.dependencyManager?.track(.tap)
         
         guard let validationAPIPath = dependencyManager.validationAPIPath else {
             return
@@ -129,7 +129,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
     }
     
     @IBAction func onCloseSelected() {
-        closeButton.dependencyManager?.trackButtonEvent(.cancel)
+        closeButton.dependencyManager?.track(.cancel)
         delegate?.vipGateExitedWithSuccess(false)
     }
     

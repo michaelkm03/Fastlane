@@ -115,7 +115,7 @@ class VIPSubscriptionHelper {
             switch result {
                 case .success(let selectedProduct):
                     if willShowPrompt {
-                        selectionDependency.trackButtonEvent(.tap)
+                        selectionDependency.track(.tap)
                     }
                     self?.delegate?.setIsLoading(true, title: nil)
                     self?.subscribeToProduct(selectedProduct)
@@ -126,7 +126,7 @@ class VIPSubscriptionHelper {
                     originViewController.showSubscriptionAlert(for: error as NSError)
                 case .cancelled:
                     if willShowPrompt {
-                        selectionDependency.trackButtonEvent(.cancel)
+                        selectionDependency.track(.cancel)
                     }
                     self?.delegate?.setIsLoading(false, title: nil)
             }

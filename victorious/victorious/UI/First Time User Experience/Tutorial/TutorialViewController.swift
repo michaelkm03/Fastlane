@@ -30,7 +30,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
-    var activeFeedDelegate: ActiveFeedDelegate? = nil
+    weak var activeFeedDelegate: ActiveFeedDelegate? = nil
     
     @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
         didSet {

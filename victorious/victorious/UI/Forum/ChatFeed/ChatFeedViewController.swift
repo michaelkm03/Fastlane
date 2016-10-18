@@ -9,7 +9,6 @@
 import VictoriousIOSSDK
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-
     fileprivate struct Layout {
         fileprivate static let bottomMargin: CGFloat = 20.0
     }
@@ -322,7 +321,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         chatFeedDelegate?.chatFeed(self, didSelectReplyButtonFor: content)
-        dependencyManager.trackButtonEvent(.tap, for: "reply.tracking", with: activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] })
+        dependencyManager.track(.tap, trackingKey: "reply.tracking", macroReplacements: activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] })
     }
     
     func messageCell(_ messageCell: ChatFeedMessageCell, didSelectLinkURL url: URL) {

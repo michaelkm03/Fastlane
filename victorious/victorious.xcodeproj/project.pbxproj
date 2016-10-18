@@ -1196,7 +1196,6 @@
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */; };
-		F035DC1C1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F035DC1B1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift */; };
 		F04489001D67AED500B6C529 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04488FF1D67AED500B6C529 /* BubbleView.swift */; };
 		F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */; };
 		F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */; };
@@ -2835,7 +2834,6 @@
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
 		F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCreationFlowController.swift; sourceTree = "<group>"; };
-		F035DC1B1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ButtonTracking.swift"; sourceTree = "<group>"; };
 		F04488FF1D67AED500B6C529 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFlashBarButtonItem.swift; sourceTree = "<group>"; };
 		F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDirectionButton.swift; sourceTree = "<group>"; };
@@ -4017,7 +4015,6 @@
 				7AE0A0481D64EAF500769080 /* VDependencyManager.swift */,
 				7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */,
 				F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */,
-				F035DC1B1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift */,
 				7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */,
 				7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */,
 				7AFE92031D654481005D51A4 /* VDependencyManager+FixedWebContent.swift */,
@@ -8099,7 +8096,6 @@
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */,
 				66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */,
-				F035DC1C1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift in Sources */,
 				7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */,
 				7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */,
 				67713FCF1D79E6FC00DA4D6C /* VUploadManager.swift in Sources */,

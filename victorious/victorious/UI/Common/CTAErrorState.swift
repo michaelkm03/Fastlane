@@ -67,7 +67,7 @@ class CTAErrorState: UIView {
     }
     
     @objc fileprivate func performButtonAction() {
-        actionButton.dependencyManager?.trackButtonEvent(.tap)
+        actionButton.dependencyManager?.track(.tap)
         switch actionType {
             case .openSettings:
                 if let url = URL(string: UIApplicationOpenSettingsURLString) {

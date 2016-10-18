@@ -103,7 +103,7 @@ class NewItemsController: NSObject {
     // MARK: - Private
     
     @objc fileprivate func onNewItemsSelected() {
-        newItemIndicator.dependencyManager?.trackButtonEvent(.tap)
+        newItemIndicator.dependencyManager?.track(.tap)
         delegate?.onNewItemsSelected()
         hide()
     }
