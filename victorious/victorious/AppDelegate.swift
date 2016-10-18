@@ -41,6 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let timingTracker = DefaultTimingTracker.sharedInstance()
         timingTracker.startEvent(type: VAppTimingEventTypeAppStart)
         timingTracker.startEvent(type: VAppTimingEventTypeShowRegistration)
+        
+        resendPushNotificationToken()
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -100,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Private
 
     /// Listens to the login user notification in order to `register` the user with our services.
-    fileprivate func addLoginListener() {
+    private func addLoginListener() {
         NotificationCenter.default.addObserver(forName: .loggedInChanged, object: nil, queue: .main) { (notififcation) in
             if let currentUser = VCurrentUser.user {
                 #if V_ENABLE_TESTFAIRY
@@ -118,11 +120,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    fileprivate func configureAudioSessionCategory() {
+    private func configureAudioSessionCategory() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {
             Log.warning("Failed to set the AudioSession category with error ->\(error)")
         }
+    }
+    
+    private func resendPushNotificationToken() {
+        VPushNotificationManager.shared().sendToken(successBlock: {
+            Log.debug("Successfully re-sent push notification token.")
+        }, fail: { error in
+            Log.debug("Failed to re-send push notification token: \(error)")
+        })
     }
 }
