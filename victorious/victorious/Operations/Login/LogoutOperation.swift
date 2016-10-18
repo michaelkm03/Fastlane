@@ -22,7 +22,7 @@ class LogoutOperation: AsyncOperation<Void> {
     
     // MARK: - Initializing
     
-    fileprivate let dependencyManager: VDependencyManager?
+    private let dependencyManager: VDependencyManager?
     
     override var executionQueue: Queue {
         return .background

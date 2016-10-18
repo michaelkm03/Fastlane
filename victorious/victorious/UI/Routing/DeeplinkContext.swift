@@ -15,7 +15,7 @@ struct DeeplinkContext {
     static let hashTagFeed = "hashtag_feed"
     static let chatRoomFeed = "chat_room_feed"
 
-    fileprivate(set) var value: String?
+    private(set) var value: String?
 
     /// Initializer
     /// - paramenter value: the context

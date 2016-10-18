@@ -25,10 +25,10 @@ private struct Constants {
 /// A reusable error state class that tells the user that the current screen is not usable unless
 /// they perform a specific action.
 class CTAErrorState: UIView {
-    fileprivate let messageLabel = UILabel()
-    fileprivate var actionButton = TextOnColorButton()
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let actionType: CTAErrorStateActionType
+    private let messageLabel = UILabel()
+    private var actionButton = TextOnColorButton()
+    private let dependencyManager: VDependencyManager
+    private let actionType: CTAErrorStateActionType
 
     init(frame: CGRect, dependencyManager: VDependencyManager, actionType: CTAErrorStateActionType) {
         self.dependencyManager = dependencyManager
@@ -42,7 +42,7 @@ class CTAErrorState: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    fileprivate func setupViews() {
+    private func setupViews() {
         messageLabel.text = dependencyManager.messageLabelText
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
@@ -66,7 +66,7 @@ class CTAErrorState: UIView {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    @objc fileprivate func performButtonAction() {
+    @objc private func performButtonAction() {
         actionButton.dependencyManager?.track(.tap)
         switch actionType {
             case .openSettings:

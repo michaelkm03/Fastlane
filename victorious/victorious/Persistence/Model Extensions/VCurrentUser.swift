@@ -13,7 +13,7 @@ let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
 
 final class VCurrentUser: NSObject {
-    fileprivate(set) static var user: User?
+    private(set) static var user: User?
     static let userDidUpdateNotificationKey = "com.getvictorious.CurrentUser.DidUpdate"
     
     /// updates current user to the passed in user parameter.

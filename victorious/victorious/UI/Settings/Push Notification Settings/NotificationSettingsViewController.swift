@@ -45,7 +45,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - Properties
     
-    fileprivate var dependencyManager: VDependencyManager!
+    private var dependencyManager: VDependencyManager!
     var settings : NotificationSettings? {
         didSet {
             initializeSections()
@@ -53,12 +53,12 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
     }
     
-    fileprivate var stateManager: VNotificationSettingsStateManager?
-    fileprivate var permissionsTrackingHelper: VPermissionsTrackingHelper?
-    fileprivate var sections:[NotificationSettingsTableSection] = []
-    fileprivate var errorStateView: CTAErrorState?
-    fileprivate var shouldFetchSettings = true
-    fileprivate let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private var stateManager: VNotificationSettingsStateManager?
+    private var permissionsTrackingHelper: VPermissionsTrackingHelper?
+    private var sections:[NotificationSettingsTableSection] = []
+    private var errorStateView: CTAErrorState?
+    private var shouldFetchSettings = true
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     // MARK: - UIViewController methods
     
@@ -268,19 +268,19 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         return result
     }
     
-    fileprivate func createErrorStateView() {
+    private func createErrorStateView() {
         if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
             errorStateView.frame = CGRect(center: self.tableView.bounds.center, size: CGSize(width: Constants.errorStateViewWidthMultiplier * tableView.frame.width, height: Constants.errorStateViewHeight))
             self.errorStateView = errorStateView
         }
     }
     
-    fileprivate func startSpinner() {
+    private func startSpinner() {
         view.addSubview(spinner)
         spinner.startAnimating()
     }
     
-    fileprivate func stopSpinner() {
+    private func stopSpinner() {
         spinner.stopAnimating()
         spinner.removeFromSuperview()
     }

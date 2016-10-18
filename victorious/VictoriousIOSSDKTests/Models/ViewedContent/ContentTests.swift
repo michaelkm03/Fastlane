@@ -69,7 +69,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(chatMessage.author?.displayName, "Leetzor")
     }
 
-    fileprivate func createChatMessageFromJSON(fileName: String) -> Content? {
+    private func createChatMessageFromJSON(fileName: String) -> Content? {
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
             let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
@@ -79,7 +79,7 @@ class ContentTests: XCTestCase {
         return Content(chatMessageJSON: JSON(data: mockData), serverTime: Timestamp(value: 1234567890))
     }
 
-    fileprivate func createContentFromJSON(fileName: String) -> Content? {
+    private func createContentFromJSON(fileName: String) -> Content? {
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
             let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")

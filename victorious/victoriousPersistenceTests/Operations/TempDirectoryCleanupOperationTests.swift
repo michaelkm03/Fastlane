@@ -12,8 +12,8 @@ import XCTest
 class TempDirectoryCleanupOperationTests: XCTestCase {
     
     var fileURLs: [URL] = []
-    fileprivate let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(kContentCreationDirectory)
-    fileprivate let fileManager = FileManager.default
+    private let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(kContentCreationDirectory)
+    private let fileManager = FileManager.default
 
     override func setUp() {
         super.setUp()

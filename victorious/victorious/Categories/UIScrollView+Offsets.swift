@@ -39,7 +39,7 @@ extension UIScrollView {
         scrollTo(bottomOffset, animated: animated)
     }
     
-    fileprivate func scrollTo(_ offset: CGPoint, animated: Bool, completion: (() -> Void)? = nil) {
+    private func scrollTo(_ offset: CGPoint, animated: Bool, completion: (() -> Void)? = nil) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         CATransaction.setAnimationDuration(0.5)

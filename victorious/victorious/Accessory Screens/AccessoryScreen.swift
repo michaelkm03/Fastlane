@@ -29,7 +29,7 @@ struct AccessoryScreen {
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Accessing values
     

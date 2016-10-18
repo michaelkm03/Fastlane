@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Private
 
     /// Listens to the login user notification in order to `register` the user with our services.
-    fileprivate func addLoginListener() {
+    private func addLoginListener() {
         NotificationCenter.default.addObserver(forName: .loggedInChanged, object: nil, queue: .main) { (notififcation) in
             if let currentUser = VCurrentUser.user {
                 #if V_ENABLE_TESTFAIRY
@@ -118,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    fileprivate func configureAudioSessionCategory() {
+    private func configureAudioSessionCategory() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {

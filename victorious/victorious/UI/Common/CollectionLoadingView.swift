@@ -24,7 +24,7 @@ final class CollectionLoadingView: UICollectionReusableView {
         setup()
     }
     
-    fileprivate func setup() {
+    private func setup() {
         addSubview(activityIndicatorView)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -34,7 +34,7 @@ final class CollectionLoadingView: UICollectionReusableView {
     
     // MARK: - Views
     
-    fileprivate let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     // MARK: - Configuration
     

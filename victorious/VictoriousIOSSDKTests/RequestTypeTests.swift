@@ -14,7 +14,7 @@ import XCTest
 private class MockRequest<T>: RequestType {
     typealias ResponseParser = (URLRequest, URLResponse, Data, JSON) throws -> T
     
-    fileprivate var _urlRequest: NSMutableURLRequest /// Using a private, mutable stored property and a public computed property is necessary to expose certain bugs in the execute() implementation
+    private var _urlRequest: NSMutableURLRequest /// Using a private, mutable stored property and a public computed property is necessary to expose certain bugs in the execute() implementation
     var urlRequest: URLRequest {
         return _urlRequest.copy() as! URLRequest
     }
@@ -37,8 +37,8 @@ private class MockRequest<T>: RequestType {
 
 class RequestTypeTests: XCTestCase {
 
-    fileprivate let mockAuthenticationContext =  AuthenticationContext(userID: 31337, token: "abcdefg")
-    fileprivate let mockRequestContext = RequestContext(appID: 1, deviceID: "57a01bb1-e97d-420e-96d1-b98966328df8", firstInstallDeviceID: "ed8ac5f2-d3dd-4ca2-a471-9c6e74f3c0d9", buildNumber: "1234", appVersion: "1.0", experimentIDs: [1], sessionID: "e384f969-a6c6-4b85-b8f2-ae7ef4c810f1")
+    private let mockAuthenticationContext =  AuthenticationContext(userID: 31337, token: "abcdefg")
+    private let mockRequestContext = RequestContext(appID: 1, deviceID: "57a01bb1-e97d-420e-96d1-b98966328df8", firstInstallDeviceID: "ed8ac5f2-d3dd-4ca2-a471-9c6e74f3c0d9", buildNumber: "1234", appVersion: "1.0", experimentIDs: [1], sessionID: "e384f969-a6c6-4b85-b8f2-ae7ef4c810f1")
     
     override func setUp() {
         super.setUp()

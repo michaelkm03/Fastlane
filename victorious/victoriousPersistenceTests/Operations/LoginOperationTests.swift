@@ -39,7 +39,7 @@ class LoginOperationTests: XCTestCase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    fileprivate func loadUser() -> User? {
+    private func loadUser() -> User? {
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "User", withExtension: "json"),
             let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 return nil

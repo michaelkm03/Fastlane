@@ -43,10 +43,10 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
         }
     }
     
-    @IBOutlet fileprivate var labelWidthConstraint: NSLayoutConstraint!
-    @IBOutlet fileprivate var scrollViewInsetConstraints: [NSLayoutConstraint]!
+    @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
     
-    fileprivate lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
+    private lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
         guard let subscriptionFetchAPIPath = self.dependencyManager.subscriptionFetchAPIPath else {
             return nil
         }
@@ -144,11 +144,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
         }
     }
     
-    fileprivate func openGate() {
+    private func openGate() {
         delegate?.vipGateExitedWithSuccess(true)
     }
     
-    fileprivate func updateViews() {
+    private func updateViews() {
         guard isViewLoaded else {
             return
         }
@@ -206,7 +206,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
         openGate()
     }
     
-    fileprivate lazy var progressHUD: MBProgressHUD = {
+    private lazy var progressHUD: MBProgressHUD = {
         let progressHUD = MBProgressHUD(view: self.view)
         progressHUD.mode = .indeterminate
         progressHUD.graceTime = 0.35
@@ -230,7 +230,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
     
     // MARK: - String Constants
     
-    fileprivate struct Strings {
+    private struct Strings {
         static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment: "")
         static let termsOfService           = NSLocalizedString("Terms of Service", comment: "")
         static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment: "")

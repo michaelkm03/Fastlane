@@ -11,9 +11,9 @@ import UIKit
 /// Cell to represent GIF search result in a collectin of search results
 class MediaSearchResultCell: UICollectionViewCell {
     
-    @IBOutlet fileprivate weak var emptyView: UIView!
-    @IBOutlet fileprivate weak var imageView: UIImageView!
-    @IBOutlet fileprivate weak var overlayView: UIView!
+    @IBOutlet private weak var emptyView: UIView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var overlayView: UIView!
     
     /// Sets the image asset URL to show in this cell
     var assetUrl: URL? {
@@ -24,7 +24,7 @@ class MediaSearchResultCell: UICollectionViewCell {
         }
     }
     
-    fileprivate func loadImage(_ url: URL) {
+    private func loadImage(_ url: URL) {
         self.imageView.alpha = 0.0
         self.imageView.sd_setImage(with: url, completed: { image, error, cacheType, url in
             if cacheType == .none {

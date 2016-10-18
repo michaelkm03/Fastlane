@@ -15,8 +15,8 @@ struct Router {
     
     // MARK: - Initialization
     
-    fileprivate weak var originViewController: UIViewController?
-    fileprivate let dependencyManager: VDependencyManager
+    private weak var originViewController: UIViewController?
+    private let dependencyManager: VDependencyManager
 
     init(originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.originViewController = originViewController
@@ -42,7 +42,7 @@ struct Router {
     
     // MARK: - Private Helper Functions
     
-    fileprivate func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext?) {
+    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext?) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
@@ -71,7 +71,7 @@ struct Router {
         }
     }
 
-    fileprivate func showVIPForum() {
+    private func showVIPForum() {
         guard let originViewController = self.originViewController else {
             return
         }
@@ -83,7 +83,7 @@ struct Router {
         }
     }
     
-    fileprivate func showVIPSubscription(completion: ((_ success: Bool) -> Void)? = nil) {
+    private func showVIPSubscription(completion: ((_ success: Bool) -> Void)? = nil) {
         guard let originViewController = self.originViewController else {
             return
         }
@@ -91,14 +91,14 @@ struct Router {
         ShowVIPSubscriptionOperation(originViewController: originViewController, dependencyManager: dependencyManager, completion: completion).queue()
     }
     
-    fileprivate func showProfile(for userID: User.ID) {
+    private func showProfile(for userID: User.ID) {
         guard let originViewController = self.originViewController else {
             return
         }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    fileprivate func showWebView(for url: URL, configuration: ExternalLinkDisplayConfiguration) {
+    private func showWebView(for url: URL, configuration: ExternalLinkDisplayConfiguration) {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
                 guard url.isHTTPScheme else {
@@ -118,7 +118,7 @@ struct Router {
         }
     }
     
-    fileprivate func showError() {
+    private func showError() {
         let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
         let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
         originViewController?.v_showAlert(title: title, message: message)
@@ -144,10 +144,10 @@ struct Router {
 // MARK: - Show Forum
 
 private final class ShowForumOperation: AsyncOperation<Void> {
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let animated: Bool
-    fileprivate let showVIP: Bool
-    fileprivate weak var originViewController: UIViewController?
+    private let dependencyManager: VDependencyManager
+    private let animated: Bool
+    private let showVIP: Bool
+    private weak var originViewController: UIViewController?
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, showVIP: Bool = false, animated: Bool = true) {
         self.dependencyManager = dependencyManager
@@ -189,9 +189,9 @@ private final class ShowForumOperation: AsyncOperation<Void> {
 // MARK: - Show Profile
 
 private final class ShowProfileOperation: AsyncOperation<Void> {
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate weak var originViewController: UIViewController?
-    fileprivate let userId: Int
+    private let dependencyManager: VDependencyManager
+    private weak var originViewController: UIViewController?
+    private let userId: Int
     
     init( originViewController: UIViewController,
           dependencyManager: VDependencyManager,
@@ -252,11 +252,11 @@ private struct ShowCloseUpDisplayModifier {
 
 /// Shows a close up view displaying the provided content.
 private final class ShowCloseUpOperation: AsyncOperation<Void> {
-    fileprivate let displayModifier: ShowCloseUpDisplayModifier
-    fileprivate var content: Content?
-    fileprivate var contentID: String?
-    fileprivate var context: DeeplinkContext?
-    fileprivate(set) var displayedCloseUpView: CloseUpContainerViewController?
+    private let displayModifier: ShowCloseUpDisplayModifier
+    private var content: Content?
+    private var contentID: String?
+    private var context: DeeplinkContext?
+    private(set) var displayedCloseUpView: CloseUpContainerViewController?
 
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.contentID = contentID
@@ -316,9 +316,9 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
 
 /// Fetches a piece of content and shows a close up view containing it.
 private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
-    fileprivate let displayModifier: ShowCloseUpDisplayModifier
-    fileprivate var contentID: String
-    fileprivate var context: DeeplinkContext?
+    private let displayModifier: ShowCloseUpDisplayModifier
+    private var contentID: String
+    private var context: DeeplinkContext?
 
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.displayModifier = displayModifier
@@ -388,10 +388,10 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
 // MARK: - Show Web Content
 
 private final class ShowWebContentOperation: AsyncOperation<Void> {
-    fileprivate let originViewController: UIViewController
-    fileprivate let urlToFetchFrom: String
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let configuration: ExternalLinkDisplayConfiguration
+    private let originViewController: UIViewController
+    private let urlToFetchFrom: String
+    private let dependencyManager: VDependencyManager
+    private let configuration: ExternalLinkDisplayConfiguration
     
     init (originViewController: UIViewController, url: String, dependencyManager: VDependencyManager, configuration: ExternalLinkDisplayConfiguration) {
         self.originViewController = originViewController
@@ -448,10 +448,10 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
 // MARK: - Show VIP Flow Operation
 
 private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let animated: Bool
-    fileprivate let completion: VIPFlowCompletion?
-    fileprivate weak var originViewController: UIViewController?
+    private let dependencyManager: VDependencyManager
+    private let animated: Bool
+    private let completion: VIPFlowCompletion?
+    private weak var originViewController: UIViewController?
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
         self.dependencyManager = dependencyManager

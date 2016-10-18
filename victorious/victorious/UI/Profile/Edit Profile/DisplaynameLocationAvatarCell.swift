@@ -12,11 +12,11 @@ import VictoriousIOSSDK
 /// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
 /// Assign closures to be notified of events in the UI.
 class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
-    fileprivate struct Constants {
+    private struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
     }
     
-    @IBOutlet fileprivate var displaynameField: UITextField! {
+    @IBOutlet private var displaynameField: UITextField! {
         didSet {
             NotificationCenter.default.addObserver(
                 self,
@@ -26,7 +26,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet fileprivate var usernameField: UITextField! {
+    @IBOutlet private var usernameField: UITextField! {
         didSet {
             NotificationCenter.default.addObserver(
                 self,
@@ -36,7 +36,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet fileprivate var locationField: UITextField! {
+    @IBOutlet private var locationField: UITextField! {
         didSet {
             NotificationCenter.default.addObserver(
                 self,
@@ -46,7 +46,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet fileprivate var avatarView: AvatarView! {
+    @IBOutlet private var avatarView: AvatarView! {
         didSet {
             avatarView.size = .large
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
@@ -132,7 +132,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     // MARK: - Target / Action
     
-    @objc fileprivate func tappedOnAvatar(_ gesture: UITapGestureRecognizer) {
+    @objc private func tappedOnAvatar(_ gesture: UITapGestureRecognizer) {
         switch gesture.state {
             case .ended:
                 self.onAvatarSelected?()
@@ -158,7 +158,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
 
     // MARK: - Notification Handlers
     
-    @objc fileprivate func textFieldDidChange(_ notification: Notification) {
+    @objc private func textFieldDidChange(_ notification: Notification) {
         onDataChange?()
     }
 }

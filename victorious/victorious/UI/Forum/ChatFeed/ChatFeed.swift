@@ -96,7 +96,7 @@ extension ChatFeed {
         }
     }
     
-    fileprivate func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
         let collectionView = self.collectionView!
         let unstashedItemCount = chatInterfaceDataSource.unstashedItems.count
         let oldUnstashedItemCount = unstashedItemCount - newItems.count

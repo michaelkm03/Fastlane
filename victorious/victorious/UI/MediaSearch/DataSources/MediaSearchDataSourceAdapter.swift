@@ -8,7 +8,7 @@
 
 import UIKit
 import VictoriousIOSSDK
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -19,7 +19,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -76,9 +76,9 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
         return dataSource?.state ?? .cleared
     }
     
-	fileprivate(set) var sections: [Section] = []
+	private(set) var sections: [Section] = []
 	
-	fileprivate var highlightedSection: (section: Section, indexPath: IndexPath)?
+	private var highlightedSection: (section: Section, indexPath: IndexPath)?
 	
     var dataSource: MediaSearchDataSource?
 	
@@ -148,7 +148,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     
     // MARK: - Private
     
-    fileprivate func updateDataSource( _ results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
+    private func updateDataSource( _ results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .first {
             if self.sections.isEmpty && results.count > 0 {
@@ -229,7 +229,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
 	// MARK: - Helpers
 	
-    fileprivate func configureNoContentCell( _ cell: MediaSearchNoContentCell, forState state: VDataSourceState ) {
+    private func configureNoContentCell( _ cell: MediaSearchNoContentCell, forState state: VDataSourceState ) {
 		switch state {
 		case .loading:
 			cell.text = ""

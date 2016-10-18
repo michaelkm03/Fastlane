@@ -9,8 +9,8 @@
 import Foundation
 
 class SystemBlurredImageBackground : VBackground {
-    fileprivate let backgroundImage: UIImage?
-    fileprivate let VSystemBlurredImageBackgroundImageKey = "image"
+    private let backgroundImage: UIImage?
+    private let VSystemBlurredImageBackgroundImageKey = "image"
 
     required init(dependencyManager: VDependencyManager) {
         backgroundImage = dependencyManager.image(forKey: VSystemBlurredImageBackgroundImageKey)

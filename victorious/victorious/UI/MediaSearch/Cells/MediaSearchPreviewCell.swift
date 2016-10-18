@@ -18,7 +18,7 @@ class MediaSearchPreviewCell: UICollectionViewCell {
     var videoPlayer: VVideoPlayer?
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet fileprivate weak var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView!
     
     var previewAssetUrl: URL? {
         didSet {

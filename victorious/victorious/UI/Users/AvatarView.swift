@@ -60,7 +60,7 @@ enum AvatarViewSize {
 /// or to use that value when calculating layout manually.
 ///
 class AvatarView: UIView {
-    fileprivate struct Constants {
+    private struct Constants {
         static let smallInitialsFont = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
         static let largeInitialsFont = UIFont.systemFont(ofSize: 42.0, weight: UIFontWeightSemibold)
         static let initialsColor = UIColor(white: 0.0, alpha: 0.7)
@@ -96,7 +96,7 @@ class AvatarView: UIView {
         setup()
     }
     
-    fileprivate func setup() {
+    private func setup() {
         backgroundColor = nil
         clipsToBounds = false
         imageView.clipsToBounds = true
@@ -125,14 +125,14 @@ class AvatarView: UIView {
 
     // MARK: - Views
     
-    fileprivate let shadowView = UIView()
-    fileprivate let imageView = UIImageView()
-    fileprivate let initialsLabel = UILabel()
-    fileprivate var verifiedBadgeView: UIImageView?
-    fileprivate var vipBadgeView: UIView?
-    fileprivate var vipBorderView: UIView?
+    private let shadowView = UIView()
+    private let imageView = UIImageView()
+    private let initialsLabel = UILabel()
+    private var verifiedBadgeView: UIImageView?
+    private var vipBadgeView: UIView?
+    private var vipBorderView: UIView?
     
-    fileprivate func getOrCreateVerifiedBadgeView() -> UIImageView {
+    private func getOrCreateVerifiedBadgeView() -> UIImageView {
         if let verifiedBadgeView = self.verifiedBadgeView {
             return verifiedBadgeView
         }
@@ -144,7 +144,7 @@ class AvatarView: UIView {
         return verifiedBadgeView
     }
 
-    fileprivate func setOrCreateVIPBadgeView() {
+    private func setOrCreateVIPBadgeView() {
         if self.vipBadgeView != nil {
             return
         }
@@ -185,7 +185,7 @@ class AvatarView: UIView {
         vipBadgeView.addSubview(vipLabel)
     }
 
-    fileprivate func setOrCreateVIPBorderView() {
+    private func setOrCreateVIPBorderView() {
         if self.vipBorderView != nil {
             return
         }
@@ -229,7 +229,7 @@ class AvatarView: UIView {
     /// Currently, this property is only set in user profile screen.
     var isVIPEnabled: Bool?
     
-    fileprivate func applyInitialsStyle() {
+    private func applyInitialsStyle() {
         initialsLabel.textAlignment = .center
         initialsLabel.adjustsFontSizeToFitWidth = true
         initialsLabel.minimumScaleFactor = Constants.initialsMinScaleFactor
@@ -237,16 +237,16 @@ class AvatarView: UIView {
         initialsLabel.textColor = Constants.initialsColor
     }
     
-    fileprivate func updateVerifiedBadge() {
+    private func updateVerifiedBadge() {
         verifiedBadgeView?.image = size.verifiedBadgeImage
     }
 
-    fileprivate func updateVIPBadge() {
+    private func updateVIPBadge() {
         let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && isVIPEnabled == true
         vipBadgeView?.isHidden = !shouldShowVIPBadge
     }
 
-    fileprivate func updateVIPBorderView() {
+    private func updateVIPBorderView() {
         let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && isVIPEnabled == true
         vipBorderView?.isHidden = !shouldShowVIPBorder
     }
@@ -267,14 +267,14 @@ class AvatarView: UIView {
     
     // MARK: - Updating content
     
-    fileprivate var needsContentUpdate = false
+    private var needsContentUpdate = false
     
-    fileprivate func setNeedsContentUpdate() {
+    private func setNeedsContentUpdate() {
         needsContentUpdate = true
         setNeedsLayout()
     }
     
-    fileprivate func updateContentIfNeeded() {
+    private func updateContentIfNeeded() {
         guard needsContentUpdate else {
             return
         }
@@ -307,7 +307,7 @@ class AvatarView: UIView {
         }
     }
     
-    fileprivate func showInitials() {
+    private func showInitials() {
         guard let initials = user?.displayName?.initials() else {
             initialsLabel.isHidden = true
             return
@@ -317,7 +317,7 @@ class AvatarView: UIView {
         initialsLabel.text = initials
     }
     
-    fileprivate dynamic func currentUserDidChange() {
+    private dynamic func currentUserDidChange() {
         if user?.id == VCurrentUser.user?.id {
             // We may be updating the same user with more information here.
             // So we nil out the user property first before we set it.
@@ -351,7 +351,7 @@ class AvatarView: UIView {
         updateContentIfNeeded()
     }
 
-    fileprivate func layoutVerifiedBadge() {
+    private func layoutVerifiedBadge() {
         guard user?.avatarBadgeType == .verified else {
             self.verifiedBadgeView?.isHidden = true
             return
@@ -370,7 +370,7 @@ class AvatarView: UIView {
         verifiedBadgeView.isHidden = user?.avatarBadgeType != .verified
     }
 
-    fileprivate func layoutVIPBadge() {
+    private func layoutVIPBadge() {
         guard size.shouldShowVIPBadge else {
             return
         }
@@ -379,7 +379,7 @@ class AvatarView: UIView {
         updateVIPBadge()
     }
 
-    fileprivate func layoutVIPBorderView() {
+    private func layoutVIPBorderView() {
         guard size.shouldShowVIPBorder else {
             return
         }
@@ -390,9 +390,9 @@ class AvatarView: UIView {
 
     // MARK: - Shadow
     
-    fileprivate var shadowBounds: CGRect?
+    private var shadowBounds: CGRect?
     
-    fileprivate func updateShadowPathIfNeeded() {
+    private func updateShadowPathIfNeeded() {
         let newShadowBounds = shadowView.bounds
         
         if newShadowBounds != shadowBounds {

@@ -34,8 +34,8 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         }
     }
     
-    fileprivate var cancelButton: UIBarButtonItem?
-    fileprivate var timerManager: VTimerManager?
+    private var cancelButton: UIBarButtonItem?
+    private var timerManager: VTimerManager?
     
     // MARK : Public properties
     

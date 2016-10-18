@@ -27,7 +27,7 @@ class ExperimentSettingsDataSource: NSObject {
         static let modified = UIColor.red
         var current = TintColor.unmodified
     }
-    fileprivate var tintColor = TintColor()
+    private var tintColor = TintColor()
     
     var selectedExperimentIds: Set<Int> {
         return Set(sections.flatMap {
@@ -37,7 +37,7 @@ class ExperimentSettingsDataSource: NSObject {
     
     let experimentSettings = ExperimentSettings()
     
-    fileprivate enum State: Int {
+    private enum State: Int {
         case loading, content, noContent, error
         
         /// Returns a message to display to the user for this state.
@@ -61,8 +61,8 @@ class ExperimentSettingsDataSource: NSObject {
         var experiments: [DeviceExperiment]
     }
     
-    fileprivate var sections = [Section]()
-    fileprivate var state: State = .loading
+    private var sections = [Section]()
+    private var state: State = .loading
     
     func saveSettings() {
         self.experimentSettings.activeExperiments = self.selectedExperimentIds
@@ -106,11 +106,11 @@ class ExperimentSettingsDataSource: NSObject {
         }
     }
     
-    fileprivate func updateTintColor() {
+    private func updateTintColor() {
         self.tintColor.current = self.experimentSettings.activeExperiments != nil ? TintColor.modified : TintColor.unmodified
     }
     
-    fileprivate func updateVisibleCells() {
+    private func updateVisibleCells() {
         if let tableView = self.delegate?.tableView {
             for cell in tableView.visibleCells {
                 if let switchCell = cell as? VSettingsSwitchCell {

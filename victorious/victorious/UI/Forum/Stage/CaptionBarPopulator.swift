@@ -11,9 +11,9 @@ import VictoriousIOSSDK
 
 /// Configures and updates the expanded state of a caption bar
 struct CaptionBarPopulator {
-    fileprivate static let animationDuration = TimeInterval(0.2)
+    private static let animationDuration = TimeInterval(0.2)
     
-    fileprivate static func textAttributesForLabel(_ label: UILabel, matchingTextView textView: UITextView) -> [String : AnyObject] {
+    private static func textAttributesForLabel(_ label: UILabel, matchingTextView textView: UITextView) -> [String : AnyObject] {
         // Create a paragraph style to imitate the text padding around the text view
         let paragraphStyle = NSMutableParagraphStyle()
         let textInsets = textView.v_textInsets

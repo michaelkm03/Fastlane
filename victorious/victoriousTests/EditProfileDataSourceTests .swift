@@ -11,7 +11,7 @@ import XCTest
 @testable import victorious
 
 class EditProfileDataSourceTests: XCTestCase {
-    fileprivate struct Constants {
+    private struct Constants {
         static let testUsername = "asdf"
     }
     

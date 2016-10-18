@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 final class RestorePurchasesOperation: AsyncOperation<Void> {
     let validationAPIPath: APIPath
-    fileprivate let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     init(validationAPIPath: APIPath) {
         self.validationAPIPath = validationAPIPath

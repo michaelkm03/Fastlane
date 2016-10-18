@@ -14,9 +14,9 @@ import VictoriousIOSSDK
 /// a simple collection or table view layout.
 @objc open class PaginatedDataSource: NSObject, PaginatedDataSourceType {
     
-    fileprivate(set) var currentPaginatedOperation: Operation?
+    private(set) var currentPaginatedOperation: Operation?
     
-    fileprivate(set) var state: VDataSourceState = .cleared {
+    private(set) var state: VDataSourceState = .cleared {
         didSet {
             if oldValue != state {
                 self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
@@ -30,7 +30,7 @@ import VictoriousIOSSDK
     
     var sortOrder: ComparisonResult = .orderedAscending
     
-    fileprivate var isPurging = false
+    private var isPurging = false
     
     func unstashAll() {
         shouldStashNewItems = false
@@ -42,14 +42,14 @@ import VictoriousIOSSDK
     var isStashingNewItems: Bool {
         return shouldStashNewItems
     }
-    fileprivate var shouldStashNewItems: Bool = false
+    private var shouldStashNewItems: Bool = false
     
     var shouldShowNextPageActivity: Bool {
         return state == .loading && visibleItems.count > 0
     }
     
     // Tracks page numbers already loaded to prevent re-loading pages unecessarily
-    fileprivate var pagesLoaded = Set<Int>()
+    private var pagesLoaded = Set<Int>()
     
     func isLoading() -> Bool {
         return state == .loading
@@ -63,15 +63,15 @@ import VictoriousIOSSDK
         }
     }
     
-    fileprivate var purgedStashedCount = 0
+    private var purgedStashedCount = 0
     
     var stashedItemsCount: Int {
         return stashedItems.count + purgedStashedCount
     }
     
-    fileprivate var _stashedItems = NSOrderedSet()
+    private var _stashedItems = NSOrderedSet()
     
-    fileprivate var stashedItems: NSOrderedSet {
+    private var stashedItems: NSOrderedSet {
         set {
             let oldValue = _stashedItems
             let shouldUpdateDelegate = _stashedItems.count != newValue.count
@@ -91,7 +91,7 @@ import VictoriousIOSSDK
         }
     }
     
-    fileprivate(set) var visibleItems = NSOrderedSet() {
+    private(set) var visibleItems = NSOrderedSet() {
         didSet {
             if oldValue != visibleItems {
                 if isPurging {

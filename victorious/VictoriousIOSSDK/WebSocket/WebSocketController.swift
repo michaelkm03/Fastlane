@@ -271,11 +271,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 }
 
-fileprivate extension WebSocket {
+private extension WebSocket {
  
     /// Everytime the token is invalidated (== everytime we drop the connection) we have a need to generate a new connection
     /// and therefore also a new WebSocket instance. Since the token is appended to the URL.
-    fileprivate convenience init(url: URL, socketListenerQueue: DispatchQueue? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
+    private convenience init(url: URL, socketListenerQueue: DispatchQueue? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
         self.init(url: url, protocols: nil)
         self.delegate = delegate
         self.pongDelegate = pongDelegate
@@ -286,7 +286,7 @@ fileprivate extension WebSocket {
     }
 }
 
-fileprivate extension DictionaryConvertible {
+private extension DictionaryConvertible {
 
     private var toServerRootKey: String {
         return "to_server"
@@ -301,7 +301,7 @@ fileprivate extension DictionaryConvertible {
     }
 
     /// A dictionary representation of the WebSocket JSON protocol. The `identificationMessage` is passed in to identify each outgoing message.
-    fileprivate func toServerDictionary(with identificationMessage: UniqueIdentificationMessage) -> [String: AnyObject] {
+    private func toServerDictionary(with identificationMessage: UniqueIdentificationMessage) -> [String: AnyObject] {
         var toServerDictionary: [String: AnyObject] = [:]
 
         if let rootTypeKey = rootTypeKey, let rootTypeValue = rootTypeValue {

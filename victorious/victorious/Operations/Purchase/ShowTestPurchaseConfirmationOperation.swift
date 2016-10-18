@@ -10,10 +10,10 @@ import Foundation
 
 final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
     
-    fileprivate let type: VPurchaseType
-    fileprivate let title: String?
-    fileprivate let price: String?
-    fileprivate let duration: String?
+    private let type: VPurchaseType
+    private let title: String?
+    private let price: String?
+    private let duration: String?
     
     // MARK: - ActionConfirmationOperation
     

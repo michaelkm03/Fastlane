@@ -13,7 +13,7 @@ import Foundation
 }
 
 class NewItemsController: NSObject {
-    fileprivate struct Constants {
+    private struct Constants {
         static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
         static let pillHeight: CGFloat = 30
         static let pillBottomMargin: CGFloat = 20
@@ -33,7 +33,7 @@ class NewItemsController: NSObject {
         }
     }
     
-    fileprivate(set) var isShowing: Bool = true
+    private(set) var isShowing: Bool = true
     
     var count: Int = 0 {
         didSet {
@@ -49,8 +49,8 @@ class NewItemsController: NSObject {
     
     weak var delegate: NewItemsControllerDelegate?
     
-    @IBOutlet fileprivate weak var container: VPassthroughContainerView!
-    @IBOutlet fileprivate weak var newItemIndicator: TextOnColorButton!
+    @IBOutlet private weak var container: VPassthroughContainerView!
+    @IBOutlet private weak var newItemIndicator: TextOnColorButton!
     
     func show(animated: Bool = true) {
         guard !isShowing else {
@@ -102,13 +102,13 @@ class NewItemsController: NSObject {
     
     // MARK: - Private
     
-    @objc fileprivate func onNewItemsSelected() {
+    @objc private func onNewItemsSelected() {
         newItemIndicator.dependencyManager?.track(.tap)
         delegate?.onNewItemsSelected()
         hide()
     }
     
-    fileprivate func localizedButtonTitle(count: Int) -> String {
+    private func localizedButtonTitle(count: Int) -> String {
         let formattedMessageCount: String = largeNumberFormatter.string(for: count)
         let title: String
         if count == 1 {

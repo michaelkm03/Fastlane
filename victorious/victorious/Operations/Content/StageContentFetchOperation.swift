@@ -24,8 +24,8 @@ final class StageContentFetchOperation: AsyncOperation<Content> {
     
     // MARK: - Executing
     
-    fileprivate let request: ContentFetchRequest
-    fileprivate(set) var refreshStageEvent: RefreshStage
+    private let request: ContentFetchRequest
+    private(set) var refreshStageEvent: RefreshStage
     
     override var executionQueue: Queue {
         return .main
@@ -52,7 +52,7 @@ final class StageContentFetchOperation: AsyncOperation<Content> {
     
     /// Calculated time diff, used to sync users in the video on stage.
     /// seekAheadTime = serverTime - startTime + workTime
-    fileprivate func calculateSeekAheadTime(for content: Content, from operationStartTime: Date) -> Content {
+    private func calculateSeekAheadTime(for content: Content, from operationStartTime: Date) -> Content {
         guard
             let startTime = refreshStageEvent.startTime,
             let serverTime = refreshStageEvent.serverTime

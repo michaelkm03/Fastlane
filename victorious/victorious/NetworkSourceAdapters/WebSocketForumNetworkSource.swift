@@ -12,14 +12,14 @@ import VictoriousIOSSDK
 
 class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
-    fileprivate struct Constants {
+    private struct Constants {
         static let appIdExpander = "%%APP_ID%%"
         static let tokenExpander = "%%AUTH_TOKEN%%"
     }
     
-    fileprivate var webSocketController = WebSocketController.sharedInstance
+    private var webSocketController = WebSocketController.sharedInstance
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Initialization
     
@@ -48,7 +48,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Configuration
 
-    fileprivate struct Reconnector {
+    private struct Reconnector {
         /// The initial time to wait before reconnecting upon disconnection.
         static let initialTimeout = TimeInterval(2)
 
@@ -65,11 +65,11 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
 
     /// The reconnect timeout used at the moment, will reset when we explicitly close the WS. Set to 0 to disable reconnecting.
-    fileprivate var currentReconnectTimeout: TimeInterval = Reconnector.initialTimeout
+    private var currentReconnectTimeout: TimeInterval = Reconnector.initialTimeout
 
     // MARK: - ForumEventReceiver
     
-    fileprivate(set) var childEventReceivers = [ForumEventReceiver]()
+    private(set) var childEventReceivers = [ForumEventReceiver]()
     
     func receive(_ event: ForumEvent) {
         switch event {
@@ -86,7 +86,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    fileprivate func receiveDisconnectEventWithError(_ error: WebSocketError?) {
+    private func receiveDisconnectEventWithError(_ error: WebSocketError?) {
         guard let _ = error , currentReconnectTimeout > 0 && VCurrentUser.user != nil else {
             return
         }
@@ -140,7 +140,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
     // MARK: Private
     
-    fileprivate func expandWebSocketURLString(_ url: String, withToken token: String, applicationID: String) -> URL? {
+    private func expandWebSocketURLString(_ url: String, withToken token: String, applicationID: String) -> URL? {
         guard !url.isEmpty else {
             return nil
         }
@@ -150,7 +150,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         return URL(string: webSocketEndPoint)
     }
     
-    fileprivate func refreshToken() {
+    private func refreshToken() {
         guard let currentUserID = VCurrentUser.user?.id else {
             assertionFailure("No current user is logged in, how did they even get this far?")
             return

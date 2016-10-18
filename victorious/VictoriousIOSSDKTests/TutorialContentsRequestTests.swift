@@ -12,7 +12,7 @@ import XCTest
 
 class TutorialContentsRequestTests: XCTestCase {
     
-    fileprivate let apiPath = APIPath(templatePath: "https://www.google.com")
+    private let apiPath = APIPath(templatePath: "https://www.google.com")
     
     func testRequest() {
         let request = TutorialContentsRequest(apiPath: apiPath)

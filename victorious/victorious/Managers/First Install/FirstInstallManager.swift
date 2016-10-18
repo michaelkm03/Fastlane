@@ -51,8 +51,8 @@ import UIKit
     // MARK: - Device ID
     
     static let defaultDeviceIDFileName = "FirstInstallDeviceID.txt"
-    fileprivate let fileManager = FileManager()
-    fileprivate var documentDirectory: URL? {
+    private let fileManager = FileManager()
+    private var documentDirectory: URL? {
         return fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
     }
     
@@ -80,7 +80,7 @@ import UIKit
         }
     }
     
-    fileprivate func readDeviceIDFromFile(_ path: String) -> String? {
+    private func readDeviceIDFromFile(_ path: String) -> String? {
         if !fileManager.fileExists(atPath: path) {
             return nil
         }
@@ -95,7 +95,7 @@ import UIKit
         }
     }
     
-    fileprivate func writeDeviceIDToFile(_ path: String, deviceID id: String) -> Bool {
+    private func writeDeviceIDToFile(_ path: String, deviceID id: String) -> Bool {
         do {
             try id.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
             return true
@@ -106,7 +106,7 @@ import UIKit
         }
     }
 
-    fileprivate func excludeBackupForFile(_ url: URL, shouldExcludeFromBack flag: Bool) -> Bool {
+    private func excludeBackupForFile(_ url: URL, shouldExcludeFromBack flag: Bool) -> Bool {
         do {
             try (url as NSURL).setResourceValue(flag, forKey: URLResourceKey.isExcludedFromBackupKey)
             return true

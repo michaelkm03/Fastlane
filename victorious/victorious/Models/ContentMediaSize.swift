@@ -34,7 +34,7 @@ struct ContentMediaSize: Equatable {
         return CGSize(width: width, height: ContentMediaSize.height(fromWidth: width, aspectRatio: aspectRatio))
     }
     
-    fileprivate static func height(fromWidth width: CGFloat, aspectRatio: CGFloat) -> CGFloat {
+    private static func height(fromWidth width: CGFloat, aspectRatio: CGFloat) -> CGFloat {
         return aspectRatio == 0.0 ? 0.0 : width / aspectRatio
     }
     

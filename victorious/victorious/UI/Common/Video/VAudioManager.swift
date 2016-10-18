@@ -12,7 +12,7 @@ import AVFoundation
 /// An object that manages the propery system audio settings for a video player,
 /// accessible through its singleton instance (see `sharedInstance`).
 @objc class VAudioManager: NSObject {
-    fileprivate static var instance: VAudioManager?
+    private static var instance: VAudioManager?
     
     class func sharedInstance() -> VAudioManager {
         if let instance = VAudioManager.instance {

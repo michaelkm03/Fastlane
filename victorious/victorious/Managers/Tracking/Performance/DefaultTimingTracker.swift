@@ -30,9 +30,9 @@ private func ==(lhs: AppTimingEvent, rhs: AppTimingEvent) -> Bool {
 
 /// Object that manages performance event tracking by measuring time between start and stop calls.
 class DefaultTimingTracker: NSObject, TimingTracker {
-    fileprivate(set) var apiPaths = [APIPath]()
-    fileprivate var activeEvents = Set<AppTimingEvent>()
-    fileprivate static let instance = DefaultTimingTracker()
+    private(set) var apiPaths = [APIPath]()
+    private var activeEvents = Set<AppTimingEvent>()
+    private static let instance = DefaultTimingTracker()
     
     /// Setter allowing calling code to provide an object to which the actual tracking
     /// request execution will be delegated once a performance event has been
@@ -81,7 +81,7 @@ class DefaultTimingTracker: NSObject, TimingTracker {
         }
     }
     
-    fileprivate func trackEvent(_ event: AppTimingEvent) {
+    private func trackEvent(_ event: AppTimingEvent) {
         let durationMs = Int(Date().timeIntervalSince(event.dateStarted) * 1000.0)
         let params: [AnyHashable: Any] = [
             VTrackingKeyUrls: apiPaths.map { $0.templatePath },

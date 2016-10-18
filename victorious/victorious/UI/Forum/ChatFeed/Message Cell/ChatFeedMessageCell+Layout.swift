@@ -16,7 +16,7 @@ private enum ChatFeedMessageCellAlignment {
 extension ChatFeedMessageCell {
     // MARK: - Constants
 
-    fileprivate struct Constants {
+    private struct Constants {
         static let likeViewMargin = CGFloat(16.0)
         static let replyMargin = CGFloat(2.0)
         static let likeViewWidth = CGFloat(66.0)
@@ -146,7 +146,7 @@ extension ChatFeedMessageCell {
         }
     }
 
-    fileprivate static func layoutBubbleView(_ bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
+    private static func layoutBubbleView(_ bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
         guard let size = size else {
             bubbleView?.frame = CGRect.zero
             return nil
@@ -172,7 +172,7 @@ extension ChatFeedMessageCell {
         return bubbleView.frame
     }
     
-    fileprivate static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, inBounds bounds: CGRect) -> CGPoint {
+    private static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, inBounds bounds: CGRect) -> CGPoint {
         switch alignment {
             case .left:
                 return CGPoint(x: horizontalSpacing, y: contentMargin.top)
@@ -185,7 +185,7 @@ extension ChatFeedMessageCell {
         }
     }
     
-    fileprivate static func usernameSize(in cell: ChatFeedMessageCell, withTimestampSize timestampSize: CGSize) -> CGSize {
+    private static func usernameSize(in cell: ChatFeedMessageCell, withTimestampSize timestampSize: CGSize) -> CGSize {
         var size = cell.usernameLabel.sizeThatFits(cell.bounds.size)
         size.width = min(size.width, cell.bounds.width - horizontalSpacing * 3.0 - avatarSize.width - topLabelXInset * 3.0 - timestampSize.width)
         return size

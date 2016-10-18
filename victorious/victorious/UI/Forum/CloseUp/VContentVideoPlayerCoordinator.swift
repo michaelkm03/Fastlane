@@ -28,18 +28,18 @@ protocol ContentVideoPlayerCoordinatorDelegate: class {
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
-    fileprivate struct Constants {
+    private struct Constants {
         static let toolbarHeight = CGFloat(41.0)
     }
 
-    fileprivate var lastState: VideoState = .notStarted
-    fileprivate var state: VideoState = .notStarted {
+    private var lastState: VideoState = .notStarted
+    private var state: VideoState = .notStarted {
         didSet {
             lastState = oldValue
             toolbar.paused = state != .playing
         }
     }
-    fileprivate var content: Content
+    private var content: Content
     
     weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
@@ -94,7 +94,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - Managing the video player
     
-    fileprivate let videoPlayer: VVideoPlayer
+    private let videoPlayer: VVideoPlayer
     
     var duration: Double {
         return videoPlayer.durationSeconds
@@ -106,7 +106,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - Managing the toolbar
     
-    fileprivate let toolbar = VideoToolbarView.viewFromNib()
+    private let toolbar = VideoToolbarView.viewFromNib()
     
     func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
         superview.addSubview(toolbar)
@@ -142,7 +142,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         return videoPlayer.isPlaying
     }
     
-    fileprivate func prepareToPlay() {
+    private func prepareToPlay() {
         if let seekAheadTime = content.seekAheadTime , Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seek(toTimeSeconds: seekAheadTime)
         }

@@ -12,7 +12,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Constants
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let extraWidth = CGFloat(16.0)
     }
     
@@ -47,7 +47,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Views
     
-    fileprivate let button = BadgeButton(type: .system)
+    private let button = BadgeButton(type: .system)
     
     // MARK: - Accessing the accessory screen
     
@@ -55,7 +55,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Managing badge count
     
-    fileprivate func updateBadgeCount() {
+    private func updateBadgeCount() {
         guard let badgeCountType = container?.badgeCountType(for: accessoryScreen) else {
             return
         }
@@ -65,9 +65,9 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Navigating
     
-    fileprivate weak var container: AccessoryScreenContainer?
+    private weak var container: AccessoryScreenContainer?
     
-    fileprivate dynamic func buttonWasPressed() {
+    private dynamic func buttonWasPressed() {
         guard let destination = accessoryScreen.loadDestination() else {
             return
         }

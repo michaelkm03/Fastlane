@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 final class StoredLoginOperation: SyncOperation<Void> {
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager

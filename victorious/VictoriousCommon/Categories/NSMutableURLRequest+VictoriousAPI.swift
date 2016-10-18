@@ -31,7 +31,7 @@ private struct HTTPHeader {
 
 extension NSMutableURLRequest {
 
-    fileprivate static let dateFormatter: DateFormatter = {
+    private static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z" // RFC2822 Format
@@ -103,7 +103,7 @@ extension NSMutableURLRequest {
         setValue(locationHeaderValue(location: location, postalCode: postalCode), forHTTPHeaderField: HTTPHeader.geoLocation)
     }
     
-    fileprivate func locationHeaderValue(location: CLLocationCoordinate2D, postalCode: String?) -> String {
+    private func locationHeaderValue(location: CLLocationCoordinate2D, postalCode: String?) -> String {
         
         if let postalCode = postalCode {
             return "latitude:\(location.latitude), longitude:\(location.longitude), postal_code:\(postalCode)"

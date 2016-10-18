@@ -15,7 +15,7 @@ class VDependencyManager_SystemFontTests: XCTestCase {
     
     let fontSize: Float = 10
     
-    fileprivate func dependencyManagerWithFontNamed(_ name: String) -> VDependencyManager {
+    private func dependencyManagerWithFontNamed(_ name: String) -> VDependencyManager {
         let configuration = [
             fontKey : [
                 "fontSize": NSNumber(value: self.fontSize),
