@@ -139,7 +139,7 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
-        private var textViewPrependedImage: UIImage? {
+        var textViewPrependedImage: UIImage? {
             didSet {
                 onSetTextViewPrependedImage?()
             }
