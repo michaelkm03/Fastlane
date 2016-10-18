@@ -139,6 +139,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView.delaysContentTouches = false
+        
         edgesForExtendedLayout = UIRectEdge()
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
