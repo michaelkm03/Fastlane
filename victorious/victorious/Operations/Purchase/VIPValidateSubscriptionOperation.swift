@@ -38,9 +38,9 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     
     var receiptDataSource: ReceiptDataSource = Bundle.main
     
-    fileprivate(set) var validationSucceeded = false
+    private(set) var validationSucceeded = false
     
-    fileprivate let request: ValidateReceiptRequest?
+    private let request: ValidateReceiptRequest?
     
     let shouldForceSuccess: Bool
     
@@ -85,7 +85,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
         }
     }
     
-    fileprivate func updateUser(status: VIPStatus?) {
+    private func updateUser(status: VIPStatus?) {
         guard var currentUser = VCurrentUser.user else {
             return
         }

@@ -18,13 +18,13 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     // MARK: - Properties 
     
-    fileprivate let webView = WKWebView()
-    fileprivate var backButton: UIBarButtonItem?
-    fileprivate var forwardButton: UIBarButtonItem?
-    fileprivate var cancelButton: UIBarButtonItem?
-    fileprivate var initialBaseURL: URL?
-    fileprivate var initialHTMLString = ""
-    fileprivate let dependencyManager: VDependencyManager
+    private let webView = WKWebView()
+    private var backButton: UIBarButtonItem?
+    private var forwardButton: UIBarButtonItem?
+    private var cancelButton: UIBarButtonItem?
+    private var initialBaseURL: URL?
+    private var initialHTMLString = ""
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Initialization 
     
@@ -89,16 +89,16 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     // MARK: - Private Helpers
    
-    fileprivate func updateNavigationButtonState() {
+    private func updateNavigationButtonState() {
         backButton?.isEnabled = webView.canGoBack || !webViewIsDisplayingInitialHTMLString
         forwardButton?.isEnabled = webView.canGoForward
     }
     
-    fileprivate func showStatusBarActivityIndicator() {
+    private func showStatusBarActivityIndicator() {
         NetworkActivityIndicator.sharedInstance().start()
     }
     
-    fileprivate func hideStatusBarActivityIndicator() {
+    private func hideStatusBarActivityIndicator() {
         NetworkActivityIndicator.sharedInstance().stop()
     }
     

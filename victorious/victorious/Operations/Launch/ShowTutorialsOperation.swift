@@ -10,9 +10,9 @@ import Foundation
 
 final class ShowTutorialsOperation: AsyncOperation<Void> {
 
-    fileprivate weak var originViewController: UIViewController?
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let animated: Bool
+    private weak var originViewController: UIViewController?
+    private let dependencyManager: VDependencyManager
+    private let animated: Bool
     
     let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
     

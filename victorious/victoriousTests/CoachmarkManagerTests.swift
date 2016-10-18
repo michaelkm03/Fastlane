@@ -17,13 +17,13 @@ private class DummyDisplayer: CoachmarkDisplayer {
         return "578d299a4323f"
     }
     
-    fileprivate func highlightFrame(forIdentifier identifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         return nil
     }
     
-    fileprivate func presentCoachmark(from viewController: CoachmarkViewController) {}
+    func presentCoachmark(from viewController: CoachmarkViewController) {}
     
-    fileprivate func triggerCoachmark(withContext context: String?) {}
+    func triggerCoachmark(withContext context: String?) {}
 }
 
 class CoachmarkManagerTests: XCTestCase {

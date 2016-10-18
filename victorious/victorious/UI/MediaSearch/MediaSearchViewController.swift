@@ -40,16 +40,16 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         return self.dataSourceAdapter.dataSource?.options ?? MediaSearchOptions()
     }
     
-    fileprivate var hasLoadedOnce = false
+    private var hasLoadedOnce = false
     
     var selectedIndexPath: IndexPath?
     var previewSection: Int?
     var isScrollViewDecelerating = false
-    fileprivate(set) var dependencyManager: VDependencyManager?
+    private(set) var dependencyManager: VDependencyManager?
     
-    fileprivate(set) var scrollPaginator = ScrollPaginator()
+    private(set) var scrollPaginator = ScrollPaginator()
     let dataSourceAdapter = MediaSearchDataSourceAdapter()
-    fileprivate var mediaExporter: MediaSearchExporter?
+    private var mediaExporter: MediaSearchExporter?
     
     weak var delegate: MediaSearchDelegate?
     
@@ -65,7 +65,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         fatalError( "Could not load MediaSearchViewController from storyboard." )
     }
     
-    fileprivate var progressHUD: MBProgressHUD?
+    private var progressHUD: MBProgressHUD?
     
     
     // MARK: - UIViewController
@@ -206,7 +206,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.mediaExporter = mediaExporter
     }
     
-    fileprivate func showHud(renderingError error: NSError?) {
+    private func showHud(renderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled {
             MBProgressHUD.hide(for: view, animated: false)
             let errorTitle = NSLocalizedString("Error rendering media", comment: "")
@@ -269,7 +269,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.updateLayout()
     }
     
-    fileprivate func titleViewWithTitle( _ text: String ) -> UIView {
+    private func titleViewWithTitle( _ text: String ) -> UIView {
         let label = UILabel()
         label.text = text
         label.font = UIFont.preferredFont( forTextStyle: UIFontTextStyle.headline )
@@ -278,7 +278,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         return label
     }
     
-    fileprivate func updateNavigationItemState() {
+    private func updateNavigationItemState() {
         self.navigationItem.rightBarButtonItem?.isEnabled = selectedIndexPath != nil
         self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.MediaSearchNext.rawValue
     }
@@ -309,7 +309,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     }
     
     /// Invalidates the layout through a batch update so layout changes are animated
-    fileprivate func updateLayout() {
+    private func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
         })

@@ -11,7 +11,7 @@ import Foundation
 @objc(VCreationFlowTypeHelper)
 class CreationFlowTypeHelper: NSObject {
     
-    fileprivate static let creationFlowTypes: [String : VCreationFlowType] = [
+    private static let creationFlowTypes: [String : VCreationFlowType] = [
         "Create Image": .image,
         "Create Video": .video,
         "Create Poll": .poll,

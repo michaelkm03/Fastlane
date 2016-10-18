@@ -17,9 +17,9 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         return delegate
     }()
     var completionBlock: VIPFlowCompletion?
-    @objc fileprivate(set) var dependencyManager: VDependencyManager!
-    fileprivate var gateDependencyManager: VDependencyManager!
-    fileprivate var successDependencyManager: VDependencyManager!
+    @objc private(set) var dependencyManager: VDependencyManager!
+    private var gateDependencyManager: VDependencyManager!
+    private var successDependencyManager: VDependencyManager!
     
     class func new(withDependencyManager dependencyManager: VDependencyManager) -> VIPFlowNavigationController? {
         guard

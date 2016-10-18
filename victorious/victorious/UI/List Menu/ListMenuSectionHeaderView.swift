@@ -27,7 +27,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         }
     }
     
-    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         clipsToBounds = false
         titleLabel?.text = dependencyManager.titleText
         titleLabel?.textColor = dependencyManager.titleColor

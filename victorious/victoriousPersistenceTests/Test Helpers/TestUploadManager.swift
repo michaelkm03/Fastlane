@@ -10,7 +10,7 @@ import Foundation
 @testable import victorious
 
 class TestUploadManager: VUploadManager {
-    fileprivate(set) var enqueuedTasksCount = 0
+    private(set) var enqueuedTasksCount = 0
     
     override func enqueueUploadTask(_ uploadTask: VUploadTaskInformation!, onComplete: VUploadManagerTaskCompleteBlock!) {
         enqueuedTasksCount += 1

@@ -24,7 +24,7 @@ class SyncOperation<Output>: Operation, Queueable {
         fatalError("Subclasses of SyncOperation must override `executionQueue`!")
     }
     
-    fileprivate(set) var result: OperationResult<Output>?
+    private(set) var result: OperationResult<Output>?
     
     // MARK: - Operation Execution
     

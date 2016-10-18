@@ -9,7 +9,7 @@
 import UIKit
 
 class ConfigurableGridStreamHeaderView: UICollectionReusableView {
-    fileprivate var header: UIView?
+    private var header: UIView?
     
     func addHeader(_ header: UIView) {
         if self.header == header {

@@ -45,6 +45,6 @@ enum Queue {
         }
     }
     
-    fileprivate static let backgroundQueue = OperationQueue()
-    fileprivate static let asyncScheduleQueue = OperationQueue()
+    private static let backgroundQueue = OperationQueue()
+    private static let asyncScheduleQueue = OperationQueue()
 }

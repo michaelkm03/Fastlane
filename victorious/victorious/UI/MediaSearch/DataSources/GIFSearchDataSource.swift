@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 
 class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
-    fileprivate(set) var options = MediaSearchOptions()
+    private(set) var options = MediaSearchOptions()
     
     override init() {
         options.showPreview = true

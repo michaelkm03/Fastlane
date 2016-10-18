@@ -10,7 +10,7 @@ import VictoriousIOSSDK
 
 /// A data source that fetches gifs and provides cells that load and auto-play these gifs
 class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
-    fileprivate struct Constants {
+    private struct Constants {
         static let loadingCellReuseIdentifier = TrayLoadingCollectionViewCell.defaultReuseIdentifier
         static let retryCellReuseIdentifier = TrayRetryLoadCollectionViewCell.defaultReuseIdentifier
         static let defaultCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
@@ -19,8 +19,8 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     let dependencyManager: VDependencyManager
     var dataSourceDelegate: TrayDataSourceDelegate?
-    fileprivate var gifs: [GIFSearchResultObject] = []
-    fileprivate(set) var trayState: TrayState = .empty {
+    private var gifs: [GIFSearchResultObject] = []
+    private(set) var trayState: TrayState = .empty {
         didSet {
             if oldValue != trayState {
                 dataSourceDelegate?.trayDataSource(self, changedToState: trayState)

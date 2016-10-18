@@ -31,16 +31,16 @@ class VIPSubscriptionHelper {
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Navigating
     
-    fileprivate weak var originViewController: UIViewController?
+    private weak var originViewController: UIViewController?
     
     // MARK: - Fetching products
     
-    fileprivate let subscriptionFetchAPIPath: APIPath
-    fileprivate var products: [VProduct]?
+    private let subscriptionFetchAPIPath: APIPath
+    private var products: [VProduct]?
     
     func fetchProducts(_ completion: @escaping ([VProduct]?) -> Void) {
         guard let request = VIPFetchSubscriptionRequest(apiPath: subscriptionFetchAPIPath) else {
@@ -92,7 +92,7 @@ class VIPSubscriptionHelper {
         }
     }
     
-    fileprivate func showSubscriptionSelectionForProducts(_ products: [VProduct]) {
+    private func showSubscriptionSelectionForProducts(_ products: [VProduct]) {
         guard
             let originViewController = originViewController,
             let selectionDependency = dependencyManager.selectionDialogDependency
@@ -133,7 +133,7 @@ class VIPSubscriptionHelper {
         }
     }
     
-    fileprivate func subscribeToProduct(_ product: VProduct) {
+    private func subscribeToProduct(_ product: VProduct) {
         guard let validationAPIPath = dependencyManager.validationAPIPath else {
             return
         }

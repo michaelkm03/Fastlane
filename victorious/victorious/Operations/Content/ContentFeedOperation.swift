@@ -23,7 +23,7 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
     
     // MARK: - Executing
     
-    fileprivate let request: ContentFeedRequest
+    private let request: ContentFeedRequest
     
     override var executionQueue: Queue {
         return .main

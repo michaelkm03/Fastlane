@@ -9,8 +9,8 @@
 import Foundation
 
 class ImageBackground: VBackground {
-    fileprivate let backgroundImage: UIImage?
-    fileprivate static let BackgroundImageKey = "image"
+    private let backgroundImage: UIImage?
+    private static let BackgroundImageKey = "image"
     
     required init(dependencyManager: VDependencyManager) {
         backgroundImage = dependencyManager.image(forKey: ImageBackground.BackgroundImageKey)

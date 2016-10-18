@@ -19,8 +19,8 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Executing
     
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let requestOperation: RequestOperation<LoginRequest>
+    private let dependencyManager: VDependencyManager
+    private let requestOperation: RequestOperation<LoginRequest>
     
     var requestExecutor: RequestExecutorType {
         get {

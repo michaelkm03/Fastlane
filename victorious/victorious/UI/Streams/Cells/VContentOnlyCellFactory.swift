@@ -20,10 +20,10 @@ class VContentOnlyCellFactory: NSObject {
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     
-    fileprivate var registeredReuseIdentifiers = Set<String>()
+    private var registeredReuseIdentifiers = Set<String>()
     
     func collectionView(_ collectionView: UICollectionView, cellForContent content: Content, atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = ContentPreviewView.defaultReuseIdentifier

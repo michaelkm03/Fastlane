@@ -22,14 +22,14 @@ protocol HashtagBarControllerSearchDelegate: class {
 
 /// Manages the display of and responds to delegate methods related to a collection view populated with hashtags.
 class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    fileprivate static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
+    private static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
         
-    fileprivate let cachedSizes = NSCache<NSString, NSValue>()
-    fileprivate let cellDecorator: HashtagBarCellDecorator?
+    private let cachedSizes = NSCache<NSString, NSValue>()
+    private let cellDecorator: HashtagBarCellDecorator?
     
-    fileprivate let collectionView: UICollectionView
+    private let collectionView: UICollectionView
     
-    fileprivate var currentTrendingTags = [String]() {
+    private var currentTrendingTags = [String]() {
         didSet {
             guard currentTrendingTags != oldValue else {
                 return
@@ -38,7 +38,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    fileprivate var searchResults = [String]() {
+    private var searchResults = [String]() {
         didSet {
             var hashtags = searchResults
             if let searchText = searchText , !searchText.isEmpty {
@@ -49,7 +49,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    fileprivate var currentFetchOperation: AsyncOperation<[Hashtag]>? {
+    private var currentFetchOperation: AsyncOperation<[Hashtag]>? {
         didSet {
             if oldValue != currentFetchOperation {
                 oldValue?.cancel()
@@ -57,7 +57,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    fileprivate var hasValidSearchText: Bool {
+    private var hasValidSearchText: Bool {
         return !(searchText?.isEmpty ?? true)
     }
     
@@ -76,9 +76,9 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    fileprivate let searchAPIPath: APIPath?
+    private let searchAPIPath: APIPath?
     
-    fileprivate let trendingAPIPath: APIPath?
+    private let trendingAPIPath: APIPath?
     
     weak var selectionDelegate: HashtagBarControllerSelectionDelegate?
     
@@ -110,7 +110,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         return preferredCellSize().height
     }
     
-    fileprivate func preferredCellSize(_ searchText: String = "#") -> CGSize {
+    private func preferredCellSize(_ searchText: String = "#") -> CGSize {
         guard let cellDecorator = cellDecorator else {
             return .zero
         }
@@ -127,7 +127,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     // MARK: - Hashtag updating
     
-    fileprivate func searchForText(_ text: String) {
+    private func searchForText(_ text: String) {
         guard
             let searchAPIPath = searchAPIPath,
             let request = HashtagSearchRequest(apiPath: searchAPIPath, searchTerm: text)
@@ -154,7 +154,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    fileprivate func getTrendingHashtags() {
+    private func getTrendingHashtags() {
         guard
             let trendingAPIPath = trendingAPIPath,
             let request = TrendingHashtagsRequest(apiPath: trendingAPIPath)
@@ -176,7 +176,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
 
     // MARK: - Helpers
     
-    fileprivate func hashtagAtIndex(_ index: Int) -> String? {
+    private func hashtagAtIndex(_ index: Int) -> String? {
         var hashtag: String?
         if hasValidSearchText, let searchText = self.searchText {
             hashtag = index == 0 ? searchText : searchResults[index - 1]

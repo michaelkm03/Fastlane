@@ -13,7 +13,7 @@ class BadgeButton: UIButton {
     
     // MARK: - Constants
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let badgePadding = CGFloat(1.0)
         static let badgeTextColor = UIColor.white
         static let badgeBackgroundColor = UIColor(red: 0.95, green: 0.05, blue: 0.05, alpha: 1.0)
@@ -43,7 +43,7 @@ class BadgeButton: UIButton {
     
     // MARK: - Subviews
     
-    fileprivate let badgeLabel: UILabel = {
+    private let badgeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = Constants.badgeTextColor

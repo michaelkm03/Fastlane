@@ -98,7 +98,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
     
     /// Provides a private shorthand accessor within the implementation because we mostly deal with the Content
-    fileprivate var content: Content? {
+    private var content: Content? {
         return chatFeedContent?.content
     }
 
@@ -133,26 +133,26 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - Gesture Recognizer Actions
     
-    fileprivate dynamic func didTapOnAvatar(_ sender: AnyObject?) {
+    private dynamic func didTapOnAvatar(_ sender: AnyObject?) {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    fileprivate dynamic func didTapOnPreview(_ sender: AnyObject?) {
+    private dynamic func didTapOnPreview(_ sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
     
-    fileprivate dynamic func didLongPressBubble(_ recognizer: UILongPressGestureRecognizer) {
+    private dynamic func didLongPressBubble(_ recognizer: UILongPressGestureRecognizer) {
         switch recognizer.state {
             case .began: delegate?.messageCellDidLongPressContent(self)
             case .changed, .cancelled, .ended, .failed, .possible: break
         }
     }
     
-    fileprivate dynamic func didTapOnFailureButton(_ sender: UIButton) {
+    private dynamic func didTapOnFailureButton(_ sender: UIButton) {
         delegate?.messageCellDidSelectFailureButton(self)
     }
 
-    fileprivate dynamic func didTapOnLikeView() {
+    private dynamic func didTapOnLikeView() {
         if let content = content , !content.isLikedByCurrentUser {
             likeView?.animateLike()
         }
@@ -160,13 +160,13 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         toggleLike()
     }
 
-    fileprivate dynamic func didTapOnReplyButton(_ sender: UIButton) {
+    private dynamic func didTapOnReplyButton(_ sender: UIButton) {
         delegate?.messageCellDidSelectReplyButton(self)
     }
     
     // MARK: - Private helper methods
     
-    fileprivate func updateStyle() {
+    private func updateStyle() {
         captionLabel.textColor = dependencyManager.messageTextColor
         captionLabel.tintColor = dependencyManager.messageLinkColor
         captionLabel.font = dependencyManager.messageFont
@@ -245,7 +245,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         avatarView.user = content?.author
     }
     
-    fileprivate func createContentPreviewViewIfNeeded() -> ContentPreviewView {
+    private func createContentPreviewViewIfNeeded() -> ContentPreviewView {
         if let existingPreviewView = self.previewView as? ContentPreviewView {
             return existingPreviewView
         }
@@ -256,7 +256,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return previewView
     }
     
-    fileprivate func setupMediaView(for content: Content) -> MediaContentView {
+    private func setupMediaView(for content: Content) -> MediaContentView {
         self.previewView?.removeFromSuperview()
         self.previewView = nil
         
@@ -272,7 +272,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return previewView
     }
     
-    fileprivate func setupPreviewView(_ previewView: UIView) {
+    private func setupPreviewView(_ previewView: UIView) {
         previewView.clipsToBounds = true
         previewView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -291,7 +291,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         self.previewView = previewView
     }
 
-    fileprivate func toggleLike() {
+    private func toggleLike() {
         guard let content = content else {
             return
         }
@@ -363,7 +363,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth) ?? CGSize(width: width / 2, height: width / 2)
     }
     
-    fileprivate static var nonContentWidth: CGFloat {
+    private static var nonContentWidth: CGFloat {
         return contentMargin.horizontal + avatarSize.width + horizontalSpacing
     }
     

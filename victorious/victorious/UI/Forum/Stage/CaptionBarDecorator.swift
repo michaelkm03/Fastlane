@@ -9,7 +9,7 @@
 import Foundation
 
 struct CaptionBarDecorator {
-    fileprivate struct Constants {
+    private struct Constants {
         static let textAreaCornerRadius: CGFloat = 6
         static let expandButtonTouchInsets = UIEdgeInsetsMake(-6, -6, -6, -6)
     }

@@ -53,7 +53,7 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
     
     /// Adjusts layout attributes to align messages to the bottom when there aren't enough to fill the entire
     /// collection view.
-    fileprivate func processLayoutAttributes(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    private func processLayoutAttributes(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let collectionView = collectionView else {
             return layoutAttributes
         }

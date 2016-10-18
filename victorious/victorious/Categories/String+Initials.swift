@@ -25,7 +25,7 @@ extension String {
         return initials.joined(separator: "")
     }
     
-    fileprivate var uppercaseFirstCharacter: String {
+    private var uppercaseFirstCharacter: String {
         guard let character = characters.first else {
             return ""
         }

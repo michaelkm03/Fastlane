@@ -16,7 +16,7 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     let publishParameters: VPublishParameters
     let mediaURL: URL?
     
-    fileprivate var currentUploadTask: VUploadTaskInformation?
+    private var currentUploadTask: VUploadTaskInformation?
     
     init?(apiPath: APIPath, publishParameters: VPublishParameters, uploadManager: VUploadManager) {
         guard let request = MediaUploadCreateRequest(apiPath: apiPath) else {
@@ -76,7 +76,7 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         uploadManager.cancelUploadTask(currentUploadTask)
     }
     
-    fileprivate var formFields: [AnyHashable: Any] {
+    private var formFields: [AnyHashable: Any] {
         var dict: [AnyHashable: Any] = [
             "name": publishParameters.caption ?? "",
             "is_gif_style": publishParameters.isGIF ? "true" : "false",

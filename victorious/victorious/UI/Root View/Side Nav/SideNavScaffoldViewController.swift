@@ -13,7 +13,7 @@ import UIKit
 class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationControllerDelegate {
     // MARK: - Configuration
     
-    fileprivate static let estimatedBarButtonWidth: CGFloat = 60.0
+    private static let estimatedBarButtonWidth: CGFloat = 60.0
     
     // MARK: - Initializing
     
@@ -109,9 +109,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     // MARK: - Setup
     
-    fileprivate var hasPerformedFirstLaunchSetup = false
+    private var hasPerformedFirstLaunchSetup = false
     
-    fileprivate func setupNavigationButtons() {
+    private func setupNavigationButtons() {
         centerWrapperViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "Hamburger"),
             style: .plain,
@@ -152,11 +152,11 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     let rightNavViewController: UIViewController?
     
     /// The avatar view used as the right navigation button.
-    fileprivate var profileButton: SideNavProfileButton?
+    private var profileButton: SideNavProfileButton?
     
     // MARK: - Actions
     
-    @objc fileprivate func leftNavButtonWasPressed() {
+    @objc private func leftNavButtonWasPressed() {
         sideMenuController.toggleSideViewController(on: .left, animated: true)
     }
     
@@ -164,9 +164,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     /// repeatedly during a navigation controller pop transition queues up multiple pushes of the same right-nav view
     /// controller. The navigation controller doesn't list the right nav view controller in its `viewControllers`
     /// property, so we can't check that it's already been pushed that way. Thus, this flag is born.
-    fileprivate var allowsRightNavigation = true
+    private var allowsRightNavigation = true
     
-    @objc fileprivate func profileButtonWasPressed() {
+    @objc private func profileButtonWasPressed() {
         guard allowsRightNavigation else {
             return
         }
@@ -190,12 +190,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     // MARK: - Notifications
     
-    fileprivate dynamic func loggedInStatusDidChange(_ notification: Notification) {
+    private dynamic func loggedInStatusDidChange(_ notification: Notification) {
         handleLoggedInStatusChange()
         profileButton?.user = VCurrentUser.user
     }
     
-    fileprivate dynamic func mainFeedFilterDidChange(_ notification: Notification) {
+    private dynamic func mainFeedFilterDidChange(_ notification: Notification) {
         sideMenuController.closeSideViewController(animated: true)
         if let title = ((notification as NSNotification).userInfo?["selectedItem"] as? ListMenuSelectedItem)?.title {
             mainNavigationController.navigationBar.topItem?.titleView = nil
@@ -206,7 +206,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         }
     }
     
-    fileprivate func showCreatorLogoTitle() {
+    private func showCreatorLogoTitle() {
         dependencyManager.childDependency(forKey: "centerScreen")?.configureNavigationItem(mainNavigationController.navigationBar.topItem)
     }
     

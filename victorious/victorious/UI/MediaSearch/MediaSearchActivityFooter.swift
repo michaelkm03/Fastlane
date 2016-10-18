@@ -12,8 +12,8 @@ import UIKit
 /// for letting the user know when there are no more results to load.
 class MediaSearchActivityFooter: UICollectionReusableView {
     
-    @IBOutlet fileprivate weak var label: UILabel!
-    @IBOutlet fileprivate weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     /// Determines whether or not a loading state is represented using an activity indicator view
     var loading: Bool = true {

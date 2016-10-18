@@ -111,7 +111,7 @@ class ComposerTextViewManagerTests: XCTestCase {
     
     // MARK: - Delegate stub
     
-    fileprivate class ComposerTextViewManagerDelegateStub: ComposerTextViewManagerDelegate {
+    private class ComposerTextViewManagerDelegateStub: ComposerTextViewManagerDelegate {
         
         var onSetTextViewContentSize: ((Void) -> ())? = nil
         
@@ -139,7 +139,7 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
-        fileprivate var textViewPrependedImage: UIImage? {
+        var textViewPrependedImage: UIImage? {
             didSet {
                 onSetTextViewPrependedImage?()
             }
