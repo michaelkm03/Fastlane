@@ -397,6 +397,7 @@
 		6236F8801C36056A00746476 /* PaginatedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A61F1C347A01008B875C /* PaginatedDataSourceTests.swift */; };
 		6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */; };
 		624E39961C6AF153004E0C8E /* TestVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */; };
+		6258C55E1DB5A05B005A79C2 /* SignupUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6258C55D1DB5A05B005A79C2 /* SignupUITests.swift */; };
 		6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */; };
 		629A4D4E1DAEF56200747139 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629A4D4C1DAEF56200747139 /* AppVersionTests.swift */; };
 		629A4D4F1DAEF56200747139 /* ContentMediaSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629A4D4D1DAEF56200747139 /* ContentMediaSizeTests.swift */; };
@@ -1836,6 +1837,8 @@
 		6236F8771C36037200746476 /* AccountCreateOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperationTests.swift; sourceTree = "<group>"; };
 		6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundleTests.swift"; sourceTree = "<group>"; };
 		624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVideoPlayer.swift; sourceTree = "<group>"; };
+		6258C5591DB59F70005A79C2 /* victoriousUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "victoriousUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		6258C55D1DB5A05B005A79C2 /* SignupUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignupUITests.swift; path = "UI/Signup and Login/SignupUITests.swift"; sourceTree = "<group>"; };
 		6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VIPGateViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		629A4D4C1DAEF56200747139 /* AppVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppVersionTests.swift; path = Models/AppVersionTests.swift; sourceTree = "<group>"; };
 		629A4D4D1DAEF56200747139 /* ContentMediaSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentMediaSizeTests.swift; path = Models/ContentMediaSizeTests.swift; sourceTree = "<group>"; };
@@ -4474,7 +4477,9 @@
 		623021571DADAC2A00F4690C /* victoriousUITests */ = {
 			isa = PBXGroup;
 			children = (
+				6258C5581DB59F46005A79C2 /* UI */,
 				6230215A1DADAC2A00F4690C /* Info.plist */,
+				6258C5591DB59F70005A79C2 /* victoriousUITests-Bridging-Header.h */,
 			);
 			path = victoriousUITests;
 			sourceTree = "<group>";
@@ -4510,6 +4515,22 @@
 				624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		6258C5581DB59F46005A79C2 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				6258C55C1DB5A008005A79C2 /* Signup and Login */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		6258C55C1DB5A008005A79C2 /* Signup and Login */ = {
+			isa = PBXGroup;
+			children = (
+				6258C55D1DB5A05B005A79C2 /* SignupUITests.swift */,
+			);
+			name = "Signup and Login";
 			sourceTree = "<group>";
 		};
 		6287BE0E1C7E871B0057D116 /* VIP */ = {
@@ -6726,6 +6747,7 @@
 					};
 					623021551DADAC2A00F4690C = {
 						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
@@ -7810,6 +7832,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6258C55E1DB5A05B005A79C2 /* SignupUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10115,8 +10138,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -10132,6 +10157,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
 			};
@@ -10141,9 +10168,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10153,6 +10182,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
 			};
@@ -10162,9 +10192,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10174,6 +10206,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
 			};
@@ -10183,9 +10216,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10195,6 +10230,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
 			};
@@ -10204,9 +10240,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10216,6 +10254,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
 			};
