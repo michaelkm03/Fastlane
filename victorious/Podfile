@@ -18,24 +18,24 @@ target 'victorious' do
 
     target 'victoriousTests' do
         inherit! :search_paths
-        pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+        pod 'Nocilla', :git => 'https://github.com/Victorious/Nocilla.git'
         pod 'OCMock', '~> 3.3.1'
     end
 
     target 'VictoriousCommonTests' do
         inherit! :search_paths
-        pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+        pod 'Nocilla', :git => 'https://github.com/Victorious/Nocilla.git'
         pod 'OCMock', '~> 3.3.1'
     end
 
 end
 
 target 'VictoriousIOSSDKTests' do
-    pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+    pod 'Nocilla', :git => 'https://github.com/Victorious/Nocilla.git'
 end
 
 target 'victoriousPersistenceTests' do
-    pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
+    pod 'Nocilla', :git => 'https://github.com/Victorious/Nocilla.git'
 end
 
 post_install do |installer|
