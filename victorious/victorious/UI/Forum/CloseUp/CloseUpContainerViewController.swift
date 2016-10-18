@@ -354,7 +354,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             self?.closeUpView.headerDidAppear()
         }
         
-        present(lightbox, animated: true, completion: nil)
+        present(lightbox, animated: true)
     }
 }
 

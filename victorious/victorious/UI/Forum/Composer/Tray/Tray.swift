@@ -27,7 +27,7 @@ enum TrayMediaCompletionState {
 extension Tray where Self: UIViewController {
     func showHUD(forRenderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled, let window = view.window {
-            MBProgressHUD.hideAllHUDs(for: view, animated: false)
+            MBProgressHUD.hide(for: view, animated: false)
             let errorTitle = NSLocalizedString("Error rendering media", comment: "")
             v_showErrorWithTitle(errorTitle, message: "", onView: window)
         }
@@ -43,13 +43,12 @@ extension Tray where Self: UIViewController {
         }
         cancelableView.delegate = delegate
         
-        MBProgressHUD.hideAllHUDs(for: window, animated: false)
+        MBProgressHUD.hide(for: window, animated: false)
         let progressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        progressHUD?.mode = MBProgressHUDMode.customView
-        progressHUD?.customView = cancelableView
-        progressHUD?.isSquare = true;
-        progressHUD?.dimBackground = true
-        progressHUD?.show(true)
+        progressHUD.mode = MBProgressHUDMode.customView
+        progressHUD.customView = cancelableView
+        progressHUD.isSquare = true;
+        progressHUD.show(animated: true)
         return progressHUD
     }
     

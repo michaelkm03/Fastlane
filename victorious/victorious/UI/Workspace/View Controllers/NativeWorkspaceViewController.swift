@@ -46,7 +46,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
             if !UIVideoEditorController.canEditVideo(atPath: path) {
                 assertionFailure("Handling a MediaURL that the video editor controller can't handle")
                 v_showDefaultErrorAlert() { _ in
-                    self.presentingViewController?.dismiss(animated: true, completion: nil)
+                    self.presentingViewController?.dismiss(animated: true)
                 }
                 return
             }
@@ -98,7 +98,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     // MARK: - UIVideoEditorControllerDelegate
     
     func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: true)
     }
     
     func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: Error) {

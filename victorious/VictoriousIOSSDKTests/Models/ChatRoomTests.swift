@@ -21,11 +21,13 @@ class ChatRoomTests: XCTestCase {
             XCTFail("Failed to initialize a ChatRoom with data: \(mockData)")
             return
         }
+        XCTAssertEqual(chatroom.id, "cupcakes")
         XCTAssertEqual(chatroom.name, "Cupcakes")
     }
 
     func testInitailizer() {
-        let chatRoom = ChatRoom(name: "Seasalt")
+        let chatRoom = ChatRoom(id: "sea_salt", name: "Seasalt")
         XCTAssertEqual(chatRoom.name, "Seasalt")
+        XCTAssertEqual(chatRoom.id, "sea_salt")
     }
 }

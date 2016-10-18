@@ -108,7 +108,7 @@ struct Router {
                     
                 if configuration.addressBarVisible {
                     let safariViewController = SFSafariViewController(url: url)
-                    self.originViewController?.present(safariViewController, animated: true, completion: nil)
+                    self.originViewController?.present(safariViewController, animated: true)
                 }
                 
                 else if let originVC = self.originViewController {
@@ -290,7 +290,7 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
             "%%CONTENT_ID%%": contentID,
             "%%CONTEXT%%" : childDependencyManager.context
-            ])
+        ])
 
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,

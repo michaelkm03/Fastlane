@@ -13,9 +13,13 @@ private struct Constants {
     static let coachmarkDisplayDelay = 1.0
 }
 
+protocol ActiveFeedDelegate: class {
+    var activeFeed: Feed { get }
+}
+
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer, ActiveFeedDelegate {
     private struct EndVIPButtonConfiguration {
         let title: String
         let titleColor: UIColor
@@ -99,6 +103,20 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return forumVC
     }
     
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
+    }
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
@@ -124,16 +142,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
                 InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
-            case .filterContent(let path):
-                // FUTURE: the composer should listen to these events and hide itself so everything component in the forum handles it's own state
-                // path will be nil for home feed, and non nil for filtered feed
-                composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
                 onClose(sender: nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
+            case .handleContent(_, let loadingType):
+                if loadingType == .refresh {
+                    publisher?.removeAllPendingItems()
+                }
             default:
                 break
         }
@@ -152,12 +170,19 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
+    /// Encapsulates information about the currently active feed
+    var activeFeed = Feed(roomID: nil) {
+        didSet {
+            broadcast(.activeFeedChanged)
+        }
+    }
+    
     private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
         
-        publisher?.publish(content, withWidth: width)
+        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeFeed.roomID)
     }
 
     // MARK: - ForumEventSender
@@ -183,12 +208,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
 
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
-        if let context = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.context {
-            chatFeedContext = context
-        }
-        else {
-            chatFeedContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
-        }
+        let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
+        chatFeedContext = selectedItem?.context ?? DeeplinkContext(value: DeeplinkContext.mainFeed)
+        activeFeed = Feed(roomID: selectedItem?.chatRoomID)
     }
 
     func setStageHeight(_ value: CGFloat) {
@@ -273,9 +295,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
-
+        
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
         
@@ -341,7 +361,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         alertController.addAction(confirm)
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
     
     private func confirmCloseVIPEvent() {
@@ -367,12 +387,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             
         } else if let chatFeed = destination as? ChatFeed {
             chatFeed.dependencyManager = dependencyManager.chatFeedDependency
-            chatFeed.delegate = self
+            chatFeed.chatFeedDelegate = self
+            chatFeed.activeFeedDelegate = self
             self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
+            composer.composerDelegate = self
             composer.dependencyManager = dependencyManager.composerDependency
-            composer.delegate = self
+            composer.activeFeedDelegate = self
             self.composer = composer
         
         } else {
@@ -388,7 +410,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             closeButton?.dependencyManager?.trackButtonEvent(.tap)
         }
         
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true)
 
         // Close connection to network source when we close the forum.
         forumNetworkSource?.tearDown()
@@ -427,7 +449,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 case .cancel: break
             }
         }) {
-            present(alertController, animated: true, completion: nil)
+            present(alertController, animated: true)
         }
     }
     
@@ -448,8 +470,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
         let context = chatFeedContext.value ?? "chat_feed"
         let isLikedByCurrentUser = content.content.isLikedByCurrentUser
-        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
-        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
+        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context, "%%ROOM_ID%%": activeFeed.roomID ?? ""])
+        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context, "%%ROOM_ID%%": activeFeed.roomID ?? ""])
 
         let toggleLikeOperation: SyncOperation<Void>? = isLikedByCurrentUser
             ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
@@ -505,7 +527,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 handler: nil
             )
         )
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
     
     func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
@@ -533,8 +555,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
             return
         }
+        
+        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeFeed.roomID)
 
-        chatFeed?.collectionView.reloadItems(at: contentPublisher.pendingItems.indices.map {
+        chatFeed?.collectionView.reloadItems(at: pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
         })
     }
@@ -562,7 +586,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             chatFeed?.collectionView.deleteItems(at: indexPaths as [IndexPath])
         }
     }
-    
+
     // MARK: - VFocusable
     
     var focusType: VFocusType = .none {

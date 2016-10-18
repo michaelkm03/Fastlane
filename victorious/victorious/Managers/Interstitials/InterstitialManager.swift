@@ -74,7 +74,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             case .achievement, .statusUpdate, .clientSideCreated:
                 interstitialViewController.transitioningDelegate = self
                 interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
-                presentingViewController.present(interstitialViewController, animated: true, completion: nil)
+                presentingViewController.present(interstitialViewController, animated: true)
         }
 
         acknowledgeAlert(alert)
@@ -136,7 +136,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             interstitialViewController.removeFromParentViewController()
         }
         else if interstitialViewController.presentingViewController != nil {
-            interstitialViewController.dismiss(animated: true, completion: nil)
+            interstitialViewController.dismiss(animated: true)
         }
 
         presentedInterstitial = nil

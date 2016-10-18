@@ -12,13 +12,6 @@ public protocol ForumEventReceiver: class {
 }
 
 public extension ForumEventReceiver {
-    
-    var childEventReceivers: [ForumEventReceiver] {
-        return []
-    }
-    
-    func receive(_ event: ForumEvent) {}
-    
     func broadcast(_ event: ForumEvent) {
         for receiver in childEventReceivers {
             receiver.receive(event)

@@ -10,7 +10,7 @@
 
 // Library
 #import <MBProgressHUD/MBProgressHUD.h>
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 // Dependencies
 #import "VConstants.h"
@@ -451,8 +451,8 @@ static const CGFloat kDefaultImageSideLength = 640.0f;
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = errorText;
-    [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+    hud.label.text = errorText;
+    [hud hideAnimated:YES afterDelay:kErrorMessageDisplayDuration];
 }
 
 - (CGFloat)previewViewRadialHypotenuse

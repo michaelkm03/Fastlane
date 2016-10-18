@@ -51,6 +51,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 @property (nonatomic, strong) MBProgressHUD *facebookLoginProgressHUD;
+@property (nonatomic, strong) FBSDKLoginManager *facebookLoginManager;
 
 @property (nonatomic, strong) NSOperation *currentOperation;
 @property (nonatomic, copy) void (^onLoadingAppeared)();
@@ -95,6 +96,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
         
         _appTimingTracker = [DefaultTimingTracker sharedInstance];
+        _facebookLoginManager = [[FBSDKLoginManager alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     }
@@ -307,13 +309,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         self.actionsDisabled = YES;
         self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
-        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        [loginManager logInWithReadPermissions:FacebookHelper.readPermissions
+        [self.facebookLoginManager logInWithReadPermissions:FacebookHelper.readPermissions
                             fromViewController:self
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
          {
              self.actionsDisabled = NO;
-             [self.facebookLoginProgressHUD hide:YES];
+             [self.facebookLoginProgressHUD hideAnimated:YES];
              self.facebookLoginProgressHUD = nil;
              
              if ( [FBSDKAccessToken currentAccessToken] != nil )
@@ -457,7 +458,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
 
-- (void)setUsername:(NSString *)username
+- (void)setUsername:(NSString *)username completion:(void (^)(BOOL, NSError *))completion
 {
     if (self.actionsDisabled)
     {
@@ -468,13 +469,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.loginFlowHelper setUsername:username
                            completion:^(BOOL success, NSError *error)
      {
+         completion(success, error);
+         
          if (success)
          {
              [welf continueRegistrationFlow];
-         }
-         else
-         {
-             [welf v_showErrorDefaultError];
          }
      }];
     
@@ -748,7 +747,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     // This handles the case where the user taps "Cancel" on the "This app wants to open Facebook" prompt.
     if ( self.facebookLoginProgressHUD != nil )
     {
-        [self.facebookLoginProgressHUD hide:YES];
+        [self.facebookLoginProgressHUD hideAnimated:YES];
         self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
     }

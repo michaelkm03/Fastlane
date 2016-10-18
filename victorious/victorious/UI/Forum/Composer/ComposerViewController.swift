@@ -26,11 +26,22 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let vipLockComposerMargin: CGFloat = 8
         static let gifType = "gif"
     }
+
+    // MARK: - ForumEventReceiver
     
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {
+        switch event {
+            case .activeFeedChanged: feedIsChatRoom = activeFeedDelegate?.activeFeed.roomID != nil
+            default: break
+        }
+    }
+
     // MARK: - ForumEventSender
     
     var nextSender: ForumEventSender? {
-        return delegate
+        return composerDelegate
     }
     
     private var visibleKeyboardHeight: CGFloat = 0
@@ -173,12 +184,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return !attachmentMenuItems.isEmpty && interactingWithComposer
     }
     
-    weak var delegate: ComposerDelegate? {
-        didSet {
-            setupAttachmentTabBar()
-        }
-    }
-    
     private var userIsOwner: Bool {
         return VCurrentUser.user?.accessLevel.isCreator == true
     }
@@ -213,7 +218,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Composer
     
     var maximumTextInputHeight = CGFloat.greatestFiniteMagnitude
-    
+
+    weak var composerDelegate: ComposerDelegate? {
+        didSet {
+            setupAttachmentTabBar()
+        }
+    }
+
+    var activeFeedDelegate: ActiveFeedDelegate?
+
     var text: String {
         get {
             return textView?.text ?? ""
@@ -268,26 +281,44 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textViewHasText = true
     }
     
+    // MARK: - Managing visibiliity
+    
+    private var feedIsFiltered = false {
+        didSet {
+            updateVisibility(animated: true)
+        }
+    }
+    
+    private var feedIsChatRoom = false {
+        didSet {
+            updateVisibility(animated: true)
+        }
+    }
+    
     private var composerIsVisible = true
     
-    func setComposerVisible(_ visible: Bool, animated: Bool) {
-        guard visible != composerIsVisible else {
+    private func updateVisibility(animated: Bool) {
+        let composerShouldBeVisible = !feedIsFiltered || feedIsChatRoom
+        
+        guard composerShouldBeVisible != composerIsVisible else {
             return
         }
         
         if animated {
             UIView.animate(withDuration: Constants.animationDuration) {
-                self.setComposerVisible(visible, animated: false)
+                self.updateVisibility(animated: false)
                 self.view.layoutIfNeeded()
             }
         }
         else {
-            composerToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
-            if !visible {
+            composerToBottomConstraint.constant = composerShouldBeVisible ? 0.0 : -totalComposerHeight
+            
+            if !composerShouldBeVisible {
                 textView.resignFirstResponder()
             }
-            composerIsVisible = visible
-            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+            
+            composerIsVisible = composerShouldBeVisible
+            composerDelegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         }
     }
     
@@ -431,11 +462,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         updateAppearanceFromDependencyManager()
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         setupHashtagBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+        composerDelegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -458,7 +491,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         var textViewContentHeight = textView.calculatePlaceholderTextHeight()
         var textViewContainerHeight = textViewContentHeight
         if textViewHasText {
-            textViewContentHeight = ceil(textView.contentSize.height)
+            textViewContentHeight = ceil(textView.contentHeight())
             //Ensure that text view container is less than maximum height
             textViewContainerHeight = min(textViewContentHeight, maximumTextInputHeight)
         }
@@ -501,12 +534,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let previousContentOffset = textView.contentOffset
         UIView.animate(withDuration: Constants.animationDuration, delay: 0, options: .allowUserInteraction, animations: {
-            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+            self.composerDelegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
             if textViewHeightNeedsUpdate {
                 self.textView.layoutIfNeeded()
                 self.textView.setContentOffset(previousContentOffset, animated: false)
             }
-        }, completion: nil)
+        })
         
         super.updateViewConstraints()
     }
@@ -522,13 +555,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if animationDuration != 0 {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationOptions, animations: {
             self.textInputAreaToTrayContainerConstraint.constant = visibleKeyboardHeight
-                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+                self.composerDelegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
-                }, completion: nil)
+                })
         } else {
             textInputAreaToTrayContainerConstraint.constant = visibleKeyboardHeight
             self.view.setNeedsLayout()
-            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+            composerDelegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
         }
     }
     
@@ -536,7 +569,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         self.customInputAreaHeightConstraint.constant = self.customInputAreaHeight
         if animated {
             UIView.animate(withDuration: Constants.animationDuration, delay: 0, options: [.curveEaseOut, .allowUserInteraction], animations: {
-                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+                self.composerDelegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
                 }, completion: { _ in
                     self.customInputViewControllerIsAppearing = false
@@ -544,7 +577,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             )
         } else {
             view.setNeedsUpdateConstraints()
-            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+            composerDelegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
             customInputViewControllerIsAppearing = false
         }
     }
@@ -713,12 +746,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - ComposerAttachmentTabBarDelegate
     
     func composerAttachmentTabBar(_ composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem, fromButton button: UIButton) {
+        let macroReplacement = activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] }
+        navigationItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with: macroReplacement)
+
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         var selectedButton: UIButton? = nil
         if creationFlowType != .unknown {
             update(toInputAreaState: .hidden)
-            delegate?.composer(self, didSelectCreationFlowType: creationFlowType)
+            composerDelegate?.composer(self, didSelectCreationFlowType: creationFlowType)
         } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) {
             switch composerInputAttachmentType {
                 case .Hashtag:
@@ -855,6 +891,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private func cleanup() {
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
+    }
+    
+    // MARK: - Notifications
+    
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
+        feedIsFiltered = selectedItem?.streamAPIPath != nil
     }
     
     // MARK: - PastableTextViewDelegate

@@ -8,6 +8,7 @@
 
 import VictoriousIOSSDK
 import MBProgressHUD
+import VictoriousIOSSDK
 
 /// A view controller that displays a side-scrolling single-row of gifs that play in-line
 class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LoadingCancellableViewDelegate {
@@ -77,7 +78,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         let exporter = exportMedia(fromSearchResult: gif) { [weak self] state in
             switch state {
                 case .success(let result):
-                    self?.progressHUD?.hide(true)
+                    self?.progressHUD?.hide(animated: true)
                     let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: gif.assetSize, url: gif.sourceMediaURL as NSURL?)
                     guard
                         let strongSelf = self,
@@ -88,7 +89,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
                     }
                     strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
                 case .failure(let error):
-                    self?.progressHUD?.hide(true)
+                    self?.progressHUD?.hide(animated: true)
                     self?.showHUD(forRenderingError: error)
                 case .canceled:()
             }
@@ -120,7 +121,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     // MARK: - LoadingCancellableViewDelegate
     
     func cancel() {
-        progressHUD?.hide(true)
+        progressHUD?.hide(animated: true)
         self.mediaExporter?.cancelDownload()
     }
 }

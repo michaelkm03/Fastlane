@@ -140,7 +140,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     }
     
     func cancel() {
-        progressHUD?.hide(true)
+        progressHUD?.hide(animated: true)
         self.mediaExporter?.cancelDownload()
         delegate?.mediaSearchDidCancel?()
     }
@@ -176,13 +176,12 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         }
         view.delegate = self
         
-        MBProgressHUD.hideAllHUDs(for: self.view, animated: false)
-        progressHUD = MBProgressHUD.showAdded(to: self.view.window, animated: true)
+        MBProgressHUD.hide(for: self.view, animated: false)
+        progressHUD = MBProgressHUD.showAdded(to: self.view.window!, animated: true)
         progressHUD?.mode = MBProgressHUDMode.customView
         progressHUD?.customView = view
         progressHUD?.isSquare = true
-        progressHUD?.dimBackground = true
-        progressHUD?.show(true)
+        progressHUD?.show(animated: true)
         
         self.mediaExporter?.cancelDownload()
         self.mediaExporter = nil
@@ -193,13 +192,13 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
                 guard let strongSelf = self , !mediaExporter.cancelled else {
                     return
                 }
-                strongSelf.progressHUD?.hide(true)
+                strongSelf.progressHUD?.hide(animated: true)
                 if let previewImage = previewImage, let mediaURL = mediaURL {
                     mediaSearchResultObject.exportPreviewImage = previewImage
                     mediaSearchResultObject.exportMediaURL = mediaURL as URL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
-                    strongSelf.progressHUD?.hide(true)
+                    strongSelf.progressHUD?.hide(animated: true)
                     strongSelf.showHud(renderingError: error)
                 }
             }
@@ -209,7 +208,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     fileprivate func showHud(renderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled {
-            MBProgressHUD.hideAllHUDs(for: view, animated: false)
+            MBProgressHUD.hide(for: view, animated: false)
             let errorTitle = NSLocalizedString("Error rendering media", comment: "")
             v_showErrorWithTitle(errorTitle, message: "")
         }
@@ -244,14 +243,14 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         //  the current state of the paginated data source
         self.collectionView.performBatchUpdates({
             self.collectionView.reloadSections( IndexSet(integer: 0) )
-            }, completion: nil)
+            })
     }
     
     func updateViewWithResult( _ result: MediaSearchDataSourceAdapter.ChangeResult? ) {
         if let result = result , result.hasChanges {
             self.collectionView.performBatchUpdates({
                 self.collectionView.applyDataSourceChanges( result )
-                }, completion: nil)
+                })
         }
         if result?.error != nil || (result?.hasChanges == false && (self.dataSourceAdapter.dataSource?.visibleItems.count ?? 0) == 0) {
             self.collectionView.reloadData()
@@ -262,7 +261,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.clear()
             self.collectionView.applyDataSourceChanges( result )
-            }, completion: nil)
+            })
         
         self.selectedIndexPath = nil
         self.previewSection = nil
@@ -292,7 +291,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             let result = self.dataSourceAdapter.addHighlightSection(forIndexPath: indexPath)
             sectionInserted = result.insertedSections?.integerGreaterThan(0)
             self.collectionView.applyDataSourceChanges( result )
-            }, completion: nil)
+            })
         
         if let sectionInserted = sectionInserted {
             let previewCellIndexPath = IndexPath(row: 0, section: sectionInserted)
@@ -313,7 +312,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     fileprivate func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
+        })
     }
     
     /// Removes the section showing a search result preview at the specified index path
@@ -321,14 +320,14 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
             self.collectionView.applyDataSourceChanges(result)
-        }, completion: nil)
+        })
         
         self.selectedIndexPath = nil
         self.previewSection = nil
         
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
+        })
         
         self.updateNavigationItemState()
     }

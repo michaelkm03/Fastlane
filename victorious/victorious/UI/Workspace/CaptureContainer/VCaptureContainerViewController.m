@@ -12,17 +12,16 @@
 #import "VAlternateCaptureOption.h"
 
 // Views + Helpers
-#import <OAStackView/OAStackView.h>
 #import "UIView+Autolayout.h"
 
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VCaptureContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIView *containerView;
-@property (nonatomic, weak) IBOutlet OAStackView *stackView;
+@property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *stackViewHeightConstraint;
 @property (nonatomic, strong) UIViewController *viewControllerToContain;
 @property (nonatomic, strong) NSArray *buttonsForCaptureOptions;
@@ -63,6 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         //This KVO allows view the contained view controller to update the
         //right bar button item of our navigation item
+        
         [self.KVOController observe:self.viewControllerToContain.navigationItem
                            keyPaths:@[@"rightBarButtonItems", @"rightBarButtonItem"]
                             options:NSKeyValueObservingOptionNew
@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
             [buttonsForOptions addObject:button];
         }
         self.buttonsForCaptureOptions = [NSArray arrayWithArray:buttonsForOptions];
-        self.stackView.distribution = OAStackViewDistributionFillEqually;
+        self.stackView.distribution = UIStackViewDistributionFillEqually;
     }
 }
 

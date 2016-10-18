@@ -137,7 +137,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private func setupStayTunedImageViewIfNecessary() {
         if let image = dependencyManager.backgroundImage {
             let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFill
             view.insertSubview(imageView, belowSubview: titleCardContainerView)
+            view.v_addFitToParentConstraints(toSubview: imageView)
             self.stayTunedImageView = imageView
             show(animated: false)
         }

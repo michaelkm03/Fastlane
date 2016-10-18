@@ -57,7 +57,7 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
         )
         if let rootVC = (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController {
             let targetVC = rootVC.presentedViewController ?? rootVC
-            targetVC.present(alertController, animated: true, completion: nil)
+            targetVC.present(alertController, animated: true)
         }
     }
     

@@ -100,6 +100,7 @@ class AvatarView: UIView {
         backgroundColor = nil
         clipsToBounds = false
         imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         
         shadowView.layer.borderColor = Constants.borderColor.cgColor
         shadowView.layer.borderWidth = Constants.borderWidth

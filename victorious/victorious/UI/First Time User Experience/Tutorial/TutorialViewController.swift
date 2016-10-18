@@ -10,7 +10,6 @@ import UIKit
 import VictoriousIOSSDK
 
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
-    
     @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet fileprivate weak var continueButton: UIButton! {
         didSet {
@@ -31,6 +30,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
+    var activeFeedDelegate: ActiveFeedDelegate? = nil
     
     @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
         didSet {
@@ -124,6 +124,12 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
     }
+    
+    // MARK: - ForumEventReceiver
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {}
     
     // MARK: - VBackgroundContainer
     

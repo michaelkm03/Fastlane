@@ -10,14 +10,17 @@ import Foundation
 import VictoriousIOSSDK
 
 protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachmentTabBarDelegate, TrayDelegate {
-    
+
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
     var maximumTextInputHeight: CGFloat { get set }
     
     var creationFlowPresenter: VCreationFlowPresenter! { get }
     
-    weak var delegate: ComposerDelegate? { get set }
+    weak var composerDelegate: ComposerDelegate? { get set }
+
+    /// Delegate to get information about the currently active feed
+    weak var activeFeedDelegate: ActiveFeedDelegate? { get set }
     
     var topInset: CGFloat { get set }
     
@@ -28,8 +31,6 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     func sendMessage(text: String, currentUser: UserModel)
     
     func sendMessage(asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool)
-    
-    func setComposerVisible(_ visible: Bool, animated: Bool)
     
     func showKeyboard()
     
@@ -59,7 +60,7 @@ extension Composer {
 /// Conformers will recieve messages when a composer's buttons are pressed and when
 /// a composer changes its height.
 protocol ComposerDelegate: class, ForumEventSender {
-    
+
     func composer(_ composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType)
     
     /// Called when the composer updates to a new height. The returned value represents
