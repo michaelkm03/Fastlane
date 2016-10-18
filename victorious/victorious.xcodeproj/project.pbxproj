@@ -1163,7 +1163,6 @@
 		DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */; };
 		DBAD890219F5BA5B00D678A0 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890019F5BA5B00D678A0 /* EventKitUI.framework */; };
 		DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890319F5BAC500D678A0 /* CoreText.framework */; };
-		DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890519F5BB9000D678A0 /* MapKit.framework */; };
 		DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */; };
 		DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD890919F5BBAD00D678A0 /* CoreLocation.framework */; };
 		DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */; };
@@ -2992,7 +2991,6 @@
 				A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */,
 				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
 				DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */,
-				DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */,
 				DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */,
 				038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */,
 				DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */,
@@ -5823,7 +5821,6 @@
 				67DDA8201D46D64B00C55494 /* NSURL+CustomSchemeTests.swift */,
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
-				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
 				6230214E1DAC51C300F4690C /* Managers */,
 				623021651DAEAD5700F4690C /* Models */,
 				621320051D9DE58800A1B5BD /* Operations */,
@@ -6705,6 +6702,9 @@
 							};
 							com.apple.Keychain = {
 								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
 							};
 						};
 					};
