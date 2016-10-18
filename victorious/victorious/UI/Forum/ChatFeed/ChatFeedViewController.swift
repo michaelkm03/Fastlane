@@ -9,8 +9,8 @@
 import VictoriousIOSSDK
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-    private struct Layout {
-        private static let bottomMargin: CGFloat = 20.0
+    fileprivate struct Layout {
+        fileprivate static let bottomMargin: CGFloat = 20.0
     }
     
     private lazy var dataSource: ChatFeedDataSource = {

@@ -46,7 +46,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var avatarView: AvatarView! {
+    @IBOutlet fileprivate var avatarView: AvatarView! {
         didSet {
             avatarView.size = .large
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))

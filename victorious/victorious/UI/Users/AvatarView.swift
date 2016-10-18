@@ -60,7 +60,7 @@ enum AvatarViewSize {
 /// or to use that value when calculating layout manually.
 ///
 class AvatarView: UIView {
-    private struct Constants {
+    fileprivate struct Constants {
         static let smallInitialsFont = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
         static let largeInitialsFont = UIFont.systemFont(ofSize: 42.0, weight: UIFontWeightSemibold)
         static let initialsColor = UIColor(white: 0.0, alpha: 0.7)

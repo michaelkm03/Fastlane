@@ -27,7 +27,7 @@ class ExperimentSettingsDataSource: NSObject {
         static let modified = UIColor.red
         var current = TintColor.unmodified
     }
-    private var tintColor = TintColor()
+    fileprivate var tintColor = TintColor()
     
     var selectedExperimentIds: Set<Int> {
         return Set(sections.flatMap {
@@ -61,8 +61,8 @@ class ExperimentSettingsDataSource: NSObject {
         var experiments: [DeviceExperiment]
     }
     
-    private var sections = [Section]()
-    private var state: State = .loading
+    fileprivate var sections = [Section]()
+    fileprivate var state: State = .loading
     
     func saveSettings() {
         self.experimentSettings.activeExperiments = self.selectedExperimentIds
@@ -106,11 +106,11 @@ class ExperimentSettingsDataSource: NSObject {
         }
     }
     
-    private func updateTintColor() {
+    fileprivate func updateTintColor() {
         self.tintColor.current = self.experimentSettings.activeExperiments != nil ? TintColor.modified : TintColor.unmodified
     }
     
-    private func updateVisibleCells() {
+    fileprivate func updateVisibleCells() {
         if let tableView = self.delegate?.tableView {
             for cell in tableView.visibleCells {
                 if let switchCell = cell as? VSettingsSwitchCell {

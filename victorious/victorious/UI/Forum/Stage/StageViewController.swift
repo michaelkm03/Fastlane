@@ -244,7 +244,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         stagePreparer.prepareNextContent(stageContent, for: self)
     }
     
-    private func updateStageContent(stageContent content: StageContent) {
+    fileprivate func updateStageContent(stageContent content: StageContent) {
         currentStageContent = content
         
         if let mediaContentView = mediaContentView {
