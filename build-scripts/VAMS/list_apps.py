@@ -11,7 +11,7 @@ Authenticates with the Victorious backend, retrieves a list of the current activ
 This script assumes it is being run from the root of the code directory.
 
 This script is used by the following Victorious repositories:
-https://github.com/Victorious/VictoriousiOS
+https://github.com/TouchFrame/VictoriousiOS
 """
 import os
 import requests

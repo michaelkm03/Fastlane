@@ -7,7 +7,7 @@
 A set of global variables to be shared and set between the vams_prebuild and vams_postbuild programs.
 
 The Hash calculating code was "borrowed" from Frank Zhao (frank@getvictorious.com).
-https://github.com/Victorious/TestAutomation/blob/master/backEndApiDriver.py
+https://github.com/TouchFrame/TestAutomation/blob/master/backEndApiDriver.py
 """
 
 import hashlib
