@@ -3417,6 +3417,7 @@
 			children = (
 				A7039CF51C24A8F40023DE6F /* AlertTests.swift */,
 				62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */,
+				670B28C81DB7F47F0012907E /* CreatorAnswerTests.swift */,
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
@@ -3425,11 +3426,10 @@
 				0E85A1F91CAE28F400BE950E /* RefreshStageTests.swift */,
 				0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */,
 				7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */,
-				03314F481BE40F0100EE74FD /* UserTests.swift */,
 				7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */,
+				03314F481BE40F0100EE74FD /* UserTests.swift */,
 				BF2D25791CED40980001A2AF /* ViewedContent */,
 				0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */,
-				670B28C81DB7F47F0012907E /* CreatorAnswerTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4373,11 +4373,11 @@
 				0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */,
 				0E0615081CA35D6800236D4A /* ForumEventSender.swift */,
 				0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */,
+				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 				0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */,
 				0EF716901C9904D20005CF86 /* WebSocketError.swift */,
 				0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */,
 				0E06150C1CA36FFD00236D4A /* WebSocketEvents */,
-				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 				0E9911CD1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift */,
 			);
 			name = WebSocket;

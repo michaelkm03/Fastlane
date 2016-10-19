@@ -12,14 +12,23 @@ private struct Keys {
     static let root                 = "to_client"
     static let chat                 = "chat"
     static let refreshStage         = "refresh"
+    static let creatorAnswer        = "creator_answer"
     static let serverTime           = "server_time"
     static let type                 = "type"
     static let error                = "error"
 }
 
+/// The different types of web socket messages we can get from the backend
 private struct Types {
+    /// A new piece of chat message to be displayed in the chat feed
     static let chatMessage          = "CHAT"
+    /// A new piece of content to be displayed on the stage
     static let stageRefresh         = "REFRESH"
+    /// A creator answer sent by the creator to answer a fan's question during an AMA(Ask Me Anything) event.
+    /// The question will be displayed in a toast, and the creator's response goes to the stage.
+    /// - note: Video response will not be synced.
+    static let amaCreatorAnswer     = "CREATOR_ANSWER"
+    /// An update to the total number of users chatting right now
     static let chatUserCount        = "CHAT_USERS"
 }
 
@@ -77,6 +86,11 @@ extension WebSocketEventDecoder {
                 }
                 else if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
                     forumEvent = .refreshStage(refresh)
+                }
+            case Types.amaCreatorAnswer:
+                let answerJSON = rootNode[Keys.creatorAnswer]
+                if let creatorAnswer = CreatorAnswer(json: answerJSON, serverTime: serverTime) {
+                    forumEvent = .creatorRespondedToQuestion(creatorAnswer)
                 }
             case Types.chatUserCount:
                 if let chatUserCount = ChatUserCount(json: json[Keys.root], serverTime: serverTime) {
