@@ -12,7 +12,7 @@ import Foundation
 /// A command sent *from* the cleint *to* the server.
 ///
 /// NOTE: A `ServerCommand` very much looks like a `ClientCommand` but they are intentionally 
-/// specified separate so they there can be no confusion between them.
+/// specified separate so that there can be no confusion between them.
 ///
 public struct ServerCommand {
 
@@ -43,10 +43,10 @@ public struct ServerCommand {
 }
 
 ///
-/// A command sent from the server *to* the client.
+/// A command sent *from* the server *to* the client.
 ///
 /// NOTE: A `ClientCommand` very much looks like a `ServerCommand` but they are intentionally
-/// specified separate so they there can be no confusion between them.
+/// specified separate so that there can be no confusion between them.
 ///
 public struct ClientCommand {
 
@@ -77,7 +77,10 @@ public struct ClientCommand {
 }
 
 
-
+///
+/// A class used for connecting over WebSocket to a specific endpoint. It uses `ForumEvent`s to broadcasts 
+/// what goes on over the socket such as: connected, disconnected & new message etc.
+///
 public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
 
     // MARK: - Initialization
@@ -86,6 +89,10 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
         webSocketConnection = WebSocket(url: url)
         webSocketConnection.delegate = self
     }
+
+    // MARK: - Public vars
+
+    public private(set) var webSocketMessageContainer = WebSocketRawMessageContainer()
 
     // MARK: - Private vars
 
@@ -98,15 +105,10 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
     /// The amount of time to wait for the disconnect message to be respected by the backend.
     private let forcedDisconnectTimeout = TimeInterval(2)
 
-
     // MARK: - WebSocketDelegate
 
     public func websocketDidConnect(socket: WebSocket) {
-        Log.verbose("WebSocket did connect to URL -> \(socket.currentURL)")
-
-
-//        let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
-//        webSocketMessageContainer.add(rawMessage)
+        logEvent(event: "Connected to URL -> \(socket.currentURL)")
 
         DispatchQueue.main.async { [weak self] in
             self?.broadcast(.websocket(.connected))
@@ -114,11 +116,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
     }
 
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        Log.verbose("WebSocket did disconnect from URL -> \(socket.currentURL) with error -> \(error)")
+        logEvent(event: "Disconnected from URL -> \(socket) error -> \(error)")
 
-//        let rawMessage = WebSocketRawMessage(messageString: "Disconnected -> \(socket) error -> \(error)")
-//        webSocketMessageContainer.add(rawMessage)
-//
 //        // The WebSocket instance with the baked in token has been consumed.
 //        // A new token has to be fetched and a new WebSocket instance has to be created.
 //        pingTimer?.invalidate()
@@ -132,10 +131,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        Log.verbose("WebSocket did receive text message -> \(text)")
+        logEvent(event: "Did receive text message -> \(text)")
 
-//        var rawMessage = WebSocketRawMessage(messageString: "websocketDidReceiveMessage -> \(text)")
-//
+
 //        if let dataFromString = text.data(using: String.Encoding.utf8, allowLossyConversion: false) {
 //            let json = JSON(data: dataFromString)
 //            rawMessage.json = json
@@ -149,13 +147,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
 //                self?.broadcast(event)
 //            }
 //        }
-//
-//        webSocketMessageContainer.add(rawMessage)
     }
 
     public func websocketDidReceiveData(socket: WebSocket, data: Data) {
-        Log.verbose("WebSocket did receive data of count -> \(data.count)")
-        // ignore incoming data
+        logEvent(event: "Did unexpectedly receive data of count -> \(data.count)")
+        // ignore incoming data intentionally
     }
 
 
@@ -215,6 +211,15 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
 //        sendOutbound(event)
     }
 
+    // MARK: Private
+
+    /// Will write the event to a log using our log framework and to the message container (debug menu).
+    private func logEvent(event: String) {
+        Log.verbose(event)
+
+        let rawMessage = WebSocketRawMessage(messageString: event)
+        webSocketMessageContainer.add(rawMessage)
+    }
 
 }
 
