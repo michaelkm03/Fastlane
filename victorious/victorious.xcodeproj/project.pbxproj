@@ -364,7 +364,7 @@
 		0EB1AFE91D89F19900D854DF /* PastableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB1AFE81D89F19900D854DF /* PastableTextView.swift */; };
 		0EBF41851CAB5CAE002966B3 /* RefreshStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */; };
 		0EBF41861CAB5CAE002966B3 /* BlockUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */; };
-		0EBF418A1CAB5E04002966B3 /* RefreshSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF41891CAB5E04002966B3 /* RefreshSection.swift */; };
+		0EBF418A1CAB5E04002966B3 /* StageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF41891CAB5E04002966B3 /* StageSection.swift */; };
 		0EBF418C1CAB6563002966B3 /* InboundWebsocketEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBF418B1CAB6563002966B3 /* InboundWebsocketEvent.json */; };
 		0EBF418E1CAC889C002966B3 /* RefreshStage.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBF418D1CAC889C002966B3 /* RefreshStage.json */; };
 		0EC0F60F1CE65005008760E8 /* WebSocketDebuggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */; };
@@ -1788,7 +1788,7 @@
 		0EB1AFE81D89F19900D854DF /* PastableTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastableTextView.swift; sourceTree = "<group>"; };
 		0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshStage.swift; path = ForumEvents/RefreshStage.swift; sourceTree = "<group>"; };
 		0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockUser.swift; path = ForumEvents/BlockUser.swift; sourceTree = "<group>"; };
-		0EBF41891CAB5E04002966B3 /* RefreshSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshSection.swift; path = ForumEvents/RefreshSection.swift; sourceTree = "<group>"; };
+		0EBF41891CAB5E04002966B3 /* StageSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageSection.swift; path = ForumEvents/StageSection.swift; sourceTree = "<group>"; };
 		0EBF418B1CAB6563002966B3 /* InboundWebsocketEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InboundWebsocketEvent.json; sourceTree = "<group>"; };
 		0EBF418D1CAC889C002966B3 /* RefreshStage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RefreshStage.json; sourceTree = "<group>"; };
 		0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketDebuggingViewController.swift; path = Debugging/WebSocketDebuggingViewController.swift; sourceTree = "<group>"; };
@@ -4302,7 +4302,7 @@
 			children = (
 				0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */,
 				0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */,
-				0EBF41891CAB5E04002966B3 /* RefreshSection.swift */,
+				0EBF41891CAB5E04002966B3 /* StageSection.swift */,
 				0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */,
 				670B28C61DB7F42F0012907E /* CreatorAnswer.swift */,
 			);
@@ -7439,7 +7439,7 @@
 				62FD64801D8B4CE100E9BAF8 /* ChatRoom.swift in Sources */,
 				0EF716911C9904D20005CF86 /* WebSocketError.swift in Sources */,
 				0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */,
-				0EBF418A1CAB5E04002966B3 /* RefreshSection.swift in Sources */,
+				0EBF418A1CAB5E04002966B3 /* StageSection.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				0E5F7E421CA1EBC700B3AF14 /* WebSocketEventDecoder.swift in Sources */,
 				0EBF41851CAB5CAE002966B3 /* RefreshStage.swift in Sources */,

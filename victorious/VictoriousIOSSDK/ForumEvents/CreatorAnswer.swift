@@ -1,5 +1,23 @@
-import SwiftyJSON
-
+/// A creator's answer to a fan's question during an Ask Me Anything (AMA) event.
+/// It contains both the Question Content ID and the Answer Content ID.
 public struct CreatorAnswer {
-    public init(json: JSON, serverTime: serverTime)
+    public let section: StageSection
+    public let questionContentID: Content.ID
+    public let answerContentID: Content.ID
+    
+    public init?(json: JSON) {
+        let sectionString = json["section"].stringValue
+        
+        guard
+            let section = StageSection(section: sectionString),
+            let questionID = json["question_content_id"].string,
+            let answerID = json["answer_content_id"].string
+        else {
+            return nil
+        }
+        
+        self.section = section
+        self.questionContentID = questionID
+        self.answerContentID = answerID
+    }
 }

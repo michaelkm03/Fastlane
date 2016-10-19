@@ -89,7 +89,7 @@ extension WebSocketEventDecoder {
                 }
             case Types.amaCreatorAnswer:
                 let answerJSON = rootNode[Keys.creatorAnswer]
-                if let creatorAnswer = CreatorAnswer(json: answerJSON, serverTime: serverTime) {
+                if let creatorAnswer = CreatorAnswer(json: answerJSON) {
                     forumEvent = .creatorRespondedToQuestion(creatorAnswer)
                 }
             case Types.chatUserCount:
