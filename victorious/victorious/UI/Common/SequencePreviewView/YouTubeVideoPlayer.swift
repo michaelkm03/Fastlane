@@ -10,11 +10,11 @@ import UIKit
 
 class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
 
-    fileprivate let playerView = YTPlayerView()
+    private let playerView = YTPlayerView()
     
-    fileprivate(set) var isPlaying: Bool = false
+    private(set) var isPlaying: Bool = false
 
-    fileprivate func updateMute() {
+    private func updateMute() {
         if muted {
             playerView.mute()
         }
@@ -41,7 +41,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         playerView.load(withPlayerParams: container)
     }
     
-    fileprivate var playerVars: [AnyHashable: Any] {
+    private var playerVars: [AnyHashable: Any] {
         // See https://developers.google.com/youtube/player_parameters for complete list
         return [
             "controls": NSNumber(value: 0 as Int),

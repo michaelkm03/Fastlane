@@ -11,8 +11,8 @@ import UIKit
 /// A cell used to show a loading, error or no results state in GIF search
 class MediaSearchNoContentCell: UICollectionViewCell {
     
-    @IBOutlet fileprivate weak var label: UILabel!
-    @IBOutlet fileprivate weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     /// Sets text value for a label to indicate to the user the state of the search
     var text = "" {

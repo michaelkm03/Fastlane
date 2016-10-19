@@ -33,6 +33,27 @@ static NSString * const kPromptDurationKey = @"promptDuration";
 
 @end
 
+@interface VDependencyManager (accessors)
+
+@property(nonatomic, nullable, readonly)UIColor *unselectedPageColor;
+@property(nonatomic, nullable, readonly)UIColor *selectedPageColor;
+
+@end
+
+@implementation VDependencyManager (accessors)
+
+- (UIColor *)unselectedPageColor
+{
+    return [self colorForKey:@"color.accent.secondary"];
+}
+
+- (UIColor *)selectedPageColor
+{
+    return [self colorForKey:@"color.accent"];
+}
+
+@end
+
 @implementation VPromptCarouselViewController
 
 - (void)dealloc
@@ -85,6 +106,13 @@ static NSString * const kPromptDurationKey = @"promptDuration";
          self.collectionView.alpha = 1.0f;
      }
                      completion:nil];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.pageControl.pageIndicatorTintColor = self.dependencyManager.unselectedPageColor;
+    self.pageControl.currentPageIndicatorTintColor = self.dependencyManager.selectedPageColor;
 }
 
 - (void)viewDidLayoutSubviews

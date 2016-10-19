@@ -65,11 +65,11 @@ private class LoadingHelper: NSObject {
         }
     }
     
-    fileprivate lazy var templateDownloadOperation: VTemplateDownloadOperation = {
+    private lazy var templateDownloadOperation: VTemplateDownloadOperation = {
         VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader())
     }()
     
-    fileprivate var dependencyManager: VDependencyManager {
+    private var dependencyManager: VDependencyManager {
         var defaultDependencyManager = VDependencyManager.withDefaultValuesForColorsAndFonts()!
         if let template = template as? [AnyHashable: Any] {
             let parentManager = VDependencyManager(
@@ -88,7 +88,7 @@ private class LoadingHelper: NSObject {
         return defaultDependencyManager
     }
     
-    fileprivate lazy var loginOperation: StoredLoginOperation = {
+    private lazy var loginOperation: StoredLoginOperation = {
         return StoredLoginOperation(dependencyManager: self.dependencyManager)
     }()
     

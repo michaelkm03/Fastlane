@@ -10,8 +10,8 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender {
-    fileprivate var controller: WebSocketController!
-    fileprivate var webSocket: StubbedWebSocket!
+    private var controller: WebSocketController!
+    private var webSocket: StubbedWebSocket!
     
     // ForumEventSender
     var nextSender: ForumEventSender?
@@ -216,7 +216,7 @@ private class StubbedWebSocket: WebSocket {
     init() { super.init(url: URL(string: "ws://this.url.is.fake")!) }
     
     override var isConnected: Bool { return _isConnected }
-    fileprivate var _isConnected: Bool = false
+    private var _isConnected: Bool = false
     
     override func connect() {
         _isConnected = true

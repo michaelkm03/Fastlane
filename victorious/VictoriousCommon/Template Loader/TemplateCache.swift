@@ -42,7 +42,7 @@ private let templateDataDictionaryKey = "template"
         try dataCache.removeCachedData(for: cacheIDForEnvironment(environment) as VDataCacheID)
     }
     
-    fileprivate func cacheIDForEnvironment(_ environment: VEnvironment) -> String {
+    private func cacheIDForEnvironment(_ environment: VEnvironment) -> String {
         return "template.\(environment.name).data"
     }
 }

@@ -25,8 +25,8 @@ final class ContentFlagOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    fileprivate let request: ContentFlagRequest
-    fileprivate let contentID: Content.ID
+    private let request: ContentFlagRequest
+    private let contentID: Content.ID
     
     override var executionQueue: Queue {
         return .main

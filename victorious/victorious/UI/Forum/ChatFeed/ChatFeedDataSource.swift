@@ -54,8 +54,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Managing content
     
-    fileprivate(set) var unstashedItems = [ChatFeedContent]()
-    fileprivate(set) var stashedItems = [ChatFeedContent]()
+    private(set) var unstashedItems = [ChatFeedContent]()
+    private(set) var stashedItems = [ChatFeedContent]()
     
     var pendingItems: [ChatFeedContent] {
         if shouldShowPendingItems {
@@ -110,7 +110,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Internal helpers
     
-    fileprivate func handleItems(_ newItems: [Content], withLoadingType loadingType: PaginatedLoadingType) {
+    private func handleItems(_ newItems: [Content], withLoadingType loadingType: PaginatedLoadingType) {
         switch loadingType {
             case .newer:
                 let newItems = createNewItemsArray(newItems)
@@ -136,7 +136,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
         }
     }
-    fileprivate func createNewItemsArray(_ contents: [Content]) -> [ChatFeedContent] {
+    private func createNewItemsArray(_ contents: [Content]) -> [ChatFeedContent] {
         guard let width = delegate?.chatFeedItemWidth else {
             return []
         }
@@ -146,7 +146,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         }
     }
     
-    fileprivate func clearItems() {
+    private func clearItems() {
         unstashedItems = []
         stashedItems = []
         delegate?.chatFeedDataSource(self, didLoadItems: [], loadingType: .refresh)

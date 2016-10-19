@@ -26,27 +26,27 @@ class VideoToolbarView: UIView {
     
     weak var delegate: VideoToolbarDelegate?
     
-    fileprivate var autoVisibilityTimer = VTimerManager()
+    private var autoVisibilityTimer = VTimerManager()
     
-    fileprivate let kTimeLabelPlaceholderText = "--:--"
-    fileprivate let kPlayButtonPlayImageName = "player-play-icon"
-    fileprivate let kPlayButtonPauseImageName = "player-pause-icon"
+    private let kTimeLabelPlaceholderText = "--:--"
+    private let kPlayButtonPlayImageName = "player-play-icon"
+    private let kPlayButtonPauseImageName = "player-pause-icon"
     
-    fileprivate let kVisibilityAnimationDuration = 0.2
-    fileprivate let kMaxVisibilityTimerDuration = 4.0
+    private let kVisibilityAnimationDuration = 0.2
+    private let kMaxVisibilityTimerDuration = 4.0
     
-    @IBOutlet fileprivate weak var playButton: UIButton!
-    @IBOutlet fileprivate weak var slider: UISlider!
-    @IBOutlet fileprivate weak var elapsedTimeLabel: UILabel!
-    @IBOutlet fileprivate weak var remainingTimeLabel: UILabel!
-    @IBOutlet fileprivate weak var containerView: UIView!
+    @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var slider: UISlider!
+    @IBOutlet private weak var elapsedTimeLabel: UILabel!
+    @IBOutlet private weak var remainingTimeLabel: UILabel!
+    @IBOutlet private weak var containerView: UIView!
     
-    @IBOutlet fileprivate weak var containerTopConstraint: NSLayoutConstraint!
-    @IBOutlet fileprivate weak var containerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var containerBottomConstraint: NSLayoutConstraint!
     
-    fileprivate var isSliderDown: Bool = false
-    fileprivate lazy var timeFormatter = VElapsedTimeFormatter()
-    fileprivate var lastInteractionDate = Date()
+    private var isSliderDown: Bool = false
+    private lazy var timeFormatter = VElapsedTimeFormatter()
+    private var lastInteractionDate = Date()
     
     func resetTime() {
         self.elapsedTimeLabel.text = kTimeLabelPlaceholderText
@@ -75,7 +75,7 @@ class VideoToolbarView: UIView {
         }
     }
     
-    fileprivate(set) var isVisible = true
+    private(set) var isVisible = true
     
     var autoVisibilityTimerEnabled = true {
         didSet {
@@ -154,26 +154,26 @@ class VideoToolbarView: UIView {
     
     // MARK: - IBActions
     
-    @IBAction fileprivate func onSliderDown( _ slider: UISlider ) {
+    @IBAction private func onSliderDown( _ slider: UISlider ) {
         isSliderDown = true
         refreshVisibilityDate()
         delegate?.videoToolbar( self, didStartScrubbingToLocation: slider.value)
     }
     
-    @IBAction fileprivate func onSliderUp( _ slider: UISlider ) {
+    @IBAction private func onSliderUp( _ slider: UISlider ) {
         isSliderDown = false
         refreshVisibilityDate()
         delegate?.videoToolbar( self, didEndScrubbingToLocation: slider.value)
     }
     
-    @IBAction fileprivate func onSliderValueChanged( _ slider: UISlider ) {
+    @IBAction private func onSliderValueChanged( _ slider: UISlider ) {
         if isSliderDown {
             refreshVisibilityDate()
             delegate?.videoToolbar(self, didScrubToLocation: slider.value)
         }
     }
     
-    @IBAction fileprivate func onPlayButtonPressed( _ slider: UISlider ) {
+    @IBAction private func onPlayButtonPressed( _ slider: UISlider ) {
         paused = !paused
         if paused {
             delegate?.videoToolbarDidPause( self )
@@ -186,11 +186,11 @@ class VideoToolbarView: UIView {
     
     // MARK: - Helpers
     
-    fileprivate func clampTime( _ time: Float64 ) -> Float64 {
+    private func clampTime( _ time: Float64 ) -> Float64 {
         return time < 0.0 ? 0.0 : time
     }
     
-    fileprivate func clampRatio( _ time: Float ) -> Float {
+    private func clampRatio( _ time: Float ) -> Float {
         return time < 0.0 ? 0.0 : time > 1.0 ? 1.0 : time
     }
     
@@ -202,11 +202,11 @@ class VideoToolbarView: UIView {
         }
     }
     
-    fileprivate func refreshVisibilityDate() {
+    private func refreshVisibilityDate() {
         self.lastInteractionDate = Date()
     }
     
-    fileprivate func resetTimer() {
+    private func resetTimer() {
         if !self.autoVisibilityTimerEnabled {
             return
         }

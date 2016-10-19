@@ -10,7 +10,7 @@ import VictoriousIOSSDK
 
 /// A data source that fetches stickers and provides cells that show non-animating previews of these stickers
 class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
-    fileprivate struct Constants {
+    private struct Constants {
         static let loadingCellReuseIdentifier = TrayLoadingCollectionViewCell.defaultReuseIdentifier
         static let retryCellReuseIdentifier = TrayRetryLoadCollectionViewCell.defaultReuseIdentifier
         static let defaultCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier

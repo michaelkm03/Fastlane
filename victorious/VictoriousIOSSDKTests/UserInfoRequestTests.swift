@@ -10,7 +10,7 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class UserInfoRequestTests: XCTestCase {
-    fileprivate static let apiPath = APIPath(templatePath: "http://api.getvictorious.com/my/cool/path/%%USER_ID%%")
+    private static let apiPath = APIPath(templatePath: "http://api.getvictorious.com/my/cool/path/%%USER_ID%%")
     
     func testRequestConfigurationWithAPIPath() {
         let id = 9090

@@ -11,8 +11,8 @@ import XCTest
 
 class CreateChatServiceTokenRequestTests: XCTestCase {
     
-    fileprivate let apiPath = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/users/%%USER_ID%%/chat/token")
-    fileprivate let userID = 1337
+    private let apiPath = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/users/%%USER_ID%%/chat/token")
+    private let userID = 1337
     
     func testInitialization() {
         let request = CreateChatServiceTokenRequest(apiPath: apiPath, currentUserID: userID)

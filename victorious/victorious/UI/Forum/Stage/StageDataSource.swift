@@ -10,14 +10,14 @@ import Foundation
 import VictoriousIOSSDK
 
 class StageDataSource: ForumEventReceiver {
-    fileprivate static let backendStartTimeThreshold: Int64 = 1000
+    private static let backendStartTimeThreshold: Int64 = 1000
     
     weak var delegate: Stage?
     
-    fileprivate let dependencyManager: VDependencyManager?
+    private let dependencyManager: VDependencyManager?
     
-    fileprivate var currentContentFetchOperation: StageContentFetchOperation?
-    fileprivate var currentContent: Content?
+    private var currentContentFetchOperation: StageContentFetchOperation?
+    private var currentContent: Content?
     
     // MARK: Initialiation
     

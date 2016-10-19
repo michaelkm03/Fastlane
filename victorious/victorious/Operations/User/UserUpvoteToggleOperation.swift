@@ -10,9 +10,9 @@ import UIKit
 import VictoriousIOSSDK
 
 class UserUpvoteToggleOperation: SyncOperation<Void> {
-    fileprivate let user: UserModel
-    fileprivate let upvoteAPIPath: APIPath
-    fileprivate let unupvoteAPIPath: APIPath
+    private let user: UserModel
+    private let upvoteAPIPath: APIPath
+    private let unupvoteAPIPath: APIPath
     
     init(user: UserModel, upvoteAPIPath: APIPath, unupvoteAPIPath: APIPath) {
         self.user = user

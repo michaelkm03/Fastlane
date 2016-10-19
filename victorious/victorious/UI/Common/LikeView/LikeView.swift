@@ -59,17 +59,17 @@ final class LikeView: UIView {
 
     // MARK: - Constants
 
-    fileprivate struct Constants {
+    private struct Constants {
         static let font: UIFont = UIFont(name: ".SFUIText-Regular", size: 12.0)
             ?? UIFont.systemFont(ofSize: 12.0, weight: UIFontWeightRegular)
     }
 
     // MARK: - Views
 
-    fileprivate let imageView = UIImageView()
-    fileprivate let countLabel = UILabel()
+    private let imageView = UIImageView()
+    private let countLabel = UILabel()
 
-    fileprivate lazy var animationImageView: UIImageView = {
+    private lazy var animationImageView: UIImageView = {
         return UIImageView()
     }()
 
@@ -83,7 +83,7 @@ final class LikeView: UIView {
         }
     }
 
-    fileprivate var textColor: UIColor {
+    private var textColor: UIColor {
         get {
             return countLabel.textColor
         }
@@ -165,20 +165,20 @@ final class LikeView: UIView {
 
     // MARK: - Private helpers
 
-    fileprivate func updateLikeCount(_ content: Content) {
+    private func updateLikeCount(_ content: Content) {
         let likeCount = content.likeCount ?? 0
         let totalLikes = likeCount > 0 ? likeCount + content.currentUserLikeCount : content.currentUserLikeCount
         countLabel.text = totalLikes > 0 ? largeNumberFormatter.string(for: totalLikes) : ""
         setNeedsLayout()
     }
 
-    fileprivate func updateLikeImage(_ content: Content) {
+    private func updateLikeImage(_ content: Content) {
         imageView.image = content.isLikedByCurrentUser ? selectedIcon : unselectedIcon
     }
 
     // MARK: - Private Animation
 
-    fileprivate func animate() {
+    private func animate() {
         guard let frames = LikeView.animationFrames, let imageSize = frames.first?.size else {
             return
         }

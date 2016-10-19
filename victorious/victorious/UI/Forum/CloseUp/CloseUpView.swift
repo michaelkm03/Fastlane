@@ -19,7 +19,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Configuration
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let relatedAnimationDuration = Double(1)
         static let horizontalMargins = CGFloat(16)
         static let verticalMargins = CGFloat(18)
@@ -29,7 +29,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
-    fileprivate var maxContentHeight: CGFloat = CGFloat.greatestFiniteMagnitude
+    private var maxContentHeight: CGFloat = CGFloat.greatestFiniteMagnitude
     
     // MARK: - IBOutlets
     
@@ -42,23 +42,23 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var closeUpContentContainerView: UIView!
     @IBOutlet weak var separatorBar: UIImageView!
     
-    fileprivate(set) var mediaContentHeightConstraint: NSLayoutConstraint?
+    private(set) var mediaContentHeightConstraint: NSLayoutConstraint?
     
     // MARK: - Variables
     
     weak var delegate: CloseUpViewDelegate?
     
-    fileprivate let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
-    fileprivate lazy var errorView: ErrorStateView = {
+    private lazy var errorView: ErrorStateView = {
         return ErrorStateView.v_fromNib()
     }()
 
-    fileprivate(set) var mediaContentView: MediaContentView?
+    private(set) var mediaContentView: MediaContentView?
     
-    fileprivate var videoPlayer: VVideoPlayer?
+    private var videoPlayer: VVideoPlayer?
 
-    fileprivate var dependencyManager: VDependencyManager! {
+    private var dependencyManager: VDependencyManager! {
         didSet {
             errorView.dependencyManager = dependencyManager.errorStateDependency
             configureFontsAndColors()
@@ -94,7 +94,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         separatorBar.image = UIImage.v_singlePixelImage(with: .white)
     }
 
-    fileprivate func setupMediaContentView(for content: Content) -> MediaContentView {
+    private func setupMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
@@ -111,7 +111,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Setting Content
     
-    fileprivate var content: Content? {
+    private var content: Content? {
         didSet {
             if oldValue?.id == content?.id {
                 return
@@ -161,7 +161,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Frame/Size Calculations
     
-    fileprivate func height(for content: Content?) -> CGFloat {
+    private func height(for content: Content?) -> CGFloat {
         guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
@@ -195,7 +195,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         spinner.center = center
     }
     
-    fileprivate func sizeForContent(_ content: Content?, withWidth width: CGFloat) -> CGSize {
+    private func sizeForContent(_ content: Content?, withWidth width: CGFloat) -> CGSize {
         guard let content = content else {
             let aspectRatio = Constants.defaultAspectRatio
             return CGSize(
@@ -236,7 +236,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         showProfile()
     }
     
-    fileprivate dynamic func showProfile() {
+    private dynamic func showProfile() {
         guard let userID = content?.author?.id else {
             return
         }
@@ -246,17 +246,17 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Helpers
     
-    fileprivate func contentHasText(_ content: Content) -> Bool {
+    private func contentHasText(_ content: Content) -> Bool {
         return content.text?.trimmingCharacters(in: CharacterSet.whitespaces).characters.count ?? 0 > 0
     }
     
-    @objc fileprivate func closeUpDismissed() {
+    @objc private func closeUpDismissed() {
         DispatchQueue.main.async {
             self.videoPlayer?.pause()
         }
     }
     
-    fileprivate func configureFontsAndColors() {
+    private func configureFontsAndColors() {
         userNameButton.setTitleColor(dependencyManager.usernameColor, for: .normal)
         createdAtLabel.textColor = dependencyManager.timestampColor
         captionLabel.textColor = dependencyManager.captionColor
@@ -272,7 +272,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
     }
     
-    fileprivate func clearContent() {
+    private func clearContent() {
         captionLabel.text = ""
         avatarView.user = nil
         userNameButton.setTitle("", for: UIControlState())
@@ -281,13 +281,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     
-    fileprivate func addMediaContentView(_ mediaContentView: MediaContentView) {
+    private func addMediaContentView(_ mediaContentView: MediaContentView) {
         closeUpContentContainerView.addSubview(mediaContentView)
         self.mediaContentView = mediaContentView
         setNeedsUpdateConstraints()
     }
     
-    fileprivate func removeMediaContentView() {
+    private func removeMediaContentView() {
         mediaContentView?.removeFromSuperview()
         mediaContentView = nil
     }

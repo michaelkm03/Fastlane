@@ -37,7 +37,7 @@ class ExperimentSettingsDataSource: NSObject {
     
     let experimentSettings = ExperimentSettings()
     
-    fileprivate enum State: Int {
+    private enum State: Int {
         case loading, content, noContent, error
         
         /// Returns a message to display to the user for this state.

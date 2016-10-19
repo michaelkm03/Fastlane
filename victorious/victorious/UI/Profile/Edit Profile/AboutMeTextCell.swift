@@ -10,11 +10,11 @@ import Foundation
 
 /// Provides UI for the user to edit their `tagline`.
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
-    fileprivate struct Constants {
+    private struct Constants {
         static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
     }
     
-    @IBOutlet fileprivate var textView: VPlaceholderTextView!
+    @IBOutlet private var textView: VPlaceholderTextView!
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -80,7 +80,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     // MARK: - Misc Private Functions
     
-    fileprivate func notifySizeChangeIfNeeded() {
+    private func notifySizeChangeIfNeeded() {
         let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
         guard textSize.height != contentView.bounds.height else {
             return

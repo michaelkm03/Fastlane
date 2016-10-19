@@ -16,7 +16,7 @@ protocol ContentCellTracker {
 }
 
 extension ContentCellTracker {
-    fileprivate var trackingManager: VTrackingManager {
+    private var trackingManager: VTrackingManager {
         return VTrackingManager.sharedInstance()
     }
 
@@ -38,7 +38,7 @@ extension ContentCellTracker {
         )
     }
 
-    fileprivate func parametersForViewTrackingKey(_ trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [AnyHashable: Any]? {
+    private func parametersForViewTrackingKey(_ trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [AnyHashable: Any]? {
         let parameters = [
             VTrackingKeyTimeStamp: Date(),
             VTrackingKeyUrls: trackingURLStrings

@@ -13,7 +13,7 @@ import VictoriousIOSSDK
 typealias ImageCompletion = ((Result<UIImage>) -> Void)?
 
 extension UIImageView {
-    fileprivate static let blurredImageCachePathExtension = "blurred"
+    private static let blurredImageCachePathExtension = "blurred"
     
     /// Downloads the image from the image asset or grabs the cached version to return in the completion block
     func getImageAsset(_ imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
@@ -47,12 +47,12 @@ extension UIImageView {
         }
     }
     
-    fileprivate func cachedBlurredImage(for url: URL, blurRadius: CGFloat) -> UIImage? {
+    private func cachedBlurredImage(for url: URL, blurRadius: CGFloat) -> UIImage? {
         let key = blurredImageKey(for: url, blurRadius: blurRadius)
         return SDWebImageManager.shared().imageCache.imageFromMemoryCache(forKey: key)
     }
     
-    fileprivate func addBlurredImage(_ image: UIImage, toCacheWithURL url: URL, blurRadius: CGFloat) {
+    private func addBlurredImage(_ image: UIImage, toCacheWithURL url: URL, blurRadius: CGFloat) {
         guard let key = blurredImageKey(for: url, blurRadius: blurRadius) else {
             return
         }
@@ -63,13 +63,13 @@ extension UIImageView {
         )
     }
     
-    fileprivate func blurredImageKey(for url: URL, blurRadius: CGFloat) -> String? {
+    private func blurredImageKey(for url: URL, blurRadius: CGFloat) -> String? {
         let imageExtension = "\(UIImageView.blurredImageCachePathExtension)/\(blurRadius)"
         let key = url.appendingPathComponent(imageExtension).absoluteString
         return key
     }
     
-    fileprivate func blurImage(_ image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
+    private func blurImage(_ image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
         DispatchQueue.global().async {
             guard let blurredImage = image.applyBlur(withRadius: radius) else {
                 completion?(.failure(nil))
@@ -82,7 +82,7 @@ extension UIImageView {
         }
     }
     
-    fileprivate func applyBlur(to image: UIImage, with url: URL? = nil, radius: CGFloat, completion: ImageCompletion) {
+    private func applyBlur(to image: UIImage, with url: URL? = nil, radius: CGFloat, completion: ImageCompletion) {
         guard let url = url else {
             // No URL to cache to, blur the image and call completion
             blurImage(image, withRadius: radius, completion: completion)

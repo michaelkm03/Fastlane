@@ -11,7 +11,7 @@ import Foundation
 final class ProductFetchOperation: AsyncOperation<[VProduct]> {
     let productIdentifiers: Set<String>
     
-    fileprivate let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     init(productIdentifiers: [String]) {
         self.productIdentifiers = Set(productIdentifiers.map { $0 })

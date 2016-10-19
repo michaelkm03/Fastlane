@@ -14,7 +14,7 @@ class MainRequestExecutor: RequestExecutorType {
     
     /// An error stored from the last request that was executed.  It is always populated
     /// regardless of whether or not an `RequestErrorHandler` handled it.
-    fileprivate(set) var error: NSError?
+    private(set) var error: NSError?
     
     /// An array of `RequestErrorHandler` objects that will handle errors when requests are executed.
     /// Calling code may append, filter or anything else to customize the behavior.  When an error occurs,
@@ -22,7 +22,7 @@ class MainRequestExecutor: RequestExecutorType {
     /// handle the error, then returns so that each error is handler by only one handler.
     var errorHandlers = [RequestErrorHandler]()
     
-    fileprivate func handle(_ error: NSError, with request: URLRequest? = nil) -> NSError? {
+    private func handle(_ error: NSError, with request: URLRequest? = nil) -> NSError? {
         for handler in errorHandlers {
             if handler.handle(error, with: request) {
                 return nil
@@ -31,8 +31,8 @@ class MainRequestExecutor: RequestExecutorType {
         return error
     }
     
-    fileprivate let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
-    fileprivate let alertsReceiver = AlertReceiverSelector.defaultReceiver
+    private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    private let alertsReceiver = AlertReceiverSelector.defaultReceiver
     
     var cancelled: Bool = false
     
@@ -79,7 +79,7 @@ class MainRequestExecutor: RequestExecutorType {
         networkActivityIndicator.stop()
     }
     
-    fileprivate func convertError(_ error: Error?) -> NSError? {
+    private func convertError(_ error: Error?) -> NSError? {
         guard let error = error else {
             return nil
         }

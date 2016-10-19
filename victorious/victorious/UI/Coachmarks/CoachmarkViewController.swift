@@ -42,8 +42,8 @@ private struct Constants {
 }
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
-    fileprivate let backgroundView = UIView()
-    fileprivate let detailsView = CoachmarkTextContainerView()
+    private let backgroundView = UIView()
+    private let detailsView = CoachmarkTextContainerView()
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)

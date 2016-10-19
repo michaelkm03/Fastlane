@@ -8,7 +8,7 @@
 
 class FilterNameLocalization: NSObject {
     
-    fileprivate enum FilterNames: String {
+    private enum FilterNames: String {
         case barcelona = "Barcelona"
         case london = "London"
         case paris = "Paris"

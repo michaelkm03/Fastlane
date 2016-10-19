@@ -21,14 +21,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: Variables
     
     let dependencyManager: VDependencyManager
-    fileprivate let collectionView = UICollectionView(
+    private let collectionView = UICollectionView(
         frame: CGRect.zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
-    fileprivate let dataSource: GridStreamDataSource<HeaderType>
+    private let dataSource: GridStreamDataSource<HeaderType>
 
-    fileprivate(set) var content: HeaderType.ContentType?
-    fileprivate var hasError: Bool = false
+    private(set) var content: HeaderType.ContentType?
+    private var hasError: Bool = false
     
     func setContent(_ content: HeaderType.ContentType?, withError hasError: Bool) {
         self.content = content
@@ -47,14 +47,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
 
     }
     
-    fileprivate let refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     
-    fileprivate var scrollPaginator = ScrollPaginator()
-    fileprivate let configuration: GridStreamConfiguration
+    private var scrollPaginator = ScrollPaginator()
+    private let configuration: GridStreamConfiguration
     
-    fileprivate var header: HeaderType?
+    private var header: HeaderType?
     
-    fileprivate var trackingParameters: [AnyHashable: Any] = [:]
+    private var trackingParameters: [AnyHashable: Any] = [:]
     
     // MARK: - ContentCellTracker
     
@@ -141,7 +141,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         header?.gridStreamShouldRefresh()
     }
     
-    fileprivate func loadContent(_ loadingType: PaginatedLoadingType) {
+    private func loadContent(_ loadingType: PaginatedLoadingType) {
         guard !dataSource.isLoading else {
             return
         }
@@ -265,7 +265,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: - Tracking updating
     
-    fileprivate func updateTrackingParameters() {
+    private func updateTrackingParameters() {
         if
             let content = content as? Content,
             let contentId = content.id

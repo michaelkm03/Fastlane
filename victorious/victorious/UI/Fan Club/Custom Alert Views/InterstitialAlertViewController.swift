@@ -14,16 +14,16 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
     var alert: Alert?
     weak var interstitialDelegate: InterstitialDelegate?
     
-    @IBOutlet fileprivate weak var iconImageView: UIImageView?
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var detailLabel: UILabel!
-    @IBOutlet fileprivate weak var confirmButton: UIButton!
-    @IBOutlet fileprivate weak var semiTransparentBackgroundButton: UIButton!
-    @IBOutlet fileprivate weak var containerView: UIView!
+    @IBOutlet private weak var iconImageView: UIImageView?
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var detailLabel: UILabel!
+    @IBOutlet private weak var confirmButton: UIButton!
+    @IBOutlet private weak var semiTransparentBackgroundButton: UIButton!
+    @IBOutlet private weak var containerView: UIView!
     
-    fileprivate var dependencyManager: VDependencyManager!
+    private var dependencyManager: VDependencyManager!
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let cornerRadius: CGFloat = 10
     }
     
@@ -36,7 +36,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         return imageAlertViewController
     }
     
-    fileprivate func configure(withTitle title: String, detailedDescription detail: String?, iconImageURL iconURL: URL?) {
+    private func configure(withTitle title: String, detailedDescription detail: String?, iconImageURL iconURL: URL?) {
         titleLabel.text = title
         
         if let detail = detail {
@@ -99,7 +99,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Private Methods
     
-    fileprivate func styleComponents() {
+    private func styleComponents() {
         containerView.layer.cornerRadius = Constants.cornerRadius
         
         titleLabel.font = dependencyManager.titleFont

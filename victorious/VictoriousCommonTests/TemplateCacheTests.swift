@@ -11,9 +11,9 @@ import XCTest
 
 class TemplateCacheTests: XCTestCase {
 
-    fileprivate let environment = VEnvironment(name: "Mock", baseURL: URL(string: "http://www.example.com")!, appID: 99)
-    fileprivate let buildNumber = "99"
-    fileprivate var templateCache: TemplateCache!
+    private let environment = VEnvironment(name: "Mock", baseURL: URL(string: "http://www.example.com")!, appID: 99)
+    private let buildNumber = "99"
+    private var templateCache: TemplateCache!
     
     override func setUp() {
         super.setUp()

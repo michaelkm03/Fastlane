@@ -10,7 +10,7 @@ import VictoriousIOSSDK
 import XCTest
 
 class UnreadNotificationsCountRequestTests: XCTestCase {
-    fileprivate static let apiPath = APIPath(templatePath: "http://api.getvictorious.com//api/notification/unread_notification_count")
+    private static let apiPath = APIPath(templatePath: "http://api.getvictorious.com//api/notification/unread_notification_count")
 
     func testResponseParsing() {
         guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "UnreadNotificationsCountResponse", withExtension: "json"),

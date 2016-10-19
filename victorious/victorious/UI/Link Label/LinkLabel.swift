@@ -24,7 +24,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         setup()
     }
     
-    fileprivate func setup() {
+    private func setup() {
         textContainer.layoutManager = layoutManager
         isUserInteractionEnabled = true
     }
@@ -51,11 +51,11 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     /// We would ideally be able to use `textColor` directly, but for unknown reasons, sometimes that property will
     /// report the default black color rather than the color that was most recently set to it.
     ///
-    fileprivate var baseTextColor = UIColor.black
+    private var baseTextColor = UIColor.black
     
     var highlightedLinkColor: UIColor?
     
-    fileprivate var effectiveHighlightedLinkColor: UIColor {
+    private var effectiveHighlightedLinkColor: UIColor {
         return highlightedLinkColor ?? tintColor.withAlphaComponent(0.5)
     }
     
@@ -67,7 +67,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         }
     }
     
-    fileprivate var highlightedLink: Link? {
+    private var highlightedLink: Link? {
         didSet {
             if highlightedLink != oldValue {
                 highlightLinks()
@@ -75,9 +75,9 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         }
     }
     
-    fileprivate var links = [Link]()
+    private var links = [Link]()
     
-    fileprivate func updateLinks() {
+    private func updateLinks() {
         links = linkDetectors.flatMap { detector in
             detector.detectLinks(in: self.text ?? "").map { range in
                 Link(range: range, callback: detector.callback)
@@ -87,7 +87,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         highlightLinks()
     }
     
-    fileprivate func highlightLinks() {
+    private func highlightLinks() {
         let text = self.text ?? ""
         let attributedString = NSMutableAttributedString(string: text, attributes: baseAttributes)
         
@@ -108,7 +108,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         textStorage.setAttributedString(attributedString)
     }
     
-    fileprivate var baseAttributes: [String: AnyObject] {
+    private var baseAttributes: [String: AnyObject] {
         let mutableParagraphStyle = NSMutableParagraphStyle()
         mutableParagraphStyle.alignment = textAlignment
         
@@ -121,7 +121,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         return attributes as [String : AnyObject]
     }
     
-    fileprivate func highlightAttributes(highlighted: Bool) -> [String: AnyObject] {
+    private func highlightAttributes(highlighted: Bool) -> [String: AnyObject] {
         var attributes = baseAttributes
         attributes[NSForegroundColorAttributeName] = highlighted ? effectiveHighlightedLinkColor : tintColor
         return attributes
@@ -151,7 +151,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         return _textStorage
     }()
     
-    fileprivate func updateTextContainerSize() {
+    private func updateTextContainerSize() {
         textContainer.size = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)
     }
     
@@ -183,7 +183,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         super.touchesCancelled(touches, with: event)
     }
     
-    fileprivate func getLink(for touches: Set<UITouch>?) -> Link? {
+    private func getLink(for touches: Set<UITouch>?) -> Link? {
         if let touch = touches?.first {
             return getLink(at: touch.location(in: self))
         }
@@ -191,7 +191,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         return nil
     }
     
-    fileprivate func getLink(at location: CGPoint) -> Link? {
+    private func getLink(at location: CGPoint) -> Link? {
         let location = location + CGPoint(x: 0.0, y: -verticalOffsetToTopOfText)
         var fractionOfDistance = CGFloat(0.0)
         let characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: &fractionOfDistance)
@@ -218,7 +218,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     }
     
     /// Returns the offset from the top of the label's bounds to the top of its text.
-    fileprivate var verticalOffsetToTopOfText: CGFloat {
+    private var verticalOffsetToTopOfText: CGFloat {
         // To get the offset, we need to know the size of the text, which requires setting the preferred max layout
         // width. We don't want to actually change that value though, so we restore it when we're done.
         let oldPreferredMaxLayoutWidth = preferredMaxLayoutWidth

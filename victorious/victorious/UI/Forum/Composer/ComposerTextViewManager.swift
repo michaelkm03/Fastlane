@@ -15,9 +15,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     weak var delegate: ComposerTextViewManagerDelegate?
     
-    fileprivate var attachmentStringLength: Int
+    private var attachmentStringLength: Int
     
-    fileprivate var updatingSelection = false
+    private var updatingSelection = false
     
     init?(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissOnReturn: Bool = true) {
         
@@ -180,7 +180,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateCurrentHashtag(forTextView: textView)
     }
     
-    fileprivate func updateCurrentHashtag(forTextView textView: UITextView, isDismissing: Bool = false) {
+    private func updateCurrentHashtag(forTextView textView: UITextView, isDismissing: Bool = false) {
         if !isDismissing &&
             textView.isFirstResponder &&
             textView.selectedRange.length == 0 {
@@ -192,7 +192,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     // MARK: - Helpers
     
-    fileprivate static func attributedTextAttributesFor(_ textView: UITextView) -> [String: AnyObject]? {
+    private static func attributedTextAttributesFor(_ textView: UITextView) -> [String: AnyObject]? {
         
         guard let font = textView.font,
             let color = textView.textColor else {
@@ -202,7 +202,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
     }
     
-    fileprivate func hashtagStringAroundLocation(_ location: Int, inTextView textView: UITextView) -> (String, NSRange)? {
+    private func hashtagStringAroundLocation(_ location: Int, inTextView textView: UITextView) -> (String, NSRange)? {
         
         let hashtagCharacter = Character("#")
         let hashtagBoundaryCharacters = [hashtagCharacter, Character(" "), Character("\n")]
@@ -225,7 +225,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     // MARK: - Image management
     
-    fileprivate static func attachmentStringForImage(_ image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
+    private static func attachmentStringForImage(_ image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
         
         guard let attributes = attributedTextAttributesFor(textView) else {
             return nil
@@ -258,7 +258,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return true
     }
     
-    fileprivate func removePrependedImageFrom(_ textView: UITextView) {
+    private func removePrependedImageFrom(_ textView: UITextView) {
         if delegate?.textViewHasPrependedImage == true {
             textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
             delegate?.textViewPrependedImage = nil
@@ -266,7 +266,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateDelegateOfTextViewStatus(textView)
     }
     
-    fileprivate func removePrependedImageFromAttributedText(_ attributedText: NSAttributedString) -> NSAttributedString? {
+    private func removePrependedImageFromAttributedText(_ attributedText: NSAttributedString) -> NSAttributedString? {
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
         mutableText.deleteCharacters(in: imageRange)
@@ -274,11 +274,11 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return immutableCopy.length > 0 ? immutableCopy : nil
     }
     
-    fileprivate func shouldRemoveImageFromTextView(_ textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
+    private func shouldRemoveImageFromTextView(_ textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
         return delegate?.textViewHasPrependedImage == true && range.location < attachmentStringLength
     }
     
-    fileprivate func getTextViewInputAttributes() -> [String: AnyObject] {
+    private func getTextViewInputAttributes() -> [String: AnyObject] {
         guard
             let delegate = delegate,
             let color = delegate.inputTextAttributes().inputTextColor,

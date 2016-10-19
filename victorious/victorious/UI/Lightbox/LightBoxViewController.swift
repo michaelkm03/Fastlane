@@ -56,7 +56,7 @@ class LightBoxViewController: UIViewController {
     
     // MARK: - Notification response
     
-    fileprivate dynamic func orientationChanged() {
+    private dynamic func orientationChanged() {
         guard UIDevice.current.orientation == .portrait else {
             return
         }

@@ -11,7 +11,7 @@ import UIKit
 @objc(VCameraFlashBarButtonItem)
 class CameraFlashBarButtonItem: UIBarButtonItem {
     
-    fileprivate(set) var interactiveButton: UIButton = {
+    private(set) var interactiveButton: UIButton = {
         let button = UIButton(type: .custom)
         button.isHidden = true
         button.isEnabled = false
@@ -40,7 +40,7 @@ class CameraFlashBarButtonItem: UIBarButtonItem {
         setup()
     }
     
-    fileprivate func setup() {
+    private func setup() {
         customView = interactiveButton
         title = nil
         setBackButtonBackgroundImage(nil, for: UIControlState(), barMetrics: .default)

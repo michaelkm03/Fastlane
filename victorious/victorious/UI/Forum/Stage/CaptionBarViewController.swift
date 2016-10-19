@@ -17,15 +17,15 @@ protocol CaptionBarViewControllerDelegate: class {
 /// Shows and manages the display of a bar showing a user's avatar, text they've posted, and,
 /// when appropriate, an expansion button to allow all of the text to be scrolled through.
 class CaptionBarViewController: UIViewController {
-    @IBOutlet fileprivate weak var captionBar: CaptionBar!
-    fileprivate var displayingUser: UserModel?
-    fileprivate var isShowingCaption: Bool {
+    @IBOutlet private weak var captionBar: CaptionBar!
+    private var displayingUser: UserModel?
+    private var isShowingCaption: Bool {
         return displayingUser != nil
     }
-    fileprivate let fadeDuration = TimeInterval(0.75)
+    private let fadeDuration = TimeInterval(0.75)
     weak var delegate: CaptionBarViewControllerDelegate?
     
-    fileprivate var captionBarDecorator: CaptionBarDecorator? {
+    private var captionBarDecorator: CaptionBarDecorator? {
         didSet {
             guard isViewLoaded else {
                 return
@@ -34,7 +34,7 @@ class CaptionBarViewController: UIViewController {
         }
     }
     
-    fileprivate var captionIsExpanded = false {
+    private var captionIsExpanded = false {
         didSet {
             var desiredHeight: CGFloat = 0
             let captionVisible = isViewLoaded && isShowingCaption
@@ -74,11 +74,11 @@ class CaptionBarViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction fileprivate func pressedToggleButton() {
+    @IBAction private func pressedToggleButton() {
         captionIsExpanded = !captionIsExpanded
     }
     
-    @IBAction fileprivate func pressedAvatarButton() {
+    @IBAction private func pressedAvatarButton() {
         guard let displayingUser = displayingUser else {
             return
         }

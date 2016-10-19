@@ -10,17 +10,17 @@ import AVFoundation
 import UIKit
 
 class NativeCameraCreationFlowController: VCreationFlowController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, VPassthroughContainerViewDelegate {
-    fileprivate var audioSessionCategory = AVAudioSessionCategoryAmbient
+    private var audioSessionCategory = AVAudioSessionCategoryAmbient
     
-    fileprivate var trackedAppear = false
+    private var trackedAppear = false
     
     static let maxImageDimension: CGFloat = 640
     
-    fileprivate var isRecordingVideo: Bool {
+    private var isRecordingVideo: Bool {
         return imagePickerController?.cameraCaptureMode == .video
     }
     
-    fileprivate lazy var imagePickerController: UIImagePickerController? = {
+    private lazy var imagePickerController: UIImagePickerController? = {
         let pickerSourceType = UIImagePickerControllerSourceType.camera
         guard let mediaTypes = UIImagePickerController.availableMediaTypes(for: pickerSourceType) else {
             assertionFailure("Have no available media types for this device!")
@@ -100,7 +100,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     
     // MARK: - Notification Response
     
-    dynamic fileprivate func enteredBackground() {
+    dynamic private func enteredBackground() {
         audioSessionCategory = AVAudioSessionCategoryAmbient
     }
     

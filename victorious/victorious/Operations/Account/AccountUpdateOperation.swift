@@ -31,7 +31,7 @@ final class AccountUpdateOperation: AsyncOperation <User> {
     
     // MARK: - Executing
     
-    fileprivate let request: AccountUpdateRequest!
+    private let request: AccountUpdateRequest!
     
     override var executionQueue: Queue {
         return .main

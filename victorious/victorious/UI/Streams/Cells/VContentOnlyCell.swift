@@ -13,8 +13,8 @@ import VictoriousIOSSDK
 class VContentOnlyCell: UICollectionViewCell, ContentCell {
     // MARK: - Constants
     
-    fileprivate static let cornerRadius: CGFloat = 6.0
-    fileprivate static let highlightAlpha: CGFloat = 0.2
+    private static let cornerRadius: CGFloat = 6.0
+    private static let highlightAlpha: CGFloat = 0.2
     
     // MARK: - Initializing
     
@@ -28,7 +28,7 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         setup()
     }
     
-    fileprivate func setup() {
+    private func setup() {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = VContentOnlyCell.cornerRadius
     }
@@ -53,9 +53,9 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     // MARK: - Views
     
-    fileprivate var contentPreviewView = ContentPreviewView()
+    private var contentPreviewView = ContentPreviewView()
     
-    fileprivate func updatePreviewView() {
+    private func updatePreviewView() {
         guard let content = content else {
             return
         }

@@ -24,8 +24,8 @@ final class ContentUnupvoteOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    fileprivate let contentID: Content.ID
-    fileprivate let request: ContentUnupvoteRequest
+    private let contentID: Content.ID
+    private let request: ContentUnupvoteRequest
     
     override var executionQueue: Queue {
         return .main

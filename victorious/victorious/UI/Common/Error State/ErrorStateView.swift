@@ -9,14 +9,14 @@
 import UIKit
 
 class ErrorStateView: UIView {
-    fileprivate struct Constants {
+    private struct Constants {
         static let cornerRadii = CGSize(width: 10, height: 10)
     }
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    fileprivate var lastBounds: CGRect? {
+    private var lastBounds: CGRect? {
         didSet {
             if lastBounds != oldValue {
                 let maskPath = UIBezierPath(

@@ -23,7 +23,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     let parameters: AccountCreateParameters
     let response: AccountCreateResponse
     
@@ -69,7 +69,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
         return .success()
     }
     
-    fileprivate func updateStoredCredentials(_ user: User) {
+    private func updateStoredCredentials(_ user: User) {
         guard let id = VCurrentUser.userID, let token = VCurrentUser.token else {
             return
         }

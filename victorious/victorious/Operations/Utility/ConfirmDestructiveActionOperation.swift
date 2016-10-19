@@ -10,11 +10,11 @@ import UIKit
 
 final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
     
-    fileprivate let actionTitle: String
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let originViewController: UIViewController
+    private let actionTitle: String
+    private let dependencyManager: VDependencyManager
+    private let originViewController: UIViewController
     
-    fileprivate let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
+    private let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
     
     // MARK: - ActionConfirmationOperation
     

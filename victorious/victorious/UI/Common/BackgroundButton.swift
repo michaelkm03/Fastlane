@@ -10,7 +10,7 @@ import UIKit
 
 /// A button that displays a colored background behind its content via the `backgroundColor` property.
 class BackgroundButton: UIButton {
-    fileprivate struct Constants {
+    private struct Constants {
         static let addedWidth = CGFloat(20.0)
         static let height = CGFloat(30.0)
         static let cornerRadius = CGFloat(6.0)
@@ -31,7 +31,7 @@ class BackgroundButton: UIButton {
         setup()
     }
     
-    fileprivate func setup() {
+    private func setup() {
         layer.cornerRadius = Constants.cornerRadius
         titleLabel?.font = Constants.defaultFont
         tintColor = Constants.defaultTintColor

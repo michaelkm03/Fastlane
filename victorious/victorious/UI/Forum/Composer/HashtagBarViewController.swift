@@ -22,19 +22,19 @@ class HashtagBarViewController: UIViewController, HashtagBarControllerSearchDele
         return hashtagBar
     }
     
-    @IBOutlet weak fileprivate var collectionView: UICollectionView!
+    @IBOutlet weak private var collectionView: UICollectionView!
     
-    fileprivate(set) var dependencyManager: VDependencyManager!
+    private(set) var dependencyManager: VDependencyManager!
     
-    fileprivate(set) lazy var hashtagBarController: HashtagBarController = {
+    private(set) lazy var hashtagBarController: HashtagBarController = {
         let hashtagBarController = HashtagBarController(dependencyManager: self.dependencyManager, collectionView: self.collectionView)
         hashtagBarController.searchDelegate = self
         return hashtagBarController
     }()
     
-    fileprivate var barContainerHeightConstraint: NSLayoutConstraint!
+    private var barContainerHeightConstraint: NSLayoutConstraint!
     
-    @IBOutlet fileprivate var collectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var collectionViewHeightConstraint: NSLayoutConstraint!
     
     weak var animationDelegate: HashtagBarViewControllerAnimationDelegate?
     
