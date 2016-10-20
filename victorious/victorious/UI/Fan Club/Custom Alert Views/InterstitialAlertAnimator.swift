@@ -15,7 +15,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
         self.isDismissing = isDismissing
     }
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let dismissalDuration = 0.3
         static let presentationDuration = 0.5
     }

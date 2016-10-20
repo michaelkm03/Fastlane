@@ -13,15 +13,15 @@ import VictoriousIOSSDK
 /// Or it can also be dismissed if the user swipe up on the toast.
 class InterstitialToastViewController: UIViewController, Interstitial, VBackgroundContainer {
 
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-    @IBOutlet fileprivate weak var containerView: UIView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var containerView: UIView!
     
-    fileprivate var dependencyManager: VDependencyManager!
-    fileprivate var topAnchorConstraint: NSLayoutConstraint!
-    fileprivate var timerManager: VTimerManager?
+    private var dependencyManager: VDependencyManager!
+    private var topAnchorConstraint: NSLayoutConstraint!
+    private var timerManager: VTimerManager?
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let slideInAnimationDuration = TimeInterval(0.4)
         static let slideOutAnimationDuration = TimeInterval(0.4)
         
@@ -37,7 +37,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         return toastViewController
     }
 
-    fileprivate func configure(withTitle title: String, detailedDescription detail: String? = nil) {
+    private func configure(withTitle title: String, detailedDescription detail: String? = nil) {
         titleLabel.text = title
 
         // FUTURE: toasts don't support details any more, maybe they will in the future so don't want to rip this out
@@ -119,13 +119,13 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - User Actions
     
-    @IBAction fileprivate func handlePan(_ sender: UIPanGestureRecognizer) {
+    @IBAction private func handlePan(_ sender: UIPanGestureRecognizer) {
         if sender.state == .ended && sender.translation(in: view).y < 0 {
             dismissInterstitial()
         }
     }
     
-    @objc fileprivate func dismissInterstitial() {
+    @objc private func dismissInterstitial() {
         timerManager?.invalidate()
         slideOut() {
             self.interstitialDelegate?.dismissInterstitial(self)
@@ -134,7 +134,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Private Methods
     
-    fileprivate func styleComponents() {
+    private func styleComponents() {
         titleLabel.font = dependencyManager.titleFont
         titleLabel.textColor = dependencyManager.textColor
 
@@ -144,7 +144,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         dependencyManager.addBackground(toBackgroundHost: self)
     }
     
-    fileprivate func slideIn() {
+    private func slideIn() {
         view.layoutIfNeeded()
         UIView.animate(withDuration: Constants.slideInAnimationDuration) {
             self.topAnchorConstraint.constant = Constants.topOffset
@@ -152,7 +152,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         }
     }
 
-    fileprivate func slideOut(_ completion: @escaping () -> Void) {
+    private func slideOut(_ completion: @escaping () -> Void) {
         view.layoutIfNeeded()
         UIView.animate(withDuration: Constants.slideOutAnimationDuration,
             animations: {

@@ -25,8 +25,8 @@ final class ContentDeleteOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    fileprivate let request: ContentDeleteRequest
-    fileprivate let contentID: Content.ID
+    private let request: ContentDeleteRequest
+    private let contentID: Content.ID
     
     override var executionQueue: Queue {
         return .main

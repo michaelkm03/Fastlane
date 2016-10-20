@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
 
-    fileprivate let separatorView: UIView
+    private let separatorView: UIView
 
     var separatorColor: UIColor {
         get {
@@ -40,7 +40,7 @@ class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
 
     // MARK: - Views
     
-    @IBOutlet fileprivate var label: UILabel!
+    @IBOutlet private var label: UILabel!
     
     // MARK: - Values
     

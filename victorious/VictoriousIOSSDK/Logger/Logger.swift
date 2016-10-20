@@ -60,7 +60,7 @@ public final class Log {
     
     // MARK: - Logging
     
-    // See [the wiki](https://github.com/TouchFrame/VictoriousiOS/wiki/Logs) for more details on log levels.
+    // See [the wiki](https://github.com/Victorious/VictoriousiOS/wiki/Logs) for more details on log levels.
     
     /// Logs a verbose message. Not visible by default.
     ///

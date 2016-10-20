@@ -31,7 +31,7 @@ extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
     
-    fileprivate static func scanHexComponent(from string: NSString, in range: NSRange) -> CGFloat? {
+    private static func scanHexComponent(from string: NSString, in range: NSRange) -> CGFloat? {
         let scanner = Scanner(string: string.substring(with: range))
         var value = UInt32(0)
         

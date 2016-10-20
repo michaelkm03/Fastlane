@@ -19,13 +19,13 @@ protocol TutorialNetworkDataSourceDelegate: class {
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
     var visibleItems: [ChatFeedContent] = []
     
-    fileprivate var queuedTutorialMessages: [Content] = []
+    private var queuedTutorialMessages: [Content] = []
     
-    fileprivate var timerManager: VTimerManager? = nil
+    private var timerManager: VTimerManager? = nil
     
     weak var delegate: TutorialNetworkDataSourceDelegate?
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -47,7 +47,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         }
     }
 
-    @objc fileprivate func dequeueTutorialMessage() {
+    @objc private func dequeueTutorialMessage() {
         if
             !queuedTutorialMessages.isEmpty,
             let width = delegate?.chatFeedItemWidth,

@@ -44,24 +44,24 @@ class SubscribeButton: UIView {
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Subviews
     
-    fileprivate let subscribeButton = BackgroundButton(type: .system)
-    fileprivate let userIsVIPButton: UIButton?
+    private let subscribeButton = BackgroundButton(type: .system)
+    private let userIsVIPButton: UIButton?
     
-    fileprivate var visibleButton: UIButton? {
+    private var visibleButton: UIButton? {
         return userIsVIP == true ? userIsVIPButton : subscribeButton
     }
     
-    fileprivate var hiddenButton: UIButton? {
+    private var hiddenButton: UIButton? {
         return userIsVIP == true ? subscribeButton : userIsVIPButton
     }
     
     // MARK: - Actions
     
-    fileprivate dynamic func subscribeButtonWasPressed() {
+    private dynamic func subscribeButtonWasPressed() {
         guard let scaffold = VRootViewController.shared()?.scaffold else {
             return
         }
@@ -71,7 +71,7 @@ class SubscribeButton: UIView {
     
     // MARK: - Responding to VIP changes
     
-    fileprivate var userIsVIP: Bool? {
+    private var userIsVIP: Bool? {
         didSet {
             guard userIsVIP != oldValue else {
                 return
@@ -88,11 +88,11 @@ class SubscribeButton: UIView {
         }
     }
     
-    fileprivate func updateVIPState() {
+    private func updateVIPState() {
         userIsVIP = VCurrentUser.user?.hasValidVIPSubscription == true
     }
     
-    fileprivate dynamic func userStatusDidChange(_ notification: Notification) {
+    private dynamic func userStatusDidChange(_ notification: Notification) {
         updateVIPState()
     }
     

@@ -10,7 +10,7 @@ import Foundation
 
 class ComposerAttachmentTabBar: VFlexBar {
     
-    fileprivate struct Constants {
+    private struct Constants {
         static let buttonSideLength: CGFloat = 22
         static let expandedHeight: CGFloat = 53
     }
@@ -73,7 +73,7 @@ class ComposerAttachmentTabBar: VFlexBar {
         updateTintColorOfButtons()
     }
     
-    fileprivate func updateTintColorOfButtons() {
+    private func updateTintColorOfButtons() {
         let buttonItems = buttons()
         let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .alwaysTemplate : .alwaysOriginal
         for button in buttonItems {
@@ -93,12 +93,11 @@ class ComposerAttachmentTabBar: VFlexBar {
         }
     }
     
-    @objc fileprivate func buttonPressed(_ button: ComposerAttachmentTabBarButton) {
+    @objc private func buttonPressed(_ button: ComposerAttachmentTabBarButton) {
         delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem, fromButton: button)
-        button.navigationMenuItem.dependencyManager.trackButtonEvent(.tap)
     }
     
-    fileprivate func buttons() -> [ComposerAttachmentTabBarButton] {
+    private func buttons() -> [ComposerAttachmentTabBarButton] {
         let buttons = actionItems.filter { (item: Any) -> Bool in
             type(of: item) == ComposerAttachmentTabBarButton.self
         }

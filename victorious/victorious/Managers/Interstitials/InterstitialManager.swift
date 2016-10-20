@@ -28,13 +28,13 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     var interstitialListener: InterstitialListener?
     
-    fileprivate(set) var isShowingInterstital = false
+    private(set) var isShowingInterstital = false
     
-    fileprivate var registeredAlerts = [Alert]()
+    private var registeredAlerts = [Alert]()
     
-    fileprivate var shownAlerts = [Alert]()
+    private var shownAlerts = [Alert]()
     
-    fileprivate var presentedInterstitial: Interstitial?
+    private var presentedInterstitial: Interstitial?
     
     /// Presents modally any available interstitials on the provided presenting view controller
     func showNextInterstitial(onViewController presentingViewController: UIViewController) -> Bool {
@@ -53,7 +53,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         registeredAlerts.removeAll()
     }
     
-    fileprivate func showInterstitial(with alert: Alert, onto presentingViewController: UIViewController) {
+    private func showInterstitial(with alert: Alert, onto presentingViewController: UIViewController) {
         guard
             !isShowingInterstital,
             let interstitial = dependencyManager?.interstitialViewController(alert: alert)
@@ -80,7 +80,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         acknowledgeAlert(alert)
     }
 
-    fileprivate func acknowledgeAlert(_ alert: Alert) {
+    private func acknowledgeAlert(_ alert: Alert) {
         switch alert.type {
             case .achievement, .statusUpdate, .toast:
                 RequestOperation(request: AcknowledgeAlertRequest(alertID: alert.alertID)).queue()
@@ -92,7 +92,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         isShowingInterstital = true
     }
 
-    fileprivate func addInterstitial(_ interstitial: UIViewController, toParent parent: UIViewController) {
+    private func addInterstitial(_ interstitial: UIViewController, toParent parent: UIViewController) {
         parent.view.addSubview(interstitial.view)
         interstitial.willMove(toParentViewController: parent)
         parent.addChildViewController(interstitial)

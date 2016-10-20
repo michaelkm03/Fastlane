@@ -15,7 +15,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     // Since we're not using initialization from VBaseWorkspaceViewController
     // and dependencyManager is read-only, we need to manage our own dependencyManager
     // by backing it with this internal var.
-    fileprivate var internalDependencyManager: VDependencyManager!
+    private var internalDependencyManager: VDependencyManager!
     
     override var dependencyManager: VDependencyManager! {
         return internalDependencyManager
@@ -23,7 +23,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     
     let animator = PushTransitionAnimator()
     
-    fileprivate static let videoMaximumDuration: TimeInterval = 600
+    private static let videoMaximumDuration: TimeInterval = 600
     
     override var supportsTools: Bool {
         return false
@@ -36,7 +36,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         return nativeWorkspace
     }
     
-    fileprivate var videoEditorViewController: UIVideoEditorController! {
+    private var videoEditorViewController: UIVideoEditorController! {
         didSet {
             videoEditorViewController.videoQuality = .typeHigh
             videoEditorViewController.videoMaximumDuration = NativeWorkspaceViewController.videoMaximumDuration

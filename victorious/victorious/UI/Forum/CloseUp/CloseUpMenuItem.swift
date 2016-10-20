@@ -10,7 +10,7 @@ import Foundation
 
 enum CloseUpMenuItem {
     
-    fileprivate struct Icon {
+    private struct Icon {
         
         static let share: UIImage! = nil
         static let report: UIImage! = nil

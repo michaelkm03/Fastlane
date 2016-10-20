@@ -1,3 +1,3 @@
 #!/bin/bash
 
-git subtree pull --prefix=build-scripts/VAMS https://github.com/TouchFrame/VAMS.git master --squash
+git subtree pull --prefix=build-scripts/VAMS https://github.com/Victorious/VAMS.git master --squash

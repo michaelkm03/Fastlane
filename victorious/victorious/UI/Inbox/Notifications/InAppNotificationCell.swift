@@ -16,7 +16,7 @@ protocol InAppNotificationCellDelegate: class {
 
 /// The table view cell used to display in-app notifications.
 class InAppNotificationCell: UITableViewCell, VBackgroundContainer {
-    fileprivate struct Constants {
+    private struct Constants {
         static let containerCornerRadius = CGFloat(6.0)
     }
     
@@ -77,18 +77,18 @@ class InAppNotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Views
     
-    @IBOutlet fileprivate var containerView: UIView!
-    @IBOutlet fileprivate var avatarView: AvatarView! {
+    @IBOutlet private var containerView: UIView!
+    @IBOutlet private var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonWasPressed)))
         }
     }
-    @IBOutlet fileprivate var messageLabel: IntrinsicContentSizeHackLabel!
-    @IBOutlet fileprivate var dateLabel: UILabel!
+    @IBOutlet private var messageLabel: IntrinsicContentSizeHackLabel!
+    @IBOutlet private var dateLabel: UILabel!
     
     // MARK: - Actions
     
-    @objc fileprivate func profileButtonWasPressed() {
+    @objc private func profileButtonWasPressed() {
         delegate?.notificationCellDidSelectUser(self)
     }
     

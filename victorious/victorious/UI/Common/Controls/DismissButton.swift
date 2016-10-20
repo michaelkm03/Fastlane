@@ -21,11 +21,11 @@ class DismissButton: UIButton {
         sharedInit()
     }
     
-    fileprivate struct LayoutConstants {
+    private struct LayoutConstants {
         static let buttonSize: CGFloat = 44.0
     }
     
-    fileprivate func sharedInit() {
+    private func sharedInit() {
         backgroundColor = UIColor.lightGray
         setImage(UIImage(named: "textClear"), for: UIControlState())
         v_addWidthConstraint(LayoutConstants.buttonSize)

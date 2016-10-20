@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 
 class ContentPreviewView: UIView {
-    fileprivate struct Constants {
+    private struct Constants {
         // Change to actual assets
         static let playButtonPlayImageName = "directory_play_btn"
         static let playButtonSize = CGSize(width: 30, height: 30)
@@ -27,18 +27,18 @@ class ContentPreviewView: UIView {
         static let gradientEndColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
     }
 
-    fileprivate let previewImageView = UIImageView()
-    fileprivate let gradientView = VLinearGradientView()
-    fileprivate var vipButton: UIButton?
+    private let previewImageView = UIImageView()
+    private let gradientView = VLinearGradientView()
+    private var vipButton: UIButton?
     
-    fileprivate let playButton: UIView
+    private let playButton: UIView
     
-    fileprivate let loadingSpinnerEnabled: Bool
-    fileprivate lazy var spinner: UIActivityIndicatorView? = {
+    private let loadingSpinnerEnabled: Bool
+    private lazy var spinner: UIActivityIndicatorView? = {
         return self.loadingSpinnerEnabled ? UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge) : nil
     }()
     
-    fileprivate var lastSize = CGSize.zero
+    private var lastSize = CGSize.zero
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -51,7 +51,7 @@ class ContentPreviewView: UIView {
         }
     }
     
-    fileprivate func setupOrCreateVIPButton() {
+    private func setupOrCreateVIPButton() {
         vipButton?.removeFromSuperview()
         vipButton = self.dependencyManager?.userIsVIPButton
         
@@ -148,7 +148,7 @@ class ContentPreviewView: UIView {
         }
     }
     
-    fileprivate func setupForContent(_ content: Content) {
+    private func setupForContent(_ content: Content) {
         spinner?.startAnimating()
         let userCanViewContent = VCurrentUser.user?.canView(content) == true
         gradientView.isHidden = userCanViewContent
@@ -162,7 +162,7 @@ class ContentPreviewView: UIView {
         }
     }
     
-    fileprivate func setupImage(forContent content: Content) {
+    private func setupImage(forContent content: Content) {
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             previewImageView.getImageAsset(imageAsset) { [weak self] result in
                 switch result {
@@ -180,7 +180,7 @@ class ContentPreviewView: UIView {
         lastSize = bounds.size
     }
     
-    fileprivate func finishedLoadingPreviewImage(_ image: UIImage?, for content: Content) {
+    private func finishedLoadingPreviewImage(_ image: UIImage?, for content: Content) {
         let contentID = self.content?.id
         guard content.id == contentID || contentID == nil else {
             return
@@ -194,7 +194,7 @@ class ContentPreviewView: UIView {
     
     // MARK: - Notification actions
     
-    fileprivate dynamic func userVIPStatusChanged() {
+    private dynamic func userVIPStatusChanged() {
         guard let currentContent = content else {
             return
         }

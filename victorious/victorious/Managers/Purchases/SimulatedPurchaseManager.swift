@@ -16,7 +16,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
         static let title            = "[TITLE]"
     }
     
-    fileprivate var simulatedProductIdentifiers = Set<AnyHashable>()
+    private var simulatedProductIdentifiers = Set<AnyHashable>()
     
     override var purchasedProductIdentifiers: Set<AnyHashable> {
         return simulatedProductIdentifiers
@@ -35,7 +35,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
         )
     }
     
-    fileprivate var products = Set<VProduct>()
+    private var products = Set<VProduct>()
     
     override func fetchProducts(withIdentifiers productIdentifiers: Set<AnyHashable>, success successCallback: @escaping VProductsRequestSuccessBlock, failure failureCallback: @escaping VProductsRequestFailureBlock) {
         guard products.isEmpty else {

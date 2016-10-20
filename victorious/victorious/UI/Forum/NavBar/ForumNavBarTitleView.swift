@@ -9,11 +9,11 @@
 import Foundation
 
 class ForumNavBarTitleView: UIView {
-    fileprivate let titleLabel = UILabel()
-    fileprivate let subtitleLabel = UILabel()
-    fileprivate let stackView = UIStackView()
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let configuration: TitleViewConfiguration
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let stackView = UIStackView()
+    private let dependencyManager: VDependencyManager
+    private let configuration: TitleViewConfiguration
     
     var activeUserCount: Int {
         didSet {
@@ -40,7 +40,7 @@ class ForumNavBarTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func setupViews() {
+    private func setupViews() {
         //Initialize the stack view and set the layout information
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
@@ -67,7 +67,7 @@ class ForumNavBarTitleView: UIView {
     }
     
     //Creates the string for the subtitle label
-    fileprivate func getSubtitleText() -> String {
+    private func getSubtitleText() -> String {
         let numberOfUsersText = activeUserCount == 1 ? configuration.singularNumberOfUsersText : configuration.pluralNumberOfUsersText
         
         return numberOfUsersText

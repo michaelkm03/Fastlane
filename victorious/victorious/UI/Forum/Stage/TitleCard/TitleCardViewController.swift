@@ -22,13 +22,13 @@ class TitleCardViewController: UIViewController {
 
     weak var delegate: TileCardDelegate?
 
-    fileprivate var autoHideTimer: VTimerManager?
+    private var autoHideTimer: VTimerManager?
 
-    fileprivate var currentState = State.hidden
+    private var currentState = State.hidden
 
-    fileprivate var stageContent: StageContent?
+    private var stageContent: StageContent?
 
-    fileprivate struct Constants {
+    private struct Constants {
         static let cornerRadius = CGFloat(6)
         static let borderWidth = CGFloat(1)
         static let borderColor = UIColor(white: 0.0, alpha: 0.1).cgColor
@@ -44,19 +44,19 @@ class TitleCardViewController: UIViewController {
     }
 
     @IBOutlet weak var marqueeView: MarqueeView!
-    @IBOutlet fileprivate weak var avatarView: AvatarView! {
+    @IBOutlet private weak var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
         }
     }
 
     /// The draggable container view - the actual title card that is animated.
-    @IBOutlet fileprivate weak var draggableView: UIView!
+    @IBOutlet private weak var draggableView: UIView!
 
     // MARK: - UIDynamics & Interraction
 
-    fileprivate var animator: UIDynamicAnimator?
-    fileprivate var draggableBehavior: DraggableBehavior?
+    private var animator: UIDynamicAnimator?
+    private var draggableBehavior: DraggableBehavior?
 
     // MARK: - UIViewController life cycle
 
@@ -118,14 +118,14 @@ class TitleCardViewController: UIViewController {
 
     // MARK: Private
 
-    fileprivate func setupContainerView() {
+    private func setupContainerView() {
         draggableView.applyCornerRadius(Constants.cornerRadius)
         draggableView.layer.borderColor = Constants.borderColor
         draggableView.layer.borderWidth = Constants.borderWidth
         view.backgroundColor = .clear
     }
 
-    fileprivate func setupRecognizers(on view: UIView) {
+    private func setupRecognizers(on view: UIView) {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
 
@@ -133,13 +133,13 @@ class TitleCardViewController: UIViewController {
         view.addGestureRecognizer(tapGestureRecognizer)
     }
 
-    fileprivate func setupDynamics(inReferenceView referenceView: UIView, withDraggableView draggableView: UIView) {
+    private func setupDynamics(inReferenceView referenceView: UIView, withDraggableView draggableView: UIView) {
         animator = UIDynamicAnimator(referenceView: referenceView)
         draggableBehavior = DraggableBehavior(with: draggableView)
     }
 
     /// Target point of title card that depends on current state.
-    fileprivate var targetPoint: CGPoint {
+    private var targetPoint: CGPoint {
         var point: CGPoint
         switch currentState {
             case .shown:
@@ -150,7 +150,7 @@ class TitleCardViewController: UIViewController {
         return point
     }
 
-    fileprivate func animateTitleCard(withInitialVelocity initialVelocity: CGPoint) {
+    private func animateTitleCard(withInitialVelocity initialVelocity: CGPoint) {
         guard let draggableBehavior = draggableBehavior else {
             return
         }
@@ -159,7 +159,7 @@ class TitleCardViewController: UIViewController {
         animator?.addBehavior(draggableBehavior)
     }
 
-    @objc fileprivate func didPan(_ recognizer: UIPanGestureRecognizer) {
+    @objc private func didPan(_ recognizer: UIPanGestureRecognizer) {
         let point = recognizer.translation(in: draggableView?.superview)
         let newCenter = CGPoint(x: draggableView.center.x + point.x, y: draggableView.center.y)
         if newCenter.x < (targetPoint.x + Constants.horizontalDragLimit) {
@@ -183,7 +183,7 @@ class TitleCardViewController: UIViewController {
         }
     }
 
-    @objc fileprivate func didTap(_ recognizer: UITapGestureRecognizer) {
+    @objc private func didTap(_ recognizer: UITapGestureRecognizer) {
         guard let draggableBehavior = draggableBehavior else {
             return
         }
@@ -192,7 +192,7 @@ class TitleCardViewController: UIViewController {
         animateTitleCard(withInitialVelocity: draggableBehavior.velocity)
     }
     
-    fileprivate func populateUI(with stageContent: StageContent?) {
+    private func populateUI(with stageContent: StageContent?) {
         guard isViewLoaded else {
             return
         }
@@ -208,12 +208,12 @@ class TitleCardViewController: UIViewController {
         avatarView.user = stageContent?.content.author
     }
 
-    @objc fileprivate func autoHideTimerDidFire() {
+    @objc private func autoHideTimerDidFire() {
         autoHideTimer?.invalidate()
         hide()
     }
 
-    @objc fileprivate func avatarTapped() {
+    @objc private func avatarTapped() {
         guard let avatarUser = stageContent?.content.author else {
             return
         }

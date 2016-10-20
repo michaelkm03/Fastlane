@@ -16,7 +16,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     var mediaSearchExporter: MediaSearchExporter!
     var expectation: XCTestExpectation!
     
-    fileprivate let sampleImageURL = Bundle(for: MediaSearchMediaExporterTests.self).url(forResource: "sampleImage", withExtension: fileExtension)!
+    private let sampleImageURL = Bundle(for: MediaSearchMediaExporterTests.self).url(forResource: "sampleImage", withExtension: fileExtension)!
     
     func testInvalidImageUrl() {
         expectation = self.expectation(description: "MediaSearchMediaExporterTests")

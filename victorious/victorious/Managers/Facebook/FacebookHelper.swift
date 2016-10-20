@@ -52,5 +52,5 @@ class FacebookHelper: NSObject {
         return shareDialog
     }
     
-    fileprivate static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.caseInsensitive])
+    private static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.caseInsensitive])
 }

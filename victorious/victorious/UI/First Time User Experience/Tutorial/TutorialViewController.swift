@@ -10,9 +10,8 @@ import UIKit
 import VictoriousIOSSDK
 
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
-    
     @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
-    @IBOutlet fileprivate weak var continueButton: UIButton! {
+    @IBOutlet private weak var continueButton: UIButton! {
         didSet {
             continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, for: .normal)
             continueButton.setTitle(dependencyManager.continueButtonTitleText, for: .normal)
@@ -21,9 +20,9 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
-    fileprivate var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+    private var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
     
-    fileprivate var timerManager: VTimerManager?
+    private var timerManager: VTimerManager?
     
     var onContinue: (() -> Void)?
     
@@ -31,9 +30,9 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
-    var activeChatRoomID: ChatRoom.ID?
+    weak var activeFeedDelegate: ActiveFeedDelegate? = nil
     
-    @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
+    @IBOutlet private(set) weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = chatInterfaceDataSource
             collectionView.delegate = self
@@ -41,7 +40,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
-    lazy fileprivate(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
+    lazy private(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
         let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependency(forKey: "mainFeed") ?? self.dependencyManager
         let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
         dataSource.delegate = self
@@ -71,7 +70,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return .portrait
     }
     
-    @IBAction fileprivate func didTapContinueButton(_ sender: UIButton) {
+    @IBAction private func didTapContinueButton(_ sender: UIButton) {
         // We want the closure to be called after dismissing self, so we capture the closure locally first
         // and then call it in the completion block.
         let onContinue = self.onContinue

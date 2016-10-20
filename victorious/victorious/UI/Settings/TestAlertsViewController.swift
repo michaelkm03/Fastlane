@@ -11,7 +11,7 @@ import Foundation
 
 class TestAlertsViewController: UITableViewController {
     
-    fileprivate enum TestAlertIndex: Int {
+    private enum TestAlertIndex: Int {
         case achievement = 0
         case statusUpdate = 1
         case toast = 2

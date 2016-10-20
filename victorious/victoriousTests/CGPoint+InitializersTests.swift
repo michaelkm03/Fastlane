@@ -45,7 +45,7 @@ class CGPoint_InitializersTests: XCTestCase {
         )
     }
     
-    fileprivate func assertPointsEqual(_ a: CGPoint, _ b: CGPoint) {
+    private func assertPointsEqual(_ a: CGPoint, _ b: CGPoint) {
         XCTAssertEqualWithAccuracy(a.x, b.x, accuracy: 0.001)
         XCTAssertEqualWithAccuracy(a.y, b.y, accuracy: 0.001)
     }

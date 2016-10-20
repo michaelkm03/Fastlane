@@ -15,9 +15,9 @@ private struct Constants {
 
 protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
-    var delegate: ChatFeedDelegate? { get set }
+    var chatFeedDelegate: ChatFeedDelegate? { get set }
+    weak var activeFeedDelegate: ActiveFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
-    var activeChatRoomID: ChatRoom.ID? { get set }
     
     var newItemsController: NewItemsController? { get }
     var collectionView: UICollectionView! { get }
@@ -45,7 +45,7 @@ protocol ChatFeedDelegate: class {
 }
 
 extension ChatFeed {
-    var delegate: ChatFeedDelegate? {
+    var chatFeedDelegate: ChatFeedDelegate? {
         get {
             return nil
         }
@@ -96,7 +96,7 @@ extension ChatFeed {
         }
     }
     
-    fileprivate func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
         let collectionView = self.collectionView!
         let unstashedItemCount = chatInterfaceDataSource.unstashedItems.count
         let oldUnstashedItemCount = unstashedItemCount - newItems.count

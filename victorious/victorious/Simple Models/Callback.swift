@@ -20,7 +20,7 @@ public struct Callback<Parameter> {
     
     // MARK: - Managing callbacks
     
-    fileprivate var blocks = [CallbackBlock]()
+    private var blocks = [CallbackBlock]()
     
     /// Adds the given block to the callback.
     public mutating func add(_ block: @escaping CallbackBlock) {

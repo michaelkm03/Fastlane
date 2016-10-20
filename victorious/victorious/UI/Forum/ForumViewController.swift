@@ -13,9 +13,13 @@ private struct Constants {
     static let coachmarkDisplayDelay = 1.0
 }
 
+protocol ActiveFeedDelegate: class {
+    var activeFeed: Feed { get }
+}
+
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer, ActiveFeedDelegate {
     private struct EndVIPButtonConfiguration {
         let title: String
         let titleColor: UIColor
@@ -144,6 +148,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
+            case .handleContent(_, let loadingType):
+                if loadingType == .refresh {
+                    publisher?.removeAllPendingItems()
+                }
             default:
                 break
         }
@@ -162,10 +170,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
-    /// The ID of the chat room that the user is currently in, or nil if the user is not in a chat room.
-    private var activeChatRoomID: ChatRoom.ID? {
+    /// Encapsulates information about the currently active feed
+    var activeFeed = Feed(roomID: nil) {
         didSet {
-            chatFeed?.activeChatRoomID = activeChatRoomID
+            broadcast(.activeFeedChanged)
         }
     }
     
@@ -174,7 +182,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeChatRoomID)
+        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeFeed.roomID)
     }
 
     // MARK: - ForumEventSender
@@ -202,7 +210,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
         chatFeedContext = selectedItem?.context ?? DeeplinkContext(value: DeeplinkContext.mainFeed)
-        activeChatRoomID = selectedItem?.chatRoomID
+        activeFeed = Feed(roomID: selectedItem?.chatRoomID)
     }
 
     func setStageHeight(_ value: CGFloat) {
@@ -379,12 +387,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             
         } else if let chatFeed = destination as? ChatFeed {
             chatFeed.dependencyManager = dependencyManager.chatFeedDependency
-            chatFeed.delegate = self
+            chatFeed.chatFeedDelegate = self
+            chatFeed.activeFeedDelegate = self
             self.chatFeed = chatFeed
         
         } else if let composer = destination as? Composer {
+            composer.composerDelegate = self
             composer.dependencyManager = dependencyManager.composerDependency
-            composer.delegate = self
+            composer.activeFeedDelegate = self
             self.composer = composer
         
         } else {
@@ -397,7 +407,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     @objc private func onClose(sender: UIButton?) {
         if sender != nil {
-            closeButton?.dependencyManager?.trackButtonEvent(.tap)
+            closeButton?.dependencyManager?.track(.tap)
         }
         
         navigationController?.dismiss(animated: true)
@@ -460,8 +470,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
         let context = chatFeedContext.value ?? "chat_feed"
         let isLikedByCurrentUser = content.content.isLikedByCurrentUser
-        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
-        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
+        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context, "%%ROOM_ID%%": activeFeed.roomID ?? ""])
+        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context, "%%ROOM_ID%%": activeFeed.roomID ?? ""])
 
         let toggleLikeOperation: SyncOperation<Void>? = isLikedByCurrentUser
             ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
@@ -546,7 +556,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeChatRoomID)
+        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeFeed.roomID)
 
         chatFeed?.collectionView.reloadItems(at: pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
@@ -576,7 +586,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             chatFeed?.collectionView.deleteItems(at: indexPaths as [IndexPath])
         }
     }
-    
+
     // MARK: - VFocusable
     
     var focusType: VFocusType = .none {

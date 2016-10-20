@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 
 final class ShowShareContentOperation: AsyncOperation<Void> {
     
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let content: Content
-    fileprivate weak var originViewController: UIViewController?
+    private let dependencyManager: VDependencyManager
+    private let content: Content
+    private weak var originViewController: UIViewController?
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager, content: Content) {
         self.originViewController = originViewController

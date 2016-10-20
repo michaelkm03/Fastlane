@@ -102,7 +102,7 @@ private class MockReceiverWithChildren: ForumEventReceiver {
         return children
     }
     
-    fileprivate func receive(_ event: ForumEvent) {}
+    func receive(_ event: ForumEvent) {}
     
     init(children: [ForumEventReceiver] = []) {
         self.children = children

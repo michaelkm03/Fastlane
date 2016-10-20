@@ -9,9 +9,9 @@
 import Foundation
 
 final class ShowLoginOperation: AsyncOperation<Void> {
-    fileprivate weak var originViewController: UIViewController?
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let animated: Bool
+    private weak var originViewController: UIViewController?
+    private let dependencyManager: VDependencyManager
+    private let animated: Bool
     
     required init(
         originViewController: UIViewController,

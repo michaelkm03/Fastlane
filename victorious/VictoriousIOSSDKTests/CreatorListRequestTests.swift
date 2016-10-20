@@ -11,7 +11,7 @@ import XCTest
 
 class CreatorListRequestTests: XCTestCase {
     
-    fileprivate let apiPathFromTemplate = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/user/owners/")
+    private let apiPathFromTemplate = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/user/owners/")
     
     func testInitialization() {
         let request = CreatorListRequest(apiPath: apiPathFromTemplate)
