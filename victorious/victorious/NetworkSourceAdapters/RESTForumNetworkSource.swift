@@ -37,6 +37,9 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
                 if VCurrentUser.user == nil {
                     self?.tearDown()
                 }
+                else {
+                    self?.setUp()
+                }
         }
     }
     
