@@ -24,7 +24,7 @@ private struct Types {
     static let chatMessage = "CHAT"
     /// A new piece of content to be displayed on the stage
     static let stageRefresh = "REFRESH"
-    /// A creator answer sent by the creator to answer a fan's question in live chat.
+    /// A response sent by the creator to answer a fan's question in live chat.
     /// The question will be displayed in a toast, and the creator's response goes to the stage.
     /// - note: Video response will not be synced.
     static let creatorQuestionResponse = "CREATOR_ANSWER"

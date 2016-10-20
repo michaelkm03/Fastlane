@@ -17,29 +17,22 @@ class CreatorQuestionResponseTests: XCTestCase {
         }
         XCTAssertEqual(CreatorQuestionResponse.questionContentID, "2454")
         XCTAssertEqual(CreatorQuestionResponse.answerContentID, "6844")
-        XCTAssertEqual(CreatorQuestionResponse.section, .vip)
     }
     
     func testInitializationFailure() {
         let payload1 = [
-            "section": "",
-            "question_content_id": "2454",
-            "answer_content_id": "6844"
-        ]
-        
-        let payload2 = [
             "section": "VIP_STAGE",
             "question_content_id": "",
             "answer_content_id": "6844"
         ]
         
-        let payload3 = [
+        let payload2 = [
             "section": "VIP_STAGE",
             "question_content_id": "2454",
             "answer_content_id": ""
         ]
         
-        for payload in [payload1, payload2, payload3] {
+        for payload in [payload1, payload2] {
             let invalidJSON = JSON(payload)
             XCTAssertNil(CreatorQuestionResponse(json: invalidJSON))
         }
