@@ -11,7 +11,8 @@ public struct CreatorAnswer {
         guard
             let section = StageSection(section: sectionString),
             let questionID = json["question_content_id"].string,
-            let answerID = json["answer_content_id"].string
+            let answerID = json["answer_content_id"].string,
+            !questionID.isEmpty && !answerID.isEmpty
         else {
             return nil
         }
