@@ -1,15 +1,4 @@
-//
-//  WebSocketController.swift
-//  victorious
-//
-//  Created by Sebastian Nystorm on 13/10/16.
-//  Copyright © 2016 Victorious. All rights reserved.
-//
-
 import Foundation
-
-
-
 
 ///
 /// A class used for connecting over WebSocket to a specific endpoint. It uses `ForumEvent`s to broadcast
@@ -51,36 +40,10 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
 
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         logEvent(event: "Disconnected from URL -> \(socket) error -> \(error)")
-
-//        // The WebSocket instance with the baked in token has been consumed.
-//        // A new token has to be fetched and a new WebSocket instance has to be created.
-//        pingTimer?.invalidate()
-//        webSocket = nil
-//
-//        if let disconnectEvent = eventFromDisconnect(error: error) {
-//            DispatchQueue.main.async { [weak self] in
-//                self?.broadcast(disconnectEvent)
-//            }
-//        }
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
         logEvent(event: "Did receive text message -> \(text)")
-
-
-//        if let dataFromString = text.data(using: String.Encoding.utf8, allowLossyConversion: false) {
-//            let json = JSON(data: dataFromString)
-//            rawMessage.json = json
-//
-//            guard let event = (decodeEvent(from: json) ?? decodeError(from: json)) else {
-//                Log.info("Unparsable WebSocket message returned -> \(text)")
-//                return
-//            }
-//
-//            DispatchQueue.main.async { [weak self] in
-//                self?.broadcast(event)
-//            }
-//        }
     }
 
     public func websocketDidReceiveData(socket: WebSocket, data: Data) {
@@ -104,7 +67,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
 
     /// Is the WebSocket connection open at the moment?
     public var isSetUp: Bool {
-        return webSocketConnection.isConnected == true
+        return webSocketConnection.isConnected
     }
 
     /// Sends the disconnect message to the server and waits for a certain amount of time before forcing the disconnect.
@@ -142,7 +105,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
     public let nextSender: ForumEventSender? = nil
 
     public func send(_ event: ForumEvent) {
-//        sendOutbound(event)
+        // FUTURE: send the message through the chain
     }
 
     // MARK: Private
@@ -154,117 +117,4 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSource {
         let rawMessage = WebSocketRawMessage(messageString: event)
         webSocketMessageContainer.add(rawMessage)
     }
-
 }
-
-
-/*
-
-//
-//  VictoriousWebSocketEndpoint.swift
-//  victorious
-//
-//  Created by Sebastian Nystorm on 15/3/16.
-//  Copyright © 2016 Victorious. All rights reserved.
-//
-
-import Foundation
-
-/**
- *  This components specifies the WebSocket endpoint and contains all the information needed for opening a connection.
- */
-public struct WebSocketConfiguration {
-    private let endPoint: String
-    private let port: UInt?
-    private let serviceVersion: String?
-
-    /// The amount of time to wait for the disconnect message to be respected by the backend.
-    let forceDisconnectTimeout: TimeInterval
-
-    let appId: String
-
-    /// The initial part of the URL without the token appended.
-    let baseUrl: URL
-
-    init?(endPoint: String, appId: String, port: UInt? = nil, serviceVersion: String? = nil, forceDisconnectTimeout: TimeInterval = 5) {
-        self.endPoint = endPoint
-        self.port = port
-        self.serviceVersion = serviceVersion
-        self.forceDisconnectTimeout = forceDisconnectTimeout
-        self.appId = appId
-
-        let urlString = "\(endPoint):\(port)"
-        guard var url = URL(string: urlString) else {
-            return nil
-        }
-
-        if let serviceVersion = serviceVersion {
-            url.appendPathComponent(serviceVersion)
-        }
-
-        url.appendPathComponent(appId)
-
-        self.baseUrl = url
-    }
-
-    /// Since the token only can be used once to connect, use this function to generate a URL with the specified token.
-    public func generateUrlFromToken(token: String) -> URL? {
-        return baseUrl.appendingPathComponent(token)
-    }
-}
-
-// MARK: - Chat Service Extension
-public extension WebSocketConfiguration {
-
-    private struct ChatServiceConstants {
-        static let chatServiceEndPoint = "ws://ec2-52-53-214-56.us-west-1.compute.amazonaws.com"
-//        static let chatServicePort = UInt(8063)
-        static let chatServiceVersion = "v1"
-        static let forceDisconnectTimeout = TimeInterval(5)
-        static let appId = "1"
-    }
-
-    /**
-     The default configuration for connecting to the Victorious chat service.
-
-     - returns: A configuration instance that points to our remote servers.
-     */
-    public static func makeChatServiceWebSocketConfiguration() -> WebSocketConfiguration {
-        let configuration = WebSocketConfiguration(
-            endPoint: ChatServiceConstants.chatServiceEndPoint,
-//            port: ChatServiceConstants.chatServicePort,
-            serviceVersion: ChatServiceConstants.chatServiceVersion,
-            forceDisconnectTimeout: ChatServiceConstants.forceDisconnectTimeout,
-            appId: ChatServiceConstants.appId)
-        return configuration!
-    }
-}
-
-// MARK: - Local Web Socket
-public extension WebSocketConfiguration {
-
-    private struct LocalChatServiceConstants {
-        static let chatServiceEndPoint = "ws://localhost"
-        static let chatServicePort = UInt(8063)
-        static let chatServiceVersion = "v1"
-        static let forceDisconnectTimeout = TimeInterval(1)
-        static let appId = "1"
-    }
-
-    /**
-     A configuration that points to localhost to test out the chat service without the need for a remote server.
-
-     - returns: A configuration instance that points to the local machine.
-     */
-    public static func makeLocalWebSocketConfiguration() -> WebSocketConfiguration {
-        let configuration = WebSocketConfiguration(
-            endPoint: LocalChatServiceConstants.chatServiceEndPoint,
-            port: LocalChatServiceConstants.chatServicePort,
-            serviceVersion: LocalChatServiceConstants.chatServiceVersion,
-            forceDisconnectTimeout: LocalChatServiceConstants.forceDisconnectTimeout,
-            appId: LocalChatServiceConstants.appId)
-        return configuration!
-    }
-}
-
-*/
