@@ -6737,7 +6737,7 @@
 					623021551DADAC2A00F4690C = {
 						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					A7EBF51F1C2B8CA20080C7CF = {
@@ -10130,7 +10130,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -10143,7 +10143,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -10169,7 +10170,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
@@ -10193,7 +10195,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
@@ -10217,7 +10220,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
@@ -10241,7 +10245,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
