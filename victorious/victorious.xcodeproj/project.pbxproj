@@ -4371,13 +4371,13 @@
 				0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */,
 				0E0615081CA35D6800236D4A /* ForumEventSender.swift */,
 				0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */,
+				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 				0EF7168C1C98FE5E0005CF86 /* VIPWebSocketController.swift */,
+				0E1286B41DB06A8F00B4250B /* WebSocketController.swift */,
 				0EF716901C9904D20005CF86 /* WebSocketError.swift */,
 				0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */,
 				0E06150C1CA36FFD00236D4A /* WebSocketEvents */,
-				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 				0E9911CD1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift */,
-				0E1286B41DB06A8F00B4250B /* WebSocketController.swift */,
 			);
 			name = WebSocket;
 			sourceTree = "<group>";
