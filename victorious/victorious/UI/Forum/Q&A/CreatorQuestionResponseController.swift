@@ -1,14 +1,7 @@
-//
-//  CreatorQuestionResponseController.swift
-//  victorious
-//
-//  Created by Vincent Ho on 10/20/16.
-//  Copyright © 2016 Victorious. All rights reserved.
-//
-
 import Foundation
 import VictoriousIOSSDK
 
+/// A controller to handle receiving, sending, and presenting CreatorQuestionResponse events
 class CreatorQuestionResponseController {
     private let dependencyManager: VDependencyManager
     
