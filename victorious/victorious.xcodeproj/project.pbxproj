@@ -345,6 +345,8 @@
 		0E2369201D4BC77000D9E45C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23691F1D4BC77000D9E45C /* Logger.swift */; };
 		0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */; };
 		0E5C69661D47E1B200363DBB /* Forum+TestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5C69651D47E1B200363DBB /* Forum+TestHarness.swift */; };
+		0E5E474D1DB9354700393277 /* ServerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E474C1DB9354700393277 /* ServerCommand.swift */; };
+		0E5E474F1DB9358600393277 /* ClientCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E474E1DB9358600393277 /* ClientCommand.swift */; };
 		0E5F7E401CA1E42000B3AF14 /* ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */; };
 		0E5F7E421CA1EBC700B3AF14 /* WebSocketEventDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */; };
 		0E6628751CCEE5DF0049ECF8 /* StageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */; };
@@ -1763,6 +1765,8 @@
 		0E23691F1D4BC77000D9E45C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Logger/Logger.swift; sourceTree = "<group>"; };
 		0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
 		0E5C69651D47E1B200363DBB /* Forum+TestHarness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Forum+TestHarness.swift"; path = "Debugging/Forum+TestHarness.swift"; sourceTree = "<group>"; };
+		0E5E474C1DB9354700393277 /* ServerCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServerCommand.swift; path = WebSocket/Commands/ServerCommand.swift; sourceTree = "<group>"; };
+		0E5E474E1DB9358600393277 /* ClientCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientCommand.swift; path = WebSocket/Commands/ClientCommand.swift; sourceTree = "<group>"; };
 		0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumNetworkSource.swift; sourceTree = "<group>"; };
 		0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEventDecoder.swift; path = WebSocket/WebSocketEventDecoder.swift; sourceTree = "<group>"; };
 		0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageDataSource.swift; sourceTree = "<group>"; };
@@ -4282,6 +4286,15 @@
 			name = Logger;
 			sourceTree = "<group>";
 		};
+		0E5E474B1DB9351100393277 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				0E5E474C1DB9354700393277 /* ServerCommand.swift */,
+				0E5E474E1DB9358600393277 /* ClientCommand.swift */,
+			);
+			name = Commands;
+			sourceTree = "<group>";
+		};
 		0EBF417A1CAB5C20002966B3 /* ForumEvents */ = {
 			isa = PBXGroup;
 			children = (
@@ -4353,6 +4366,7 @@
 		0EF7168B1C98FD770005CF86 /* WebSocket */ = {
 			isa = PBXGroup;
 			children = (
+				0E5E474B1DB9351100393277 /* Commands */,
 				7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */,
 				0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */,
 				0E0615081CA35D6800236D4A /* ForumEventSender.swift */,
@@ -7419,6 +7433,7 @@
 				790176471D91A63300F0A707 /* UsernameAvailabilityRequest.swift in Sources */,
 				A72EDF8B1C03E225003D6177 /* ProfileUpdate.swift in Sources */,
 				A75D3BEB1C176F39006CE331 /* PaginatorPageable.swift in Sources */,
+				0E5E474F1DB9358600393277 /* ClientCommand.swift in Sources */,
 				0E8EB2CB1CCF0B570087D815 /* Content.swift in Sources */,
 				676468CE1C3DC03600CC41D9 /* RequestPasswordResetRequest.swift in Sources */,
 				0315EAD31BED800A00645071 /* LoginRequest.swift in Sources */,
@@ -7433,6 +7448,7 @@
 				0E0615091CA35D6800236D4A /* ForumEventSender.swift in Sources */,
 				BF3CD8A01D120F9100CB7764 /* UserUnblockRequest.swift in Sources */,
 				C314E6B91BF13AD800FB9591 /* TrendingHashtagsRequest.swift in Sources */,
+				0E5E474D1DB9354700393277 /* ServerCommand.swift in Sources */,
 				0EBF41861CAB5CAE002966B3 /* BlockUser.swift in Sources */,
 				A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift in Sources */,
 				0E23691A1D493C5600D9E45C /* SBPlatformDestination.swift in Sources */,
