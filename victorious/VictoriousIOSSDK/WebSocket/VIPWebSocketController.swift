@@ -77,7 +77,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
     /// A `WebSocketEvent` of type `.Connected` will be broadcasted if the connection succeeds.
     public func setUp() {
-        guard let webSocket = webSocket , !webSocket.isConnected else {
+        guard let webSocket = webSocket, !webSocket.isConnected else {
             return
         }
 
@@ -90,7 +90,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
     /// Sends the disconnect message to the server and waits for a certain amount of time before forcing the disconnect.
     /// When the disconnect has happened a `WebSocketEvent` of type `.disconnected` will be broadcasted.
     public func tearDown() {
-        guard let webSocket = webSocket , webSocket.isConnected else {
+        guard let webSocket = webSocket, webSocket.isConnected else {
             return
         }
 
@@ -226,7 +226,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
 
         // According to the RFC even if the client disconnects we should receive a close message with the error code 1000.
         // We still want to broadcast that to the rest of the app but without an error so it's explicit nothing went wrong.
-        if let error = error , clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == .normal {
+        if let error = error, clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == .normal {
             clientInitiatedDisconnect = false
             disconnectEvent = .websocket(.disconnected(webSocketError: nil))
         }
@@ -248,7 +248,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
     }
 
     private func sendJSON(from dictionaryConvertible: DictionaryConvertible) {
-        guard let webSocket = webSocket , webSocket.isConnected else {
+        guard let webSocket = webSocket, webSocket.isConnected else {
             return
         }
         
@@ -264,7 +264,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
     }
 
     @objc private func sendPing() {
-        guard let webSocket = webSocket , webSocket.isConnected else {
+        guard let webSocket = webSocket, webSocket.isConnected else {
             return
         }
         webSocket.write(ping: Data())
@@ -275,7 +275,7 @@ private extension WebSocket {
  
     /// Everytime the token is invalidated (== everytime we drop the connection) we have a need to generate a new connection
     /// and therefore also a new WebSocket instance. Since the token is appended to the URL.
-    private convenience init(url: URL, socketListenerQueue: DispatchQueue? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
+    convenience init(url: URL, socketListenerQueue: DispatchQueue? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
         self.init(url: url, protocols: nil)
         self.delegate = delegate
         self.pongDelegate = pongDelegate
