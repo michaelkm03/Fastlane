@@ -425,8 +425,8 @@
 		6708F7041CD83E0E004332CF /* TutorialNetworkDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6708F7031CD83E0E004332CF /* TutorialNetworkDataSource.swift */; };
 		670A3B191CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 670A3B181CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard */; };
 		670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */; };
-		670B28C71DB7F42F0012907E /* CreatorAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C61DB7F42F0012907E /* CreatorAnswer.swift */; };
-		670B28C91DB7F47F0012907E /* CreatorAnswerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C81DB7F47F0012907E /* CreatorAnswerTests.swift */; };
+		670B28C71DB7F42F0012907E /* CreatorQuestionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */; };
+		670B28C91DB7F47F0012907E /* CreatorQuestionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C81DB7F47F0012907E /* CreatorQuestionResponse.swift */; };
 		671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
@@ -1860,8 +1860,8 @@
 		6708F7031CD83E0E004332CF /* TutorialNetworkDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialNetworkDataSource.swift; path = "First Time User Experience/Tutorial/TutorialNetworkDataSource.swift"; sourceTree = "<group>"; };
 		670A3B181CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = InterstitialAlertViewController.storyboard; path = "Custom Alert Views/InterstitialAlertViewController.storyboard"; sourceTree = "<group>"; };
 		670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = InterstitialAlertViewController.swift; path = "Custom Alert Views/InterstitialAlertViewController.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		670B28C61DB7F42F0012907E /* CreatorAnswer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatorAnswer.swift; path = ForumEvents/CreatorAnswer.swift; sourceTree = "<group>"; };
-		670B28C81DB7F47F0012907E /* CreatorAnswerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorAnswerTests.swift; sourceTree = "<group>"; };
+		670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatorQuestionResponse.swift; path = ForumEvents/CreatorQuestionResponse.swift; sourceTree = "<group>"; };
+		670B28C81DB7F47F0012907E /* CreatorQuestionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorQuestionResponse.swift; sourceTree = "<group>"; };
 		671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
@@ -3417,7 +3417,7 @@
 			children = (
 				A7039CF51C24A8F40023DE6F /* AlertTests.swift */,
 				62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */,
-				670B28C81DB7F47F0012907E /* CreatorAnswerTests.swift */,
+				670B28C81DB7F47F0012907E /* CreatorQuestionResponse.swift */,
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
@@ -4302,7 +4302,7 @@
 			children = (
 				0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */,
 				0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */,
-				670B28C61DB7F42F0012907E /* CreatorAnswer.swift */,
+				670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */,
 				0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */,
 				0EBF41891CAB5E04002966B3 /* StageSection.swift */,
 			);
@@ -7530,7 +7530,7 @@
 				0EF377531D36EF4A006BF786 /* StageContent.swift in Sources */,
 				0E06150B1CA35DDC00236D4A /* ForumEventReceiver.swift in Sources */,
 				0399E80E1C51D42900E090F7 /* TemplateRequest.swift in Sources */,
-				670B28C71DB7F42F0012907E /* CreatorAnswer.swift in Sources */,
+				670B28C71DB7F42F0012907E /* CreatorQuestionResponse.swift in Sources */,
 				7A29D23B1D5116A200FE2B31 /* PaginatedLoadingType.swift in Sources */,
 				0300AA7E1BF2BC8B000A121D /* DevicePreferencesRequest.swift in Sources */,
 				A7039CF21C248E0B0023DE6F /* Alert.swift in Sources */,
@@ -7565,7 +7565,7 @@
 			files = (
 				0E8F131B1CA4DC6B004AF0B0 /* WebSocketControllerTests.swift in Sources */,
 				67D3DBB01CCA9AB300D9D374 /* CreatorListRequestTests.swift in Sources */,
-				670B28C91DB7F47F0012907E /* CreatorAnswerTests.swift in Sources */,
+				670B28C91DB7F47F0012907E /* CreatorQuestionResponse.swift in Sources */,
 				62FD64781D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift in Sources */,
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				676B84E11CDD568200F8FCED /* TutorialContentsRequestTests.swift in Sources */,

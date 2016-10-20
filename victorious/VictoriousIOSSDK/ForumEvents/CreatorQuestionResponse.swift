@@ -1,6 +1,6 @@
 /// A creator's answer to a fan's question in live chat.
 /// It contains both the Question Content ID and the Answer Content ID.
-public struct CreatorAnswer {
+public struct CreatorQuestionResponse {
     public let section: StageSection
     public let questionContentID: Content.ID
     public let answerContentID: Content.ID

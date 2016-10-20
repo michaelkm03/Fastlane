@@ -35,7 +35,7 @@ public enum ForumEvent {
     case refreshStage(RefreshStage)
     
     /// A creator responded to a fan's question with an answer.
-    case creatorRespondedToQuestion(CreatorAnswer)
+    case creatorRespondedToQuestion(CreatorQuestionResponse)
     
     /// Closes either the main or VIP stage.
     case closeStage(StageSection)

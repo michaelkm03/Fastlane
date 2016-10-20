@@ -1,7 +1,7 @@
 import XCTest
 @testable import VictoriousIOSSDK
 
-class CreatorAnswerTests: XCTestCase {
+class CreatorQuestionResponseTests: XCTestCase {
     func testInitializationSuccess() {
         let payload = [
             "section": "VIP_STAGE",
@@ -11,13 +11,13 @@ class CreatorAnswerTests: XCTestCase {
         
         let validJSON = JSON(payload)
         
-        guard let creatorAnswer = CreatorAnswer(json: validJSON) else {
-            XCTFail("CreatorAnswer initialization failed.")
+        guard let CreatorQuestionResponse = CreatorQuestionResponse(json: validJSON) else {
+            XCTFail("CreatorQuestionResponse initialization failed.")
             return
         }
-        XCTAssertEqual(creatorAnswer.questionContentID, "2454")
-        XCTAssertEqual(creatorAnswer.answerContentID, "6844")
-        XCTAssertEqual(creatorAnswer.section, .vip)
+        XCTAssertEqual(CreatorQuestionResponse.questionContentID, "2454")
+        XCTAssertEqual(CreatorQuestionResponse.answerContentID, "6844")
+        XCTAssertEqual(CreatorQuestionResponse.section, .vip)
     }
     
     func testInitializationFailure() {
@@ -41,7 +41,7 @@ class CreatorAnswerTests: XCTestCase {
         
         for payload in [payload1, payload2, payload3] {
             let invalidJSON = JSON(payload)
-            XCTAssertNil(CreatorAnswer(json: invalidJSON))
+            XCTAssertNil(CreatorQuestionResponse(json: invalidJSON))
         }
     }
 }
