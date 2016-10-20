@@ -10130,7 +10130,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -10143,8 +10143,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
-				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -10161,7 +10161,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10170,8 +10170,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
-				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
@@ -10186,7 +10186,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10195,8 +10195,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
-				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
@@ -10211,7 +10211,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10220,8 +10220,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
-				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
@@ -10236,7 +10236,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
 				INFOPLIST_FILE = victoriousUITests/Info.plist;
@@ -10245,8 +10245,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e2abac18-0e1f-4097-a4b1-dc8c620c4f6f";
-				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = victorious;
