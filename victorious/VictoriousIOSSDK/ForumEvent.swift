@@ -34,7 +34,7 @@ public enum ForumEvent {
     /// Requests that the stage is refreshed with new content.
     case refreshStage(RefreshStage)
     
-    /// A creator responded to a fan's queestion with an answer
+    /// A creator responded to a fan's question with an answer.
     case creatorRespondedToQuestion(CreatorAnswer)
     
     /// Closes either the main or VIP stage.
