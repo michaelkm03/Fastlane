@@ -4302,9 +4302,9 @@
 			children = (
 				0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */,
 				0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */,
-				0EBF41891CAB5E04002966B3 /* StageSection.swift */,
-				0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */,
 				670B28C61DB7F42F0012907E /* CreatorAnswer.swift */,
+				0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */,
+				0EBF41891CAB5E04002966B3 /* StageSection.swift */,
 			);
 			name = ForumEvents;
 			sourceTree = "<group>";

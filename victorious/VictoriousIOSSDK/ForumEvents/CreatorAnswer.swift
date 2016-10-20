@@ -1,4 +1,4 @@
-/// A creator's answer to a fan's question during an Ask Me Anything (AMA) event.
+/// A creator's answer to a fan's question in live chat.
 /// It contains both the Question Content ID and the Answer Content ID.
 public struct CreatorAnswer {
     public let section: StageSection
