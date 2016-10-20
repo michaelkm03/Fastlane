@@ -1344,6 +1344,13 @@
 			remoteGlobalIDString = 0372BE661C84FA56004950CF;
 			remoteInfo = "VictoriousIOSSDK-OSX";
 		};
+		6230215B1DADAC2A00F4690C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE171D751868BE64004E5202;
+			remoteInfo = victorious;
+		};
 		7AF9301E1CDA6F6800F02EDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1826,6 +1833,8 @@
 		621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommunityItemsFetchOperationTests.swift; path = Operations/CommunityItemsFetchOperationTests.swift; sourceTree = "<group>"; };
 		622103481C65354A00A77A73 /* LoginOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperationTests.swift; sourceTree = "<group>"; };
 		623021501DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "VDependencyManager+ButtonTrackingTests.swift"; path = "Managers/Dependencies/VDependencyManager+ButtonTrackingTests.swift"; sourceTree = "<group>"; };
+		623021561DADAC2A00F4690C /* victoriousUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6230215A1DADAC2A00F4690C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6230216C1DAEAF0900F4690C /* Feed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
 		6236F8751C36030000746476 /* TestRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestExecutor.swift; sourceTree = "<group>"; };
@@ -2963,6 +2972,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0372BE631C84FA56004950CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623021531DADAC2A00F4690C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4457,6 +4473,15 @@
 			name = Dependencies;
 			sourceTree = "<group>";
 		};
+		623021571DADAC2A00F4690C /* victoriousUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6258C5581DB59F46005A79C2 /* UI */,
+				6230215A1DADAC2A00F4690C /* Info.plist */,
+			);
+			path = victoriousUITests;
+			sourceTree = "<group>";
+		};
 		623021651DAEAD5700F4690C /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -4488,6 +4513,13 @@
 				624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		6258C5581DB59F46005A79C2 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		6287BE0E1C7E871B0057D116 /* VIP */ = {
@@ -5691,6 +5723,7 @@
 				03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
+				623021571DADAC2A00F4690C /* victoriousUITests */,
 				25E91966E19A5C944598C064 /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -5708,6 +5741,7 @@
 				03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */,
 				A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */,
 				0372BE671C84FA56004950CF /* VictoriousIOSSDK.framework */,
+				623021561DADAC2A00F4690C /* victoriousUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6559,6 +6593,24 @@
 			productReference = 0372BE671C84FA56004950CF /* VictoriousIOSSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		623021551DADAC2A00F4690C /* victoriousUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 623021621DADAC2A00F4690C /* Build configuration list for PBXNativeTarget "victoriousUITests" */;
+			buildPhases = (
+				623021521DADAC2A00F4690C /* Sources */,
+				623021531DADAC2A00F4690C /* Frameworks */,
+				623021541DADAC2A00F4690C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6230215C1DADAC2A00F4690C /* PBXTargetDependency */,
+			);
+			name = victoriousUITests;
+			productName = victoriousUITests;
+			productReference = 623021561DADAC2A00F4690C /* victoriousUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7EBF5271C2B8CA20080C7CF /* Build configuration list for PBXNativeTarget "victoriousPersistenceTests" */;
@@ -6641,7 +6693,7 @@
 			attributes = {
 				CLASSPREFIX = "";
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0800;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
@@ -6675,6 +6727,12 @@
 					};
 					0372BE661C84FA56004950CF = {
 						CreatedOnToolsVersion = 7.2.1;
+					};
+					623021551DADAC2A00F4690C = {
+						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
+						TestTargetID = BE171D751868BE64004E5202;
 					};
 					A7EBF51F1C2B8CA20080C7CF = {
 						CreatedOnToolsVersion = 7.1;
@@ -6736,6 +6794,7 @@
 				03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				0372BE661C84FA56004950CF /* VictoriousIOSSDK-OSX */,
 				A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */,
+				623021551DADAC2A00F4690C /* victoriousUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -6841,6 +6900,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0372BE651C84FA56004950CF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623021541DADAC2A00F4690C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -7749,6 +7815,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		623021521DADAC2A00F4690C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7EBF51C1C2B8CA20080C7CF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8479,6 +8552,11 @@
 			isa = PBXTargetDependency;
 			target = 0372BE661C84FA56004950CF /* VictoriousIOSSDK-OSX */;
 			targetProxy = 03C116C71C850E7E00F3F873 /* PBXContainerItemProxy */;
+		};
+		6230215C1DADAC2A00F4690C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE171D751868BE64004E5202 /* victorious */;
+			targetProxy = 6230215B1DADAC2A00F4690C /* PBXContainerItemProxy */;
 		};
 		7AF9301F1CDA6F6800F02EDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -10043,6 +10121,137 @@
 			};
 			name = Staging;
 		};
+		6230215D1DADAC2A00F4690C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Debug;
+		};
+		6230215E1DADAC2A00F4690C /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = QA;
+		};
+		6230215F1DADAC2A00F4690C /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Staging;
+		};
+		623021601DADAC2A00F4690C /* Stable */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Stable;
+		};
+		623021611DADAC2A00F4690C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Release;
+		};
 		A7EBF5281C2B8CA20080C7CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C6219763AA8B046906BA06DD /* Pods-victoriousPersistenceTests.debug.xcconfig */;
@@ -10661,6 +10870,18 @@
 				0372BE6E1C84FA56004950CF /* Staging */,
 				0372BE6F1C84FA56004950CF /* Stable */,
 				0372BE701C84FA56004950CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		623021621DADAC2A00F4690C /* Build configuration list for PBXNativeTarget "victoriousUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6230215D1DADAC2A00F4690C /* Debug */,
+				6230215E1DADAC2A00F4690C /* QA */,
+				6230215F1DADAC2A00F4690C /* Staging */,
+				623021601DADAC2A00F4690C /* Stable */,
+				623021611DADAC2A00F4690C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
