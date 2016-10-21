@@ -12,4 +12,15 @@ import Foundation
 public enum StageSection {
     case vip
     case main
+    
+    init?(section: String) {
+        switch section.lowercased() {
+            case "vip_stage":
+                self = .vip
+            case "main_stage":
+                self = .main
+            default:
+                return nil
+        }
+    }
 }

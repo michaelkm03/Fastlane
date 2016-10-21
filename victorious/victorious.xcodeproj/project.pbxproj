@@ -364,7 +364,7 @@
 		0EB1AFE91D89F19900D854DF /* PastableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB1AFE81D89F19900D854DF /* PastableTextView.swift */; };
 		0EBF41851CAB5CAE002966B3 /* RefreshStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */; };
 		0EBF41861CAB5CAE002966B3 /* BlockUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */; };
-		0EBF418A1CAB5E04002966B3 /* RefreshSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF41891CAB5E04002966B3 /* RefreshSection.swift */; };
+		0EBF418A1CAB5E04002966B3 /* StageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBF41891CAB5E04002966B3 /* StageSection.swift */; };
 		0EBF418C1CAB6563002966B3 /* InboundWebsocketEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBF418B1CAB6563002966B3 /* InboundWebsocketEvent.json */; };
 		0EBF418E1CAC889C002966B3 /* RefreshStage.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBF418D1CAC889C002966B3 /* RefreshStage.json */; };
 		0EC0F60F1CE65005008760E8 /* WebSocketDebuggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */; };
@@ -425,6 +425,8 @@
 		6708F7041CD83E0E004332CF /* TutorialNetworkDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6708F7031CD83E0E004332CF /* TutorialNetworkDataSource.swift */; };
 		670A3B191CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 670A3B181CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard */; };
 		670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */; };
+		670B28C71DB7F42F0012907E /* CreatorQuestionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */; };
+		670B28C91DB7F47F0012907E /* CreatorQuestionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C81DB7F47F0012907E /* CreatorQuestionResponseTests.swift */; };
 		671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
@@ -1793,7 +1795,7 @@
 		0EB1AFE81D89F19900D854DF /* PastableTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastableTextView.swift; sourceTree = "<group>"; };
 		0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshStage.swift; path = ForumEvents/RefreshStage.swift; sourceTree = "<group>"; };
 		0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockUser.swift; path = ForumEvents/BlockUser.swift; sourceTree = "<group>"; };
-		0EBF41891CAB5E04002966B3 /* RefreshSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshSection.swift; path = ForumEvents/RefreshSection.swift; sourceTree = "<group>"; };
+		0EBF41891CAB5E04002966B3 /* StageSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StageSection.swift; path = ForumEvents/StageSection.swift; sourceTree = "<group>"; };
 		0EBF418B1CAB6563002966B3 /* InboundWebsocketEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InboundWebsocketEvent.json; sourceTree = "<group>"; };
 		0EBF418D1CAC889C002966B3 /* RefreshStage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RefreshStage.json; sourceTree = "<group>"; };
 		0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketDebuggingViewController.swift; path = Debugging/WebSocketDebuggingViewController.swift; sourceTree = "<group>"; };
@@ -1867,6 +1869,8 @@
 		6708F7031CD83E0E004332CF /* TutorialNetworkDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialNetworkDataSource.swift; path = "First Time User Experience/Tutorial/TutorialNetworkDataSource.swift"; sourceTree = "<group>"; };
 		670A3B181CA9ED89004C5F57 /* InterstitialAlertViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = InterstitialAlertViewController.storyboard; path = "Custom Alert Views/InterstitialAlertViewController.storyboard"; sourceTree = "<group>"; };
 		670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = InterstitialAlertViewController.swift; path = "Custom Alert Views/InterstitialAlertViewController.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatorQuestionResponse.swift; path = ForumEvents/CreatorQuestionResponse.swift; sourceTree = "<group>"; };
+		670B28C81DB7F47F0012907E /* CreatorQuestionResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorQuestionResponseTests.swift; sourceTree = "<group>"; };
 		671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
@@ -3429,6 +3433,7 @@
 			children = (
 				A7039CF51C24A8F40023DE6F /* AlertTests.swift */,
 				62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */,
+				670B28C81DB7F47F0012907E /* CreatorQuestionResponseTests.swift */,
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
@@ -3437,8 +3442,8 @@
 				0E85A1F91CAE28F400BE950E /* RefreshStageTests.swift */,
 				0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */,
 				7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */,
-				03314F481BE40F0100EE74FD /* UserTests.swift */,
 				7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */,
+				03314F481BE40F0100EE74FD /* UserTests.swift */,
 				BF2D25791CED40980001A2AF /* ViewedContent */,
 				0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */,
 			);
@@ -4312,8 +4317,9 @@
 			children = (
 				0EBF417F1CAB5CAE002966B3 /* BlockUser.swift */,
 				0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */,
-				0EBF41891CAB5E04002966B3 /* RefreshSection.swift */,
+				670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */,
 				0EBF417E1CAB5CAE002966B3 /* RefreshStage.swift */,
+				0EBF41891CAB5E04002966B3 /* StageSection.swift */,
 			);
 			name = ForumEvents;
 			sourceTree = "<group>";
@@ -4382,11 +4388,11 @@
 				0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */,
 				0E0615081CA35D6800236D4A /* ForumEventSender.swift */,
 				0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */,
+				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 				0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */,
 				0EF716901C9904D20005CF86 /* WebSocketError.swift */,
 				0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */,
 				0E06150C1CA36FFD00236D4A /* WebSocketEvents */,
-				0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */,
 				0E9911CD1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift */,
 			);
 			name = WebSocket;
@@ -7498,7 +7504,7 @@
 				62FD64801D8B4CE100E9BAF8 /* ChatRoom.swift in Sources */,
 				0EF716911C9904D20005CF86 /* WebSocketError.swift in Sources */,
 				0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */,
-				0EBF418A1CAB5E04002966B3 /* RefreshSection.swift in Sources */,
+				0EBF418A1CAB5E04002966B3 /* StageSection.swift in Sources */,
 				A7D920511C063705002A6503 /* VRequestErrorConstants.m in Sources */,
 				0E5F7E421CA1EBC700B3AF14 /* WebSocketEventDecoder.swift in Sources */,
 				0EBF41851CAB5CAE002966B3 /* RefreshStage.swift in Sources */,
@@ -7589,6 +7595,7 @@
 				0EF377531D36EF4A006BF786 /* StageContent.swift in Sources */,
 				0E06150B1CA35DDC00236D4A /* ForumEventReceiver.swift in Sources */,
 				0399E80E1C51D42900E090F7 /* TemplateRequest.swift in Sources */,
+				670B28C71DB7F42F0012907E /* CreatorQuestionResponse.swift in Sources */,
 				7A29D23B1D5116A200FE2B31 /* PaginatedLoadingType.swift in Sources */,
 				0300AA7E1BF2BC8B000A121D /* DevicePreferencesRequest.swift in Sources */,
 				A7039CF21C248E0B0023DE6F /* Alert.swift in Sources */,
@@ -7623,6 +7630,7 @@
 			files = (
 				0E8F131B1CA4DC6B004AF0B0 /* WebSocketControllerTests.swift in Sources */,
 				67D3DBB01CCA9AB300D9D374 /* CreatorListRequestTests.swift in Sources */,
+				670B28C91DB7F47F0012907E /* CreatorQuestionResponseTests.swift in Sources */,
 				62FD64781D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift in Sources */,
 				03BC6FB21BE752D500CFCBEE /* StandardPaginatorTests.swift in Sources */,
 				676B84E11CDD568200F8FCED /* TutorialContentsRequestTests.swift in Sources */,
