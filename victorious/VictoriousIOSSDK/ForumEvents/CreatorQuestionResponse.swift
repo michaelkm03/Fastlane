@@ -16,4 +16,9 @@ public struct CreatorQuestionResponse {
         self.questionContentID = questionID
         self.answerContentID = answerID
     }
+    
+    public init(questionContentID: Content.ID, answerContentID: Content.ID) {
+        self.questionContentID = questionContentID
+        self.answerContentID = answerContentID
+    }
 }
