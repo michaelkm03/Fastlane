@@ -38,7 +38,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
                     self?.tearDown()
                 }
                 else {
-                    self?.setUp()
+                    self?.startPolling()
                 }
         }
     }
@@ -145,7 +145,6 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     func tearDown() {
-        // Nothing to tear down.
         pollingTimer?.invalidate()
     }
     
