@@ -1,7 +1,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-typealias QuestionAnswerPair = (Content, Content)
+typealias QuestionAnswerPair = (question: Content, answer: Content)
 
 /// A controller to handle receiving, sending, and presenting CreatorQuestionResponse events
 class CreatorQuestionResponseController {
@@ -12,9 +12,12 @@ class CreatorQuestionResponseController {
         self.dependencyManager = dependencyManager
     }
     
-    func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((OperationResult<QuestionAnswerPair>) -> Void)? = nil) {
+    func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((QuestionAnswerPair) -> Void)? = nil) {
         QuestionAnswerPairFetchOperation(dependencyManager: dependencyManager, creatorQuestionResponse: creatorQuestionResponse)?.queue { result in
-            completion?(result)
+            switch result {
+                case .success(let questionAnswerPair): completion?(questionAnswerPair)
+                case .cancelled, .failure(_): Log.warning("Question Answer Pair Fetching failed or cancelled")
+            }
         }
     }
 }
@@ -65,7 +68,7 @@ private class QuestionAnswerPairFetchOperation: AsyncOperation<QuestionAnswerPai
             self?.answerFetchOperation.queue { answerResult in
                 switch (questionResult, answerResult) {
                     case (.success(let questionContent), .success(let answerContent)):
-                        finish(.success(questionContent, answerContent))
+                        finish(.success(question: questionContent, answer: answerContent))
                     default:
                         finish(.failure(NSError(domain: "Question or Answer Content fetch failed", code: 2, userInfo: nil)))
                 }
