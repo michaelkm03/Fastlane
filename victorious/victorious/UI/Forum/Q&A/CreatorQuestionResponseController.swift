@@ -1,17 +1,21 @@
 import Foundation
 import VictoriousIOSSDK
 
+typealias QuestionAnswerPair = (Content, Content)
+
 /// A controller to handle receiving, sending, and presenting CreatorQuestionResponse events
 class CreatorQuestionResponseController {
+    
     private let dependencyManager: VDependencyManager
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
     }
     
-    func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((Result<(Content, Content)>) -> Void)? = nil) {
-        
-        
+    func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((OperationResult<QuestionAnswerPair>) -> Void)? = nil) {
+        QuestionAnswerPairFetchOperation(dependencyManager: dependencyManager, creatorQuestionResponse: creatorQuestionResponse)?.queue { result in
+            completion?(result)
+        }
     }
 }
 
@@ -21,7 +25,7 @@ private extension VDependencyManager {
     }
 }
 
-private class QuestionAnswerPairFetchOperation: AsyncOperation<(Content, Content)> {
+private class QuestionAnswerPairFetchOperation: AsyncOperation<QuestionAnswerPair> {
     private let dependencyManager: VDependencyManager
     private let creatorQuestionResponse: CreatorQuestionResponse
     
@@ -56,7 +60,16 @@ private class QuestionAnswerPairFetchOperation: AsyncOperation<(Content, Content
         return .background
     }
     
-    override func execute(_ finish: @escaping (OperationResult<(Content, Content)>) -> Void) {
-        
+    override func execute(_ finish: @escaping (OperationResult<QuestionAnswerPair>) -> Void) {
+        questionFetchOperation.queue { [weak self] questionResult in
+            self?.answerFetchOperation.queue { answerResult in
+                switch (questionResult, answerResult) {
+                    case (.success(let questionContent), .success(let answerContent)):
+                        finish(.success(questionContent, answerContent))
+                    default:
+                        finish(.failure(NSError(domain: "Question or Answer Content fetch failed", code: 2, userInfo: nil)))
+                }
+            }
+        }
     }
 }
