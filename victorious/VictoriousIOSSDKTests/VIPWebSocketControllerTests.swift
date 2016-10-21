@@ -1,11 +1,3 @@
-//
-//  VIPWebSocketControllerTests.swift
-//  victorious
-//
-//  Created by Sebastian Nystorm on 15/3/16.
-//  Copyright © 2016 Victorious. All rights reserved.
-//
-
 import XCTest
 @testable import VictoriousIOSSDK
 

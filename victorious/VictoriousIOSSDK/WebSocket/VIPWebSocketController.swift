@@ -1,11 +1,4 @@
-//
-//  VIPWebSocketController.swift
-//  victorious
-//
-//  Created by Sebastian Nystorm on 15/3/16.
-//  Copyright © 2016 Victorious. All rights reserved.
-//
-
+///
 /// The VIPWebSocketController is the one stop shop for talking and listening over a WebSocket.
 ///
 /// It features are:
@@ -14,8 +7,8 @@
 /// 3. Send messages over the WebSocket.
 /// 4. Forward messages using the Forum Event Chain.
 /// 5. It complies to the TemplateNetworkSource protocol so it can be instantiated through the template.
+///
 public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
-
     private struct Constants {
         static let forceDisconnectTimeout: TimeInterval = 2
     }
@@ -82,7 +75,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
         }
 
         pingTimer?.invalidate()
-        pingTimer = Timer.scheduledTimer(timeInterval: pingTimerInterval, target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: true)
+        pingTimer = Timer.scheduledTimer(timeInterval: pingTimerInterval, target: self, selector: #selector(sendPing), userInfo: nil, repeats: true)
         
         webSocket.connect()
     }
@@ -273,7 +266,7 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
 
 private extension WebSocket {
  
-    /// Everytime the token is invalidated (== everytime we drop the connection) we have a need to generate a new connection
+    /// Everytime the token is invalidated (= everytime we drop the connection) we have a need to generate a new connection
     /// and therefore also a new WebSocket instance. Since the token is appended to the URL.
     convenience init(url: URL, socketListenerQueue: DispatchQueue? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
         self.init(url: url, protocols: nil)

@@ -7,7 +7,6 @@ import Foundation
 /// specified separate so that there can be no confusion between them.
 ///
 public struct ServerCommand {
-
     // FUTURE: document params
     // Required
     let id: String
@@ -24,13 +23,13 @@ public struct ServerCommand {
             let id = json["id"].string,
             let functionName = json["functionName"].string,
             let timestamp = json["timestamp"].int64
-            else {
-                throw ResponseParsingError()
+        else {
+            throw ResponseParsingError()
         }
 
         self.id = id
         self.functionName = functionName
         self.timestamp = Timestamp(value: timestamp)
-        self.data = json["data"].string
+        data = json["data"].string
     }
 }
