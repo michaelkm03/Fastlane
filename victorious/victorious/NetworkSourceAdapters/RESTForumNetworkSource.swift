@@ -33,13 +33,14 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         NotificationCenter.default.addObserver(
             forName: .loggedInChanged,
             object: nil,
-            queue: nil) { [weak self] _ in
-                if VCurrentUser.user == nil {
-                    self?.tearDown()
-                }
-                else {
-                    self?.startPolling()
-                }
+            queue: nil
+        ) { [weak self] _ in
+            if VCurrentUser.user == nil {
+                self?.tearDown()
+            }
+            else {
+                self?.startPolling()
+            }
         }
     }
     
