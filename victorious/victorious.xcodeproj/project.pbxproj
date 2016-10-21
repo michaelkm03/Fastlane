@@ -965,6 +965,7 @@
 		BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
 		BE171D9B1868BE64004E5202 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7F1868BE64004E5202 /* CoreData.framework */; };
+		BF0098B31DB9656B0072F054 /* CreatorQuestionResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0098B21DB9656B0072F054 /* CreatorQuestionResponseController.swift */; };
 		BF01F3771D7892640066D9DC /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF01F3761D7892640066D9DC /* Result.swift */; };
 		BF20227E1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20227C1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift */; };
 		BF20227F1D00B9A4006B59C5 /* ContentUpvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */; };
@@ -1017,7 +1018,6 @@
 		BF5857EC1C920276007684FE /* MediaSearchMediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */; };
 		BF5BF6BB1D00F558009FE532 /* ContentUnupvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BA1D00F558009FE532 /* ContentUnupvoteRequestTests.swift */; };
 		BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */; };
-		BF5E4C761DB573E600BF5B77 /* PermanentMarker.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF5E4C751DB5717200BF5B77 /* PermanentMarker.ttf */; };
 		BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
 		BF6FCA351D832E1500DB43BC /* ToggleableImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6FCA341D832E1500DB43BC /* ToggleableImageButton.swift */; };
 		BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */; };
@@ -1346,6 +1346,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0372BE661C84FA56004950CF;
 			remoteInfo = "VictoriousIOSSDK-OSX";
+		};
+		6230215B1DADAC2A00F4690C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE171D751868BE64004E5202;
+			remoteInfo = victorious;
 		};
 		7AF9301E1CDA6F6800F02EDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1829,6 +1836,8 @@
 		621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommunityItemsFetchOperationTests.swift; path = Operations/CommunityItemsFetchOperationTests.swift; sourceTree = "<group>"; };
 		622103481C65354A00A77A73 /* LoginOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperationTests.swift; sourceTree = "<group>"; };
 		623021501DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "VDependencyManager+ButtonTrackingTests.swift"; path = "Managers/Dependencies/VDependencyManager+ButtonTrackingTests.swift"; sourceTree = "<group>"; };
+		623021561DADAC2A00F4690C /* victoriousUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6230215A1DADAC2A00F4690C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6230216C1DAEAF0900F4690C /* Feed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
 		6236F8751C36030000746476 /* TestRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestExecutor.swift; sourceTree = "<group>"; };
@@ -2529,6 +2538,7 @@
 		BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreatorTests.m; sourceTree = "<group>"; };
 		BE96750119E335060072E87A /* VUploadTaskInformationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskInformationTests.m; sourceTree = "<group>"; };
 		BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializerTests.m; sourceTree = "<group>"; };
+		BF0098B21DB9656B0072F054 /* CreatorQuestionResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatorQuestionResponseController.swift; path = "Q&A/CreatorQuestionResponseController.swift"; sourceTree = "<group>"; };
 		BF01F3761D7892640066D9DC /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		BF20227C1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRequest.swift; sourceTree = "<group>"; };
 		BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequest.swift; sourceTree = "<group>"; };
@@ -2570,7 +2580,6 @@
 		BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporterTests.swift; sourceTree = "<group>"; };
 		BF5BF6BA1D00F558009FE532 /* ContentUnupvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequestTests.swift; sourceTree = "<group>"; };
-		BF5E4C751DB5717200BF5B77 /* PermanentMarker.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = PermanentMarker.ttf; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarBadgeType.swift; sourceTree = "<group>"; };
 		BF6FCA341D832E1500DB43BC /* ToggleableImageButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ToggleableImageButton.swift; path = Button/ToggleableImageButton.swift; sourceTree = "<group>"; };
 		BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaAsset.swift; sourceTree = "<group>"; };
@@ -2969,6 +2978,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0372BE631C84FA56004950CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		623021531DADAC2A00F4690C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4152,7 +4168,6 @@
 				6728942F1BFA9874001146DB /* MuseoSans */,
 				036F383E1A0C4DE90014DF66 /* OpenSans */,
 				036F38411A0C4DE90014DF66 /* Oswald */,
-				BF5E4C731DB56EF500BF5B77 /* PermanentMarker */,
 				036F38441A0C4DE90014DF66 /* PlayfairDisplay */,
 				036F38471A0C4DE90014DF66 /* PTSans */,
 				036F384B1A0C4DE90014DF66 /* PTSerif */,
@@ -4466,6 +4481,15 @@
 			name = Dependencies;
 			sourceTree = "<group>";
 		};
+		623021571DADAC2A00F4690C /* victoriousUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6258C5581DB59F46005A79C2 /* UI */,
+				6230215A1DADAC2A00F4690C /* Info.plist */,
+			);
+			path = victoriousUITests;
+			sourceTree = "<group>";
+		};
 		623021651DAEAD5700F4690C /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -4497,6 +4521,13 @@
 				624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		6258C5581DB59F46005A79C2 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		6287BE0E1C7E871B0057D116 /* VIP */ = {
@@ -5182,10 +5213,11 @@
 				A7B844E61CB88D7B00CE02DE /* forum.json */,
 				F06FC1F41C973F8800A014C7 /* Forum.storyboard */,
 				A7250A2F1CA090BF00B5EAE6 /* Forum.swift */,
-				7956D41C1D2D724A00BC14AB /* StageShrinkingAnimator.swift */,
 				A73BA2D71C9394B6008168B5 /* ForumViewController.swift */,
 				7CC982221D02353100583B70 /* NavBar */,
+				BF0098B11DB961B20072F054 /* Q&A */,
 				A73BA29C1C938B68008168B5 /* Stage */,
+				7956D41C1D2D724A00BC14AB /* StageShrinkingAnimator.swift */,
 			);
 			path = Forum;
 			sourceTree = "<group>";
@@ -5700,6 +5732,7 @@
 				03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
+				623021571DADAC2A00F4690C /* victoriousUITests */,
 				25E91966E19A5C944598C064 /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -5717,6 +5750,7 @@
 				03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */,
 				A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */,
 				0372BE671C84FA56004950CF /* VictoriousIOSSDK.framework */,
+				623021561DADAC2A00F4690C /* victoriousUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5923,6 +5957,14 @@
 			path = AppSpecific;
 			sourceTree = "<group>";
 		};
+		BF0098B11DB961B20072F054 /* Q&A */ = {
+			isa = PBXGroup;
+			children = (
+				BF0098B21DB9656B0072F054 /* CreatorQuestionResponseController.swift */,
+			);
+			name = "Q&A";
+			sourceTree = "<group>";
+		};
 		BF2AE2B61CD280BF00A9967A /* GridStream */ = {
 			isa = PBXGroup;
 			children = (
@@ -5963,14 +6005,6 @@
 				BF2D257A1CED40CC0001A2AF /* ContentTests.swift */,
 			);
 			name = ViewedContent;
-			sourceTree = "<group>";
-		};
-		BF5E4C731DB56EF500BF5B77 /* PermanentMarker */ = {
-			isa = PBXGroup;
-			children = (
-				BF5E4C751DB5717200BF5B77 /* PermanentMarker.ttf */,
-			);
-			path = PermanentMarker;
 			sourceTree = "<group>";
 		};
 		BF7AF9C41D22F98500539D90 /* Error States */ = {
@@ -6576,6 +6610,24 @@
 			productReference = 0372BE671C84FA56004950CF /* VictoriousIOSSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		623021551DADAC2A00F4690C /* victoriousUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 623021621DADAC2A00F4690C /* Build configuration list for PBXNativeTarget "victoriousUITests" */;
+			buildPhases = (
+				623021521DADAC2A00F4690C /* Sources */,
+				623021531DADAC2A00F4690C /* Frameworks */,
+				623021541DADAC2A00F4690C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6230215C1DADAC2A00F4690C /* PBXTargetDependency */,
+			);
+			name = victoriousUITests;
+			productName = victoriousUITests;
+			productReference = 623021561DADAC2A00F4690C /* victoriousUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7EBF5271C2B8CA20080C7CF /* Build configuration list for PBXNativeTarget "victoriousPersistenceTests" */;
@@ -6658,7 +6710,7 @@
 			attributes = {
 				CLASSPREFIX = "";
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0800;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
@@ -6692,6 +6744,12 @@
 					};
 					0372BE661C84FA56004950CF = {
 						CreatedOnToolsVersion = 7.2.1;
+					};
+					623021551DADAC2A00F4690C = {
+						CreatedOnToolsVersion = 8.0;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
+						TestTargetID = BE171D751868BE64004E5202;
 					};
 					A7EBF51F1C2B8CA20080C7CF = {
 						CreatedOnToolsVersion = 7.1;
@@ -6753,6 +6811,7 @@
 				03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				0372BE661C84FA56004950CF /* VictoriousIOSSDK-OSX */,
 				A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */,
+				623021551DADAC2A00F4690C /* victoriousUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -6864,6 +6923,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		623021541DADAC2A00F4690C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7EBF51E1C2B8CA20080C7CF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6953,7 +7019,6 @@
 				67F231531CBD6134006BDBA5 /* ListMenuViewController.storyboard in Resources */,
 				03DE266B1B336E5D00C9F680 /* VDataCacheTests.cachedData in Resources */,
 				03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */,
-				BF5E4C761DB573E600BF5B77 /* PermanentMarker.ttf in Resources */,
 				D8D8129E1B13849E00E93B37 /* VModernLoginViewController.storyboard in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,
 				035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */,
@@ -7769,6 +7834,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		623021521DADAC2A00F4690C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7EBF51C1C2B8CA20080C7CF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8242,6 +8314,7 @@
 				F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */,
 				F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
+				BF0098B31DB9656B0072F054 /* CreatorQuestionResponseController.swift in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,
 				F087E5BC1D93B26700034146 /* TrayDataSource.swift in Sources */,
@@ -8499,6 +8572,11 @@
 			isa = PBXTargetDependency;
 			target = 0372BE661C84FA56004950CF /* VictoriousIOSSDK-OSX */;
 			targetProxy = 03C116C71C850E7E00F3F873 /* PBXContainerItemProxy */;
+		};
+		6230215C1DADAC2A00F4690C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE171D751868BE64004E5202 /* victorious */;
+			targetProxy = 6230215B1DADAC2A00F4690C /* PBXContainerItemProxy */;
 		};
 		7AF9301F1CDA6F6800F02EDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -10063,6 +10141,137 @@
 			};
 			name = Staging;
 		};
+		6230215D1DADAC2A00F4690C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Debug;
+		};
+		6230215E1DADAC2A00F4690C /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = QA;
+		};
+		6230215F1DADAC2A00F4690C /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Staging;
+		};
+		623021601DADAC2A00F4690C /* Stable */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Stable;
+		};
+		623021611DADAC2A00F4690C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ABHRJGEGKA;
+				INFOPLIST_FILE = victoriousUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8a58dac8-6d5a-46ec-a61e-55639901b5be";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/victoriousUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = victorious;
+			};
+			name = Release;
+		};
 		A7EBF5281C2B8CA20080C7CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C6219763AA8B046906BA06DD /* Pods-victoriousPersistenceTests.debug.xcconfig */;
@@ -10681,6 +10890,18 @@
 				0372BE6E1C84FA56004950CF /* Staging */,
 				0372BE6F1C84FA56004950CF /* Stable */,
 				0372BE701C84FA56004950CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		623021621DADAC2A00F4690C /* Build configuration list for PBXNativeTarget "victoriousUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6230215D1DADAC2A00F4690C /* Debug */,
+				6230215E1DADAC2A00F4690C /* QA */,
+				6230215F1DADAC2A00F4690C /* Staging */,
+				623021601DADAC2A00F4690C /* Stable */,
+				623021611DADAC2A00F4690C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

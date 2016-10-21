@@ -29,6 +29,19 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            forName: .loggedInChanged,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            if VCurrentUser.user == nil {
+                self?.tearDown()
+            }
+            else {
+                self?.startPolling()
+            }
+        }
     }
     
     // MARK: - Dependency manager
@@ -133,7 +146,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     func tearDown() {
-        // Nothing to tear down.
+        pollingTimer?.invalidate()
     }
     
     func addChildReceiver(_ receiver: ForumEventReceiver) {
