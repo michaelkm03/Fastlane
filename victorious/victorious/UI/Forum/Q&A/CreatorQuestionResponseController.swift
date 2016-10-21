@@ -10,12 +10,24 @@ class CreatorQuestionResponseController {
         self.dependencyManager = dependencyManager
     }
     
+    /// Completion block is only called when fetch is performed successfully
     func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((QuestionAnswerPair) -> Void)? = nil) {
-        CreatorQuestionResponseFetchOperation(dependencyManager: dependencyManager, creatorQuestionResponse: creatorQuestionResponse)?.queue { result in
+        guard let apiPath = dependencyManager.contentFetchAPIPath else {
+            Log.warning("No Content Fetch APIPath available.")
+            return
+        }
+        
+        CreatorQuestionResponseFetchOperation(apiPath: apiPath, creatorQuestionResponse: creatorQuestionResponse)?.queue { result in
             switch result {
                 case .success(let questionAnswerPair): completion?(questionAnswerPair)
                 case .cancelled, .failure(_): Log.warning("Question Answer Pair Fetching failed or cancelled")
             }
         }
+    }
+}
+
+private extension VDependencyManager {
+    var contentFetchAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "contentFetchURL")
     }
 }

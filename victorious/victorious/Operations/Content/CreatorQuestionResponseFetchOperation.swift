@@ -5,29 +5,15 @@ typealias QuestionAnswerPair = (question: Content, answer: Content)
 /// Basically extracts the question content ID and answer content ID and fetch both of them.
 /// Only reports success if both content fetch succeeded.
 class CreatorQuestionResponseFetchOperation: AsyncOperation<QuestionAnswerPair> {
-    private let dependencyManager: VDependencyManager
-    private let creatorQuestionResponse: CreatorQuestionResponse
-    
     private let questionFetchOperation: ContentFetchOperation
     private let answerFetchOperation: ContentFetchOperation
     
-    init?(dependencyManager: VDependencyManager, creatorQuestionResponse: CreatorQuestionResponse) {
-        self.dependencyManager = dependencyManager
-        self.creatorQuestionResponse = creatorQuestionResponse
-        
-        // Prepare the necessary information for content fetch
-        guard
-            let contentFetchAPIPath = dependencyManager.contentFetchAPIPath,
-            let currentUserID = VCurrentUser.user?.id
-        else {
-            Log.warning("Dependency Failure with contentFetchAPIPath: \(dependencyManager.contentFetchAPIPath) and currentUserID: \(VCurrentUser.user?.id)")
-            return nil
-        }
-        
+    init?(apiPath: APIPath, creatorQuestionResponse: CreatorQuestionResponse) {
         // Initialize content fetch operations for the question and the answer
         guard
-            let questionFetchOperation = ContentFetchOperation(apiPath: contentFetchAPIPath, currentUserID: String(currentUserID), contentID: creatorQuestionResponse.questionContentID),
-            let answerFetchOperation = ContentFetchOperation(apiPath: contentFetchAPIPath, currentUserID: String(currentUserID), contentID: creatorQuestionResponse.answerContentID)
+            let currentUserID = VCurrentUser.user?.id,
+            let questionFetchOperation = ContentFetchOperation(apiPath: apiPath, currentUserID: String(currentUserID), contentID: creatorQuestionResponse.questionContentID),
+            let answerFetchOperation = ContentFetchOperation(apiPath: apiPath, currentUserID: String(currentUserID), contentID: creatorQuestionResponse.answerContentID)
         else {
             Log.warning("Couldn't initialize question or answer operations")
             return nil
@@ -55,11 +41,5 @@ class CreatorQuestionResponseFetchOperation: AsyncOperation<QuestionAnswerPair> 
                 }
             }
         }
-    }
-}
-
-private extension VDependencyManager {
-    var contentFetchAPIPath: APIPath? {
-        return networkResources?.apiPath(forKey: "contentFetchURL")
     }
 }
