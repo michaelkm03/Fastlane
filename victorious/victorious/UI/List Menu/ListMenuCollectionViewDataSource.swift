@@ -44,23 +44,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
 
-        if let childDependency = dependencyManager.communityChildDependency {
-            communityDataSource = ListMenuSectionDataSource(
-                dependencyManager: childDependency,
-                cellConfiguration: { cell, item in
-                    cell.titleLabel.text = item.title
-                    cell.avatarView.isHidden = true
-                },
-                createOperation: { CommunityItemsFetchOperation(dependencyManager: childDependency) },
-                processOutput: { $0 },
-                section: .community
-            )
-            availableSections.append(.community)
-        }
-        else {
-            communityDataSource = nil
-        }
-
         if
             let childDependency = dependencyManager.creatorsChildDependency,
             let apiPath = childDependency.creatorsListAPIPath,
@@ -81,6 +64,23 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
         else {
             creatorsDataSource = nil
+        }
+
+        if let childDependency = dependencyManager.communityChildDependency {
+            communityDataSource = ListMenuSectionDataSource(
+                dependencyManager: childDependency,
+                cellConfiguration: { cell, item in
+                    cell.titleLabel.text = item.title
+                    cell.avatarView.isHidden = true
+                },
+                createOperation: { CommunityItemsFetchOperation(dependencyManager: childDependency) },
+                processOutput: { $0 },
+                section: .community
+            )
+            availableSections.append(.community)
+        }
+        else {
+            communityDataSource = nil
         }
 
         if
