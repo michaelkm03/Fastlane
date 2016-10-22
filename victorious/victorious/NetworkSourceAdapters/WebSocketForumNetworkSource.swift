@@ -35,11 +35,11 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         let deviceID = UIDevice.current.v_authorizationDeviceID
         webSocketController.setDeviceID(deviceID: deviceID)
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: nil) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(forName: .UIApplicationDidEnterBackground, object: nil, queue: nil) { [weak self] _ in
             self?.tearDown()
         }
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: nil) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: nil) { [weak self] _ in
             if self?.isSetUp == false && self?.childEventReceivers.isEmpty == false {
                 self?.setUp()
             }

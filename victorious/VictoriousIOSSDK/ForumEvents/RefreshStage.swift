@@ -25,11 +25,18 @@ public struct RefreshStage {
     public let stageMetaData: StageMetaData?
     
     public init?(json: JSON, serverTime: Timestamp? = nil) {
-        guard let contentID = json["content_id"].string else {
+        let sectionString = json["section"].string ?? "main_stage"
+        
+        guard
+            let contentID = json["content_id"].string,
+            let section = StageSection(section: sectionString)
+        else {
             return nil
         }
         
         self.contentID = contentID
+        self.section = section
+        
         if let metaData = json["meta_data"]["name"].string {
             stageMetaData = StageMetaData(title: metaData)
         }
@@ -49,18 +56,6 @@ public struct RefreshStage {
             self.startTime = startTime
         } else {
             self.startTime = nil
-        }
-
-        let section = json["section"].string ?? "main_stage"
-        
-        let lowerCasedSection = section.lowercased()
-        switch lowerCasedSection {
-            case "vip_stage":
-                self.section = .vip
-            case "main_stage":
-                self.section = .main
-            default:
-                return nil
         }
     }
 }

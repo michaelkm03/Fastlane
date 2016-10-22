@@ -28,4 +28,8 @@ class ImageOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
             isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
         }
     }
+    
+    override var intrinsicContentSize: CGSize {
+        return imageView?.intrinsicContentSize ?? super.intrinsicContentSize
+    }
 }

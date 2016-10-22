@@ -9,18 +9,27 @@
 import Foundation
 
 private struct Keys {
-    static let root                 = "to_client"
-    static let chat                 = "chat"
-    static let refreshStage         = "refresh"
-    static let serverTime           = "server_time"
-    static let type                 = "type"
-    static let error                = "error"
+    static let root = "to_client"
+    static let chat = "chat"
+    static let refreshStage = "refresh"
+    static let creatorQuestionResponse = "creator_answer"
+    static let serverTime = "server_time"
+    static let type  = "type"
+    static let error = "error"
 }
 
+/// The different types of web socket messages we can get from the backend
 private struct Types {
-    static let chatMessage          = "CHAT"
-    static let stageRefresh         = "REFRESH"
-    static let chatUserCount        = "CHAT_USERS"
+    /// A new piece of chat message to be displayed in the chat feed
+    static let chatMessage = "CHAT"
+    /// A new piece of content to be displayed on the stage
+    static let stageRefresh = "REFRESH"
+    /// A response sent by the creator to answer a fan's question in live chat.
+    /// The question will be displayed in a toast, and the creator's response goes to the stage.
+    /// - note: Video response will not be synced.
+    static let creatorQuestionResponse = "CREATOR_ANSWER"
+    /// An update to the total number of users chatting right now
+    static let chatUserCount = "CHAT_USERS"
 }
 
 // !!! BEWARE DRAGONS BELOW !!!
@@ -30,8 +39,8 @@ private struct Types {
 // If we get back a stage refresh message with a custom content id (specified below) we are to treat it as a close stage message.
 //
 private struct SocketClose {
-    static let contentIdKey         = "content_id"
-    static let magicKey             = "close socket"
+    static let contentIdKey = "content_id"
+    static let magicKey = "close socket"
 }
 
 protocol WebSocketEventDecoder {
@@ -77,6 +86,11 @@ extension WebSocketEventDecoder {
                 }
                 else if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
                     forumEvent = .refreshStage(refresh)
+                }
+            case Types.creatorQuestionResponse:
+                let answerJSON = rootNode[Keys.creatorQuestionResponse]
+                if let CreatorQuestionResponse = CreatorQuestionResponse(json: answerJSON) {
+                    forumEvent = .creatorQuestionResponse(CreatorQuestionResponse)
                 }
             case Types.chatUserCount:
                 if let chatUserCount = ChatUserCount(json: json[Keys.root], serverTime: serverTime) {

@@ -18,7 +18,7 @@ class ContentPreviewView: UIView {
         static let loadingColor = UIColor.white.withAlphaComponent(0.2)
         static let imageViewBlurEffectRadius: CGFloat = 12.0
         
-        static let vipMargins: CGFloat = 6
+        static let vipMargins: CGFloat = 5
         static let vipSize = CGSize(width: 30, height: 30)
         
         static let imageReloadThreshold = CGFloat(0.75)
@@ -122,8 +122,8 @@ class ContentPreviewView: UIView {
         if let vipButton = vipButton {
             vipButton.frame = CGRect(
                 origin: CGPoint(
-                    x: bounds.center.x - vipButton.intrinsicContentSize.width/2,
-                    y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins
+                    x: Constants.vipMargins,
+                    y: Constants.vipMargins
                 ),
                 size: vipButton.intrinsicContentSize
             )
@@ -152,7 +152,7 @@ class ContentPreviewView: UIView {
         spinner?.startAnimating()
         let userCanViewContent = VCurrentUser.user?.canView(content) == true
         gradientView.isHidden = userCanViewContent
-        vipButton?.isHidden = userCanViewContent
+        vipButton?.isHidden = !content.isVIPOnly
         
         setupImage(forContent: content)
         
