@@ -15,16 +15,20 @@ class CreatorQuestionResponseFetchOperationTests: XCTestCase {
         creatorQuestionResponse = CreatorQuestionResponse(questionContentID: "18181", answerContentID: "18182")
         
         LSNocilla.sharedInstance().start()
-        
-        stubRequest("GET", "https://vapi-dev.getvictorious.com/v1/content" as NSString)
     }
     
     override func tearDown() {
-        LSNocilla.sharedInstance().stop()
         super.tearDown()
+        
+        LSNocilla.sharedInstance().clearStubs()
+        LSNocilla.sharedInstance().stop()
     }
     
     func testInitializationSuccess() {
+        let expectation = self.expectation(description: "testInitializationSuccess")
+        stubRequest("GET", "https://vapi-dev.getvictorious.com/v1/content/18181/user/1016" as NSString)
+        stubRequest("GET", "https://vapi-dev.getvictorious.com/v1/content/18182/user/1016" as NSString)
+        
         guard let operation = CreatorQuestionResponseFetchOperation(apiPath: validAPIPath, creatorQuestionResponse: creatorQuestionResponse, currentUserID: currentUserID) else {
             XCTFail("Operation initialization failed")
             return
@@ -32,11 +36,16 @@ class CreatorQuestionResponseFetchOperationTests: XCTestCase {
         
         XCTAssertEqual(operation.executionQueue, .background)
         
-        operation.queue() { result in
+        operation.execute { result in
             switch result {
-                case .success(_), .cancelled: XCTFail("Operation shouldn't have been cancelled or succeeded because we stubbed the requests")
-                case .failure(let error): XCTAssertEqual((error as NSError).code, 2)
+                case .success(_), .cancelled:
+                    XCTFail("Operation shouldn't have been cancelled or succeeded because we stubbed the requests")
+                case .failure(let error):
+                    XCTAssertEqual((error as NSError).code, 2)
+                    expectation.fulfill()
             }
         }
+        
+        waitForExpectations(timeout: 2, handler: nil)
     }
 }
