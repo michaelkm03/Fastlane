@@ -12,12 +12,15 @@ class CreatorQuestionResponseController {
     
     /// Completion block is only called when fetch is performed successfully
     func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((QuestionAnswerPair) -> Void)? = nil) {
-        guard let apiPath = dependencyManager.contentFetchAPIPath else {
-            Log.warning("No Content Fetch APIPath available.")
+        guard
+            let apiPath = dependencyManager.contentFetchAPIPath,
+            let currentUserID = VCurrentUser.user?.id
+        else {
+            Log.warning("Missing Content Fetch APIPath or Current User ID")
             return
         }
         
-        CreatorQuestionResponseFetchOperation(apiPath: apiPath, creatorQuestionResponse: creatorQuestionResponse)?.queue { result in
+        CreatorQuestionResponseFetchOperation(apiPath: apiPath, creatorQuestionResponse: creatorQuestionResponse, currentUserID: currentUserID)?.queue { result in
             switch result {
                 case .success(let questionAnswerPair): completion?(questionAnswerPair)
                 case .cancelled, .failure(_): Log.warning("Question Answer Pair Fetching failed or cancelled")

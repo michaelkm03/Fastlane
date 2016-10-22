@@ -8,10 +8,9 @@ class CreatorQuestionResponseFetchOperation: AsyncOperation<QuestionAnswerPair> 
     private let questionFetchOperation: ContentFetchOperation
     private let answerFetchOperation: ContentFetchOperation
     
-    init?(apiPath: APIPath, creatorQuestionResponse: CreatorQuestionResponse) {
+    init?(apiPath: APIPath, creatorQuestionResponse: CreatorQuestionResponse, currentUserID: User.ID) {
         // Initialize content fetch operations for the question and the answer
         guard
-            let currentUserID = VCurrentUser.user?.id,
             let questionFetchOperation = ContentFetchOperation(apiPath: apiPath, currentUserID: String(currentUserID), contentID: creatorQuestionResponse.questionContentID),
             let answerFetchOperation = ContentFetchOperation(apiPath: apiPath, currentUserID: String(currentUserID), contentID: creatorQuestionResponse.answerContentID)
         else {
