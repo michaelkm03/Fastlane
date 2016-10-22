@@ -55,9 +55,9 @@ xcodebuild clean \
 xcodebuild GCC_TREAT_WARNINGS_AS_ERRORS=YES \
     test \
     DownloadTemplate=no \
-    SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
     -workspace victorious/victorious.xcworkspace \
     -scheme $SCHEME \
-    -destination "$DESTINATION"
+    -destination "$DESTINATION" \
+    -warnings-as-errors
 
 exit $?
