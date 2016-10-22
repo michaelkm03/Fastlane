@@ -3,14 +3,14 @@ import VictoriousIOSSDK
 
 /// A controller to handle receiving, sending, and presenting CreatorQuestionResponse events
 class CreatorQuestionResponseController {
-    
     private let dependencyManager: VDependencyManager
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
     }
     
-    /// Completion block is only called when fetch is performed successfully
+    /// Fetches the pair of content for a question and answer specified in the `creatorQuestionResponse` parameter.
+    /// Completion block is called when and only when both content fetches succeeded.
     func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((QuestionAnswerPair) -> Void)? = nil) {
         guard
             let apiPath = dependencyManager.contentFetchAPIPath,
