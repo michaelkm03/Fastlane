@@ -34,14 +34,14 @@ public class VIPWebSocketController: WebSocketDelegate, ForumNetworkSourceWebSoc
     internal let uniqueIdentificationMessage = UniqueIdentificationMessage()
 
     /// The designated way of getting a reference to the singleton instance with the default configuration.
-    public static let sharedInstance = VIPWebSocketController()
+    public static let shared = VIPWebSocketController()
 
     // MARK: Initialization
 
     /// Use this initializer only for testing purposes. Otherwise access the single instance through `sharedInstance`.
     ///
     /// - returns: Returns an instance of the VIPWebSocketController configured to the specified endpoint.
-    internal init(webSocket: WebSocket? = nil) {
+    init(webSocket: WebSocket? = nil) {
         self.webSocket = webSocket
     }
 
