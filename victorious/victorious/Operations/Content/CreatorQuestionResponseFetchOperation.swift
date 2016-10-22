@@ -1,3 +1,5 @@
+import VictoriousIOSSDK
+
 /// A pair of user question and creator response in live chat
 typealias QuestionAnswerPair = (question: Content, answer: Content)
 
