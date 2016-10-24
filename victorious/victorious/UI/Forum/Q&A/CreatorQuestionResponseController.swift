@@ -11,7 +11,7 @@ class CreatorQuestionResponseController {
     
     /// Fetches the pair of content for a question and answer specified in the `creatorQuestionResponse` parameter.
     /// Completion block is called when and only when both content fetches succeeded.
-    func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: ((QuestionAnswerPair) -> Void)? = nil) {
+    func fetch(creatorQuestionResponse: CreatorQuestionResponse, completion: @escaping (QuestionAnswerPair) -> Void) {
         guard
             let apiPath = dependencyManager.contentFetchAPIPath,
             let currentUserID = VCurrentUser.user?.id
@@ -22,7 +22,7 @@ class CreatorQuestionResponseController {
         
         CreatorQuestionResponseFetchOperation(apiPath: apiPath, creatorQuestionResponse: creatorQuestionResponse, currentUserID: currentUserID)?.queue { result in
             switch result {
-                case .success(let questionAnswerPair): completion?(questionAnswerPair)
+                case .success(let questionAnswerPair): completion(questionAnswerPair)
                 case .cancelled, .failure(_): Log.warning("Question Answer Pair Fetching failed or cancelled")
             }
         }
