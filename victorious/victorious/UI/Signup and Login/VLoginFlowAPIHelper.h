@@ -33,6 +33,7 @@
  *  The user has entered the passed in username and requested update.
  */
 - (void)setUsername:(NSString *)username
+        displayName:(NSString *)displayName
          completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**

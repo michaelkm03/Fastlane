@@ -458,7 +458,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
 
-- (void)setUsername:(NSString *)username completion:(void (^)(BOOL, NSError *))completion
+- (void)setUsername:(NSString *)username displayName:(NSString *)displayName completion:(void (^)(BOOL, NSError *))completion
 {
     if (self.actionsDisabled)
     {
@@ -466,8 +466,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
     
     __weak typeof(self) welf = self;
-    [self.loginFlowHelper setUsername:username
-                           completion:^(BOOL success, NSError *error)
+    [self.loginFlowHelper setUsername:username displayName:displayName completion:^(BOOL success, NSError *error)
      {
          completion(success, error);
          
