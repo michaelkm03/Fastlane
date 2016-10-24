@@ -27,7 +27,7 @@ final class ContentFetchOperation: AsyncOperation<Content> {
     private let request: ContentFetchRequest
     
     override var executionQueue: Queue {
-        return .main
+        return .background
     }
     
     override func execute(_ finish: @escaping (_ result: OperationResult<Content>) -> Void) {

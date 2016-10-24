@@ -427,6 +427,8 @@
 		670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */; };
 		670B28C71DB7F42F0012907E /* CreatorQuestionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */; };
 		670B28C91DB7F47F0012907E /* CreatorQuestionResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B28C81DB7F47F0012907E /* CreatorQuestionResponseTests.swift */; };
+		670C950D1DBAD441001D8285 /* CreatorQuestionResponseFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C950C1DBAD441001D8285 /* CreatorQuestionResponseFetchOperation.swift */; };
+		670C950F1DBADBFF001D8285 /* CreatorQuestionResponseFetchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C950E1DBADBFF001D8285 /* CreatorQuestionResponseFetchOperationTests.swift */; };
 		671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
@@ -1871,6 +1873,8 @@
 		670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = InterstitialAlertViewController.swift; path = "Custom Alert Views/InterstitialAlertViewController.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		670B28C61DB7F42F0012907E /* CreatorQuestionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatorQuestionResponse.swift; path = ForumEvents/CreatorQuestionResponse.swift; sourceTree = "<group>"; };
 		670B28C81DB7F47F0012907E /* CreatorQuestionResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorQuestionResponseTests.swift; sourceTree = "<group>"; };
+		670C950C1DBAD441001D8285 /* CreatorQuestionResponseFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorQuestionResponseFetchOperation.swift; sourceTree = "<group>"; };
+		670C950E1DBADBFF001D8285 /* CreatorQuestionResponseFetchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorQuestionResponseFetchOperationTests.swift; sourceTree = "<group>"; };
 		671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
@@ -4720,6 +4724,7 @@
 				7A1DECA81D80E00C003F5C37 /* ContentUpvoteOperation.swift */,
 				7A1DECAA1D80E00C003F5C37 /* ShowShareContentOperation.swift */,
 				7A1DECAB1D80E00C003F5C37 /* StageContentFetchOperation.swift */,
+				670C950C1DBAD441001D8285 /* CreatorQuestionResponseFetchOperation.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -5411,6 +5416,7 @@
 			children = (
 				6236F8771C36037200746476 /* AccountCreateOperationTests.swift */,
 				678C43C61C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift */,
+				670C950E1DBADBFF001D8285 /* CreatorQuestionResponseFetchOperationTests.swift */,
 				A7C192B11C9220A000E5EB00 /* GIFSearchOperationTests.swift */,
 				622103481C65354A00A77A73 /* LoginOperationTests.swift */,
 				A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */,
@@ -7861,6 +7867,7 @@
 				A7D716921C53174900F45977 /* MockPagination.swift in Sources */,
 				624E39961C6AF153004E0C8E /* TestVideoPlayer.swift in Sources */,
 				A722D9441C6E9836003C06C5 /* LoginSuccessOperationTests.swift in Sources */,
+				670C950F1DBADBFF001D8285 /* CreatorQuestionResponseFetchOperationTests.swift in Sources */,
 				BF3CD88E1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift in Sources */,
 				A7E8CF2A1C90B0B600D126BF /* MockPurchaseManager.swift in Sources */,
 				67FAC0BA1C4083370051D47E /* MockErrorHandler.swift in Sources */,
@@ -8105,6 +8112,7 @@
 				7A1DECCD1D80E075003F5C37 /* StoredLoginOperation.swift in Sources */,
 				6780BD601D244DAD003F8141 /* VRootViewController.swift in Sources */,
 				A72C86461C977FF500E97D4F /* RequestContext+Environment.swift in Sources */,
+				670C950D1DBAD441001D8285 /* CreatorQuestionResponseFetchOperation.swift in Sources */,
 				7A85F1721D59251900C2B7F3 /* VideoBackground.swift in Sources */,
 				7A5519EC1D24775900CD6BCF /* ContentMediaSize.swift in Sources */,
 				A72C864E1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift in Sources */,
