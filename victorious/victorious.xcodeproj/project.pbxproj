@@ -10603,6 +10603,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 3.0;
@@ -10776,6 +10777,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
+				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
