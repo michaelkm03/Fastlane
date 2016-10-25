@@ -32,6 +32,16 @@ public struct Timestamp: Comparable, CustomStringConvertible {
         self.init(value: Int64(date.timeIntervalSince1970 * 1000.0))
     }
     
+    /// A timestamp one second earlier.
+    public var predecessor: Timestamp {
+        return Timestamp(value: value - 1)
+    }
+    
+    /// A timestamp one second later.
+    public var successor: Timestamp {
+        return Timestamp(value: value + 1)
+    }
+    
     // MARK: - Accessing the value
     
     /// The timestamp's millisecond integer value.
