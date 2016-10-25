@@ -204,10 +204,11 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
     /// Returns the range of timestamps needed to load new content for `loadingType`.
     ///
     private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Timestamp, toTime: Timestamp) {
+        // Backend builds pages of content based on fromTime, so that value should always be the time "index" and toTime the direction that we want to fetch in.
         let now = Timestamp()
         let (newerTime, olderTime) = startTimes ?? (now, now)
         switch loadingType {
-            case .refresh: return (fromTime: olderTime, toTime: Timestamp(value: 0))
+            case .refresh: return (fromTime: newerTime, toTime: Timestamp(value: 0))
             case .newer: return (fromTime: newestTimestamp ?? newerTime, toTime: now)
             case .older: return (fromTime: oldestTimestamp ?? olderTime, toTime: Timestamp(value: 0))
         }
