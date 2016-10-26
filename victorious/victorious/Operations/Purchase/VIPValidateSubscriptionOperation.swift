@@ -51,7 +51,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     override func execute(_ finish: @escaping (_ result: OperationResult<VIPStatus>) -> Void) {
         guard let request = request else {
             if shouldForceSuccess {
-                let status = VIPStatus(isVIP: true, purchasedProductIdentifier: nil)
+                let status = VIPStatus(isVIP: true)
                 updateUser(status: status)
                 finish(.success(status))
             }
@@ -71,7 +71,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
                 
                 case .failure(let error):
                     if self?.shouldForceSuccess == true {
-                        let status = VIPStatus(isVIP: true, purchasedProductIdentifier: nil)
+                        let status = VIPStatus(isVIP: true)
                         self?.updateUser(status: status)
                         finish(.success(status))
                     } else {

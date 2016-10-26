@@ -20,7 +20,7 @@ public struct VIPStatus {
         self.purchasedProductIdentifier = json["current_sku"].string
     }
     
-    public init(isVIP: Bool, purchasedProductIdentifier: String?) {
+    public init(isVIP: Bool, purchasedProductIdentifier: String? = nil) {
         self.isVIP = isVIP
         self.purchasedProductIdentifier = purchasedProductIdentifier
     }
