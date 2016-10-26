@@ -34,12 +34,13 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
 
     // MARK: - Initializing
 
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: TimeInterval = 1.0, createOperation: @escaping (_ apiPath: APIPath) -> ItemOperation?, processOutput: @escaping (_ output: ItemOperation.Output) -> [Item]) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: TimeInterval = 1.0, startTime: Timestamp? = nil, createOperation: @escaping (_ apiPath: APIPath) -> ItemOperation?, processOutput: @escaping (_ output: ItemOperation.Output) -> [Item]) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.throttleTime = throttleTime
         self.createOperation = createOperation
         self.processOutput = processOutput
+        startTimes = startTime.map { ($0.predecessor, $0.successor) }
     }
 
     // MARK: - Configuration
@@ -64,6 +65,9 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
 
     /// A function that converts the output of the data source's operation into a list of items.
     private let processOutput: (_ output: ItemOperation.Output) -> [Item]
+    
+    /// The timestamps around which the first fetch of items will be based.
+    let startTimes: (older: Timestamp, newer: Timestamp)?
 
     /// The operation that is currently loading items, if any.
     private var currentOperation: ItemOperation?
@@ -187,13 +191,6 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
 
     private func processedAPIPath(for loadingType: PaginatedLoadingType) -> APIPath? {
         let (fromTime, toTime) = paginationTimestamps(for: loadingType)
-
-        // The from-time should always come after the to-time.
-        guard fromTime > toTime else {
-            assertionFailure("Generated invalid pagination timestamps.")
-            return nil
-        }
-
         var processedAPIPath = apiPath
         processedAPIPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
         processedAPIPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
@@ -202,15 +199,14 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
 
     /// Returns the range of timestamps needed to load new content for `loadingType`.
     ///
-    /// - NOTE: `fromTime` will always be greater than `toTime` to match the API's pagination conventions.
-    ///
     private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Timestamp, toTime: Timestamp) {
+        // Backend builds pages of content based on fromTime, so that value should always be the time "index" and toTime the direction that we want to fetch in.
         let now = Timestamp()
-
+        let (newerTime, olderTime) = startTimes ?? (now, now)
         switch loadingType {
-            case .refresh: return (fromTime: now, toTime: Timestamp(value: 0))
-            case .newer: return (fromTime: now, toTime: newestTimestamp ?? Timestamp(value: 0))
-            case .older: return (fromTime: oldestTimestamp ?? now, toTime: Timestamp(value: 0))
+            case .refresh: return (fromTime: newerTime, toTime: Timestamp(value: 0))
+            case .newer: return (fromTime: newestTimestamp ?? newerTime, toTime: now)
+            case .older: return (fromTime: oldestTimestamp ?? olderTime, toTime: Timestamp(value: 0))
         }
     }
 
@@ -221,19 +217,19 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
         if let timestamp = items.reduce(nil, { timestamp, item in
             min(timestamp ?? Timestamp.max, item.paginationTimestamp)
         }) {
-            return Timestamp(value: timestamp.value - 1)
+            return timestamp.predecessor
         }
-
+        
         return nil
     }
-
+    
     private var newestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, { timestamp, item in
             max(timestamp ?? Timestamp(value: 0), item.paginationTimestamp)
         }) {
-            return Timestamp(value: timestamp.value + 1)
+            return timestamp.successor
         }
-
+        
         return nil
     }
 }
