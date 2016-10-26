@@ -34,17 +34,13 @@ class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> w
 
     // MARK: - Initializing
 
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: TimeInterval = 1.0, createOperation: @escaping (_ apiPath: APIPath) -> ItemOperation?, processOutput: @escaping (_ output: ItemOperation.Output) -> [Item], startTime: Timestamp? = nil) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: TimeInterval = 1.0, startTime: Timestamp? = nil, createOperation: @escaping (_ apiPath: APIPath) -> ItemOperation?, processOutput: @escaping (_ output: ItemOperation.Output) -> [Item]) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.throttleTime = throttleTime
         self.createOperation = createOperation
         self.processOutput = processOutput
-        if let startTime = startTime {
-            startTimes = (startTime.predecessor, startTime.successor)
-        } else {
-            startTimes = nil
-        }
+        startTimes = startTime.map { ($0.predecessor, $0.successor) }
     }
 
     // MARK: - Configuration
