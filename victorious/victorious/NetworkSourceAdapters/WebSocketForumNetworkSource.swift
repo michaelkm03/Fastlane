@@ -16,9 +16,9 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         static let appIdExpander = "%%APP_ID%%"
         static let tokenExpander = "%%AUTH_TOKEN%%"
     }
-    
-    private var webSocketController = WebSocketController.sharedInstance
-    
+
+    private var webSocketController = VIPWebSocketController.shared
+
     private let dependencyManager: VDependencyManager
     
     // MARK: - Initialization

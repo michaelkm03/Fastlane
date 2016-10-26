@@ -50,12 +50,12 @@ public enum WebSocketError: Error, Equatable, CustomStringConvertible {
 
     /// Creates a WebSocketError from JSON, the `didDisconnect` flag is used to distinguish between error messages originating
     /// from a closed connection. The flag is needed so we can distinguish from error messages terminating the connection.
-    public init?(json: JSON, didDisconnect: Bool) {
+    public init?(json: JSON, didDisconnect: Bool = false) {
         guard
             let message = json["message"].string,
             let code = json["code"].int
         else {
-                return nil
+            return nil
         }
 
         if didDisconnect {
