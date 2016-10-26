@@ -72,7 +72,7 @@
                completion:(void(^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion;
 
 /**
- *  The user has entered an appropriate username.
+ *  The user has entered an appropriate username / display name.
  */
 - (void)setUsername:(NSString *)username displayName:(NSString *)displayName completion:(void (^)(BOOL, NSError *))completion;
 
