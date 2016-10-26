@@ -350,6 +350,8 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
+    BOOL foundValidProductToRestore = NO;
+    
     for ( SKPaymentTransaction *transaction in transactions )
     {
         switch ( transaction.transactionState )
@@ -366,13 +368,10 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
             case SKPaymentTransactionStateRestored:
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 
-                // If our active SKUs contains the transaction's product identifier, then proceed with the restore.
                 if ([self.fetchedProducts.allKeys containsObject:transaction.payment.productIdentifier])
                 {
-                    [self purchasesDidRestore];
+                    foundValidProductToRestore = true;
                 }
-                // Otherwise, don't do anything and a fail to restore status will be reported after all the transactions are processed.
-                // - see: - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
                 break;
                 
             case SKPaymentTransactionStatePurchasing:
@@ -381,6 +380,15 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
             default:
                 break;
         }
+    }
+    
+    if (foundValidProductToRestore)
+    {
+        [self purchasesDidRestore];
+    }
+    else
+    {
+        [self purchasesDidFailToRestoreWithError:[NSError errorWithDomain:@"Restored transactions don't match active SKUs, or no transactions are restored at all" code:1 userInfo:nil]];
     }
 }
 
@@ -415,16 +423,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error
 {
     [self purchasesDidFailToRestoreWithError:error];
-}
-
-/// Sent when all transactions from the user's purchase history have successfully been added back to the queue.
-- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
-{
-    // By the time we finished processing all the restored transactions, if our `activePurchaseRestore` has not been nil'ed out yet, our restore has failed.
-    if (self.activePurchaseRestore != nil)
-    {
-        [self purchasesDidFailToRestoreWithError:[NSError errorWithDomain:@"Restored transactions don't match active SKUs, or no transactions are restored at all" code:1 userInfo:nil]];
-    }
 }
 
 @end
