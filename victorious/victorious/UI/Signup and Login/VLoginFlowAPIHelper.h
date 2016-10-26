@@ -30,9 +30,10 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
- *  The user has entered the passed in username and requested update.
+ *  The user has entered their username / display name.
  */
 - (void)setUsername:(NSString *)username
+        displayName:(NSString *)displayName
          completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**

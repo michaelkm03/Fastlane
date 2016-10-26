@@ -114,7 +114,7 @@ static NSString * const kUsernameAlreadyTakenErrorMessage = @"username not avail
         
         NSString *username = [self.nameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        [self.delegate setUsername:username completion:^(BOOL success, NSError *error) {
+        [self.delegate setUsername:username displayName:username completion:^(BOOL success, NSError *error) {
             if ([error.localizedDescription isEqualToString:kUsernameAlreadyTakenErrorMessage])
             {
                 [self.nameField showInvalidText:NSLocalizedString(@"UsernameTaken", @"") animated:YES shake:YES forced:YES];
