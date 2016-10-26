@@ -6776,9 +6776,6 @@
 							com.apple.Maps.iOS = {
 								enabled = 0;
 							};
-							com.apple.Push = {
-								enabled = 0;
-							};
 						};
 					};
 					BE171D951868BE64004E5202 = {
