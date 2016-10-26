@@ -36,12 +36,12 @@
 - (void)setSubscriptionImage:(UIImage *)image title:(NSString *)title localizedPrice:(NSString *)localizedPrice
 {
     self.productImageView.image = image;
-    self.productTitle.attributedText = [[NSAttributedString alloc] initWithString:title attributes:self.titleAttributes];
+    self.productTitle.attributedText = [[NSAttributedString alloc] initWithString:title ?: @"Product" attributes:self.titleAttributes];
     
     NSString *description = [NSString stringWithFormat:NSLocalizedString(@"SubscriptionDescriptionNoDateFormat", comment:nil), localizedPrice];
     NSMutableAttributedString *descriptionAttributedText = [[NSMutableAttributedString alloc] initWithString:description
                                                                                                   attributes:self.descriptionAttributes];
-    NSRange priceRange = [description rangeOfString:localizedPrice];
+    NSRange priceRange = [description rangeOfString:localizedPrice ?: @"Price"];
     [descriptionAttributedText setAttributes:self.priceAttributes range:priceRange];
     self.productDescription.attributedText = descriptionAttributedText;
 }

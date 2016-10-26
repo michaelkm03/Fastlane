@@ -206,7 +206,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (VProduct *)subscriptionProduct
 {
-    NSString *productIdentifier = [self.dependencyManager vipSubscription].productIdentifier;
+    NSString *productIdentifier = VCurrentUser.subscribedProductIdentifier;
     if ( productIdentifier != nil )
     {
         // We don't want to check `purchasedProductIdentifiers` because subscriptions do not

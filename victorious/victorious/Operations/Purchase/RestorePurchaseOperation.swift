@@ -23,7 +23,7 @@ final class RestorePurchasesOperation: AsyncOperation<Void> {
     
     override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         purchaseManager.restorePurchasesSuccess(
-            { results in
+            { _ in
                 // Force success because we have to deliver the product even if the sever fails for any reason
                 VIPValidateSubscriptionOperation(apiPath: self.validationAPIPath, shouldForceSuccess: true)?.rechainAfter(self).queue()
                 finish(.success())
