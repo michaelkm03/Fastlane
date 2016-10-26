@@ -10,15 +10,18 @@ import Foundation
 
 public struct VIPStatus {
     public let isVIP: Bool
+    public let purchasedProductIdentifier: String?
     
     public init?(json: JSON) {
         guard let isVIP = json["active"].bool else {
             return nil
         }
         self.isVIP = isVIP
+        self.purchasedProductIdentifier = json["current_sku"].string
     }
     
-    public init(isVIP: Bool) {
+    public init(isVIP: Bool, purchasedProductIdentifier: String? = nil) {
         self.isVIP = isVIP
+        self.purchasedProductIdentifier = purchasedProductIdentifier
     }
 }

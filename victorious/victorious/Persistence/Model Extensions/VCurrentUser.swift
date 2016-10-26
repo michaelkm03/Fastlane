@@ -70,4 +70,8 @@ extension VCurrentUser {
     static var completedProfile: NSNumber? {
         return user?.completedProfile as NSNumber?
     }
+    
+    static var subscribedProductIdentifier: String? {
+        return user?.vipStatus?.purchasedProductIdentifier
+    }
 }
