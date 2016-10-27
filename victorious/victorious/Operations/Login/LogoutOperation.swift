@@ -22,7 +22,7 @@ class LogoutOperation: AsyncOperation<Void> {
     
     // MARK: - Initializing
     
-    fileprivate let dependencyManager: VDependencyManager?
+    private let dependencyManager: VDependencyManager?
     
     override var executionQueue: Queue {
         return .background
@@ -35,7 +35,7 @@ class LogoutOperation: AsyncOperation<Void> {
             return
         }
         
-        RequestOperation(request: LogoutRequest()).queue { [weak self] result in
+        RequestOperation(request: LogoutRequest()).queue { result in
             InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
             
             UserDefaults.standard.removeObject(forKey: kLastLoginTypeUserDefaultsKey)
@@ -46,9 +46,6 @@ class LogoutOperation: AsyncOperation<Void> {
             FBSDKLoginManager().logOut()
             
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidLogOut)
-            
-            // Try to reset the network resource token.
-            self?.dependencyManager?.forumNetworkSource?.tearDown()
             
             // And finally, clear the user.  Don't do this early because
             // some of the stuff above requires knowing the current user

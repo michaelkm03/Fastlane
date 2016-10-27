@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 
 /// A view controller that displays a side-scrolling single-row of gifs that play in-line
 class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LoadingCancellableViewDelegate {
-    fileprivate struct Constants {
+    private struct Constants {
         static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         static let interItemSpace = CGFloat(2)
     }
@@ -28,9 +28,9 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         return dataSource
     }()
     
-    @IBOutlet fileprivate(set) var collectionView: UICollectionView!
+    @IBOutlet private(set) var collectionView: UICollectionView!
     
-    fileprivate var dependencyManager: VDependencyManager!
+    private var dependencyManager: VDependencyManager!
     
     static func new(withDependencyManager dependencyManager: VDependencyManager) -> GIFTrayViewController {
         let tray = GIFTrayViewController.v_initialViewControllerFromStoryboard() as GIFTrayViewController

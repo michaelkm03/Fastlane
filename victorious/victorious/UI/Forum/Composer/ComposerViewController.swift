@@ -225,7 +225,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
 
-    var activeFeedDelegate: ActiveFeedDelegate?
+    weak var activeFeedDelegate: ActiveFeedDelegate?
 
     var text: String {
         get {
@@ -747,7 +747,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func composerAttachmentTabBar(_ composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem, fromButton button: UIButton) {
         let macroReplacement = activeFeedDelegate?.activeFeed.roomID.map { ["%%ROOM_ID%%": $0] }
-        navigationItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with: macroReplacement)
+        navigationItem.dependencyManager.track(.tap, trackingKey: VDependencyManager.defaultTrackingKey, macroReplacements: macroReplacement)
 
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
@@ -937,7 +937,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         do {
             let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: imageType.fileExtension)
             
-            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl, source: nil, size: image.imageObject.size)
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl as NSURL, source: nil, size: image.imageObject.size)
             if let pastedImageAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
                 selectedAsset = pastedImageAsset
                 

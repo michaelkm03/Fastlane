@@ -3,7 +3,7 @@
 # Runs unit and automation tests of the app built for a device in the specific scheme and configuration.
 # Sets up a simple python server to receive POSTs from the UIAutomationTests target that collections test summary data.
 # Uses collected test summary data to update the UI Test Automation page of the VictoriousIOS wiki.
-# See https://github.com/TouchFrame/VictoriousiOS/wiki/UI-Automation-Tests
+# See https://github.com/Victorious/VictoriousiOS/wiki/UI-Automation-Tests
 ###########
 
 SCHEME=$1
@@ -53,9 +53,9 @@ xcodebuild clean \
 
 # Test
 xcodebuild GCC_TREAT_WARNINGS_AS_ERRORS=YES \
+    SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
     test \
     DownloadTemplate=no \
-    SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
     -workspace victorious/victorious.xcworkspace \
     -scheme $SCHEME \
     -destination "$DESTINATION"

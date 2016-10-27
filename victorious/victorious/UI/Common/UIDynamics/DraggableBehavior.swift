@@ -37,10 +37,10 @@ class DraggableBehavior: UIDynamicBehavior {
        var resistance = CGFloat(10)
     }
 
-    fileprivate var item: UIDynamicItem
-    fileprivate var attachmentBehavior: UIAttachmentBehavior?
-    fileprivate var itemBehavior: UIDynamicItemBehavior?
-    fileprivate var parameters: Parameters
+    private var item: UIDynamicItem
+    private var attachmentBehavior: UIAttachmentBehavior?
+    private var itemBehavior: UIDynamicItemBehavior?
+    private var parameters: Parameters
 
     /// Initialize with a `UIDynamicItem` which will be the item dragged around on the screen. 
     /// Pass in a `Parameters` struct in order to tweak the values that feeds into the physics engine.
@@ -51,7 +51,7 @@ class DraggableBehavior: UIDynamicBehavior {
         setup()
     }
 
-    fileprivate func setup() {
+    private func setup() {
         let attachmentBehavior = UIAttachmentBehavior(item: item, attachedToAnchor: CGPoint.zero)
         attachmentBehavior.frequency = parameters.frequency
         attachmentBehavior.damping = parameters.damping

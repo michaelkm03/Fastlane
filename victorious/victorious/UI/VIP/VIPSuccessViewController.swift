@@ -26,7 +26,7 @@ class VIPSuccessViewController: UIViewController {
     private let maxHeadlineHeight = CGFloat(120)
     private let maxDetailHeight = CGFloat(120)
     
-    fileprivate var dependencyManager: VDependencyManager! {
+    private var dependencyManager: VDependencyManager! {
         didSet {
             updateSubviewContents()
         }
@@ -58,7 +58,7 @@ class VIPSuccessViewController: UIViewController {
     
     // MARK: - Subview population
     
-    fileprivate func updateSubviewContents() {
+    private func updateSubviewContents() {
         guard isViewLoaded else {
             return
         }
@@ -94,7 +94,7 @@ class VIPSuccessViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction fileprivate func onConfirm() {
+    @IBAction private func onConfirm() {
         delegate?.successViewControllerFinished(self)
     }
 }

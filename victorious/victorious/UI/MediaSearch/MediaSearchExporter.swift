@@ -13,8 +13,8 @@ import VictoriousIOSSDK
 /// to a file using asynchronous operations.
 class MediaSearchExporter {
     
-    fileprivate let mediaSearchResult: MediaSearchResult
-    fileprivate let uuidString = UUID().uuidString
+    private let mediaSearchResult: MediaSearchResult
+    private let uuidString = UUID().uuidString
     
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/
     init(mediaSearchResult: MediaSearchResult) {
@@ -34,7 +34,7 @@ class MediaSearchExporter {
         cleanupTempFile()
     }
     
-    fileprivate(set) var cancelled: Bool = false
+    private(set) var cancelled: Bool = false
     
     /// For the provided MediaSearchResult, downloads its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.

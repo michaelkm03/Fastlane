@@ -37,9 +37,9 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         return dataSource
     }()
     
-    @IBOutlet fileprivate(set) var collectionView: UICollectionView!
+    @IBOutlet private(set) var collectionView: UICollectionView!
     
-    fileprivate var dependencyManager: VDependencyManager!
+    private var dependencyManager: VDependencyManager!
     
     static func new(withDependencyManager dependencyManager: VDependencyManager) -> StickerTrayViewController {
         let tray = StickerTrayViewController.v_initialViewControllerFromStoryboard() as StickerTrayViewController

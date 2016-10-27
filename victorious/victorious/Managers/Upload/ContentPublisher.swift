@@ -47,7 +47,7 @@ class ContentPublisher {
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Configuration
     
@@ -115,7 +115,7 @@ class ContentPublisher {
         pendingItems = []
     }
     
-    fileprivate func publishNextContent() {
+    private func publishNextContent() {
         guard let index = indexOfContent(withState: .waiting) else {
             return
         }
@@ -237,12 +237,12 @@ class ContentPublisher {
     // MARK: - Index of Queue
     
     /// Returns the first content in the queue that has the given `state`.
-    fileprivate func indexOfContent(withState state: ContentCreationState) -> Int? {
+    private func indexOfContent(withState state: ContentCreationState) -> Int? {
         return pendingItems.index { $0.creationState == state }
     }
     
     /// Returns the index of the specified content
-    fileprivate func index(of chatFeedContent: ChatFeedContent) -> Int? {
+    private func index(of chatFeedContent: ChatFeedContent) -> Int? {
         return pendingItems.index { $0.matches(chatFeedContent) }
     }
 }

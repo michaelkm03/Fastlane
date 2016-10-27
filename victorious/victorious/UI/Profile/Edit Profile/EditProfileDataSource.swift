@@ -14,8 +14,8 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     private let tableView: UITableView
     let nameAndLocationCell: DisplaynameLocationAvatarCell
     let aboutMeCell: AboutMeTextCell
-    fileprivate var newAvatarFileURL: URL?
-    fileprivate var user: UserModel {
+    private var newAvatarFileURL: URL?
+    private var user: UserModel {
         didSet {
             updateUI()
             if let currentUser = user as? User {
@@ -110,12 +110,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     // MARK: - Misc Private Funcitons
     
-    fileprivate func updateUI() {
+    private func updateUI() {
         nameAndLocationCell.populate(withUser: user)
         aboutMeCell.tagline = user.tagline
     }
     
-    fileprivate func configureNameAndLocationCell(_ nameCell: DisplaynameLocationAvatarCell) {
+    private func configureNameAndLocationCell(_ nameCell: DisplaynameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
         }
@@ -125,7 +125,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         nameCell.dependencyManager = dependencyManager
     }
     
-    fileprivate func configueAboutMeCell(_ aboutMeCell: AboutMeTextCell) {
+    private func configueAboutMeCell(_ aboutMeCell: AboutMeTextCell) {
         // Support resizing
         aboutMeCell.onDesiredHeightChangeClosure = { [weak self] height in
             self?.tableView.beginUpdates()
@@ -136,7 +136,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
 }
 
-fileprivate extension String {
+private extension String {
     var isValidUserName: Bool {
         let regex = "\\A\\w+\\z"
         let test = NSPredicate(format:"SELF MATCHES %@", regex)

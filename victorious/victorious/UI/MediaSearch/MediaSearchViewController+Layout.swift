@@ -79,18 +79,18 @@ extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
     
     // MARK: - Private
     
-    fileprivate func isLastSection( _ section: Int ) -> Bool {
+    private func isLastSection( _ section: Int ) -> Bool {
         let numSections = collectionView.numberOfSections
         return section == numSections - 1
     }
     
-    fileprivate func shouldShowFooter( _ section: Int ) -> Bool {
+    private func shouldShowFooter( _ section: Int ) -> Bool {
         let numSections = collectionView.numberOfSections
         let output = numSections > 1 && self.isLastSection(section)
         return output
     }
     
-    fileprivate func shouldShowHeader( _ section: Int ) -> Bool {
+    private func shouldShowHeader( _ section: Int ) -> Bool {
         return section == 0
     }
 }

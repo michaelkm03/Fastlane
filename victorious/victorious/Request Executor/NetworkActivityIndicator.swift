@@ -10,9 +10,9 @@ import Foundation
 
 open class NetworkActivityIndicator {
     
-    fileprivate(set) var activityCount: Int = 0
+    private(set) var activityCount: Int = 0
     
-    fileprivate static var instance = NetworkActivityIndicator()
+    private static var instance = NetworkActivityIndicator()
     
     open static func sharedInstance() -> NetworkActivityIndicator {
         return instance

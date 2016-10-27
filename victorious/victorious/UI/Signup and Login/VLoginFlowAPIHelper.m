@@ -71,6 +71,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 #pragma mark - Public Methods
 
 - (void)setUsername:(NSString *)username
+        displayName:(NSString *)displayName
          completion:(void (^)(BOOL success, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
@@ -78,7 +79,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     
-    [self queueUpdateProfileOperationWithUsername:username profileImageURL:nil completion:^(NSError *error)
+    [self queueUpdateProfileOperationWithUsername:username displayName:displayName profileImageURL:nil completion:^(NSError *error)
      {
          [hud hideAnimated: YES];
          completion( error == nil, error);
@@ -278,7 +279,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [self queueUpdateProfileOperationWithUsername:nil profileImageURL:filePath completion:^(NSError *error)
+    [self queueUpdateProfileOperationWithUsername:nil displayName:nil profileImageURL:filePath completion:^(NSError *error)
      {
          if (completion != nil)
          {

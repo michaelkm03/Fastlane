@@ -27,9 +27,9 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Executing
     
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let credentials: NewAccountCredentials
-    fileprivate let parameters: AccountCreateParameters
+    private let dependencyManager: VDependencyManager
+    private let credentials: NewAccountCredentials
+    private let parameters: AccountCreateParameters
     
     override var executionQueue: Queue {
         return .background

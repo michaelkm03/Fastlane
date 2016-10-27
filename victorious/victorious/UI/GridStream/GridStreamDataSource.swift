@@ -16,10 +16,10 @@ enum GridStreamSection: Int {
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDataSource {
 
-    fileprivate let headerName = "ConfigurableGridStreamHeaderView"
-    fileprivate let cellCornerRadius = CGFloat(6)
-    fileprivate let cellBackgroundColor = UIColor.clear
-    fileprivate let cellContentBackgroundColor = UIColor.clear
+    private let headerName = "ConfigurableGridStreamHeaderView"
+    private let cellCornerRadius = CGFloat(6)
+    private let cellBackgroundColor = UIColor.clear
+    private let cellContentBackgroundColor = UIColor.clear
 
     // MARK: - Initializing
     
@@ -43,8 +43,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate var gridDependency: VDependencyManager
+    private let dependencyManager: VDependencyManager
+    private var gridDependency: VDependencyManager
     
     // MARK: - Registering views
     
@@ -56,8 +56,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Managing content
     
-    fileprivate(set) var content: HeaderType.ContentType?
-    fileprivate var hasError = false
+    private(set) var content: HeaderType.ContentType?
+    private var hasError = false
     
     func setContent(_ content: HeaderType.ContentType?, withError hasError: Bool) {
         self.content = content
@@ -66,7 +66,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Managing items
     
-    fileprivate let paginatedDataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
+    private let paginatedDataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
     var items: [Content] {
         return paginatedDataSource.items
@@ -123,9 +123,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - UICollectionViewDataSource
     
-    fileprivate let cellFactory: VContentOnlyCellFactory
-    fileprivate var headerView: ConfigurableGridStreamHeaderView!
-    fileprivate var header: HeaderType?
+    private let cellFactory: VContentOnlyCellFactory
+    private var headerView: ConfigurableGridStreamHeaderView!
+    private var header: HeaderType?
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let gridStreamSection = GridStreamSection(rawValue: section) else {

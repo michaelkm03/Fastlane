@@ -35,4 +35,16 @@ class TimestampTests: XCTestCase {
         XCTAssertEqual(timestamp.apiString, "12345000")
         XCTAssertEqualWithAccuracy(Date(timestamp: timestamp).timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.01)
     }
+    
+    func testPredecessor() {
+        let timestamp = Timestamp(value: 12345)
+        let predecessor = timestamp.predecessor
+        XCTAssertEqual(timestamp.value - 1, predecessor.value)
+    }
+    
+    func testSuccecessor() {
+        let timestamp = Timestamp(value: 12345)
+        let successor = timestamp.successor
+        XCTAssertEqual(timestamp.value + 1, successor.value)
+    }
 }

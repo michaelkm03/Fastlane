@@ -24,10 +24,10 @@ final class ContentFetchOperation: AsyncOperation<Content> {
     
     // MARK: - Executing
     
-    fileprivate let request: ContentFetchRequest
+    private let request: ContentFetchRequest
     
     override var executionQueue: Queue {
-        return .main
+        return .background
     }
     
     override func execute(_ finish: @escaping (_ result: OperationResult<Content>) -> Void) {

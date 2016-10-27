@@ -146,7 +146,7 @@ class ContentMediaAssetTests: XCTestCase {
     
     // MARK: - Setup
     
-    fileprivate func createMediaAssetFromJSON(fileName: String, contentType: String, sourceType: String) -> ContentMediaAsset? {
+    private func createMediaAssetFromJSON(fileName: String, contentType: String, sourceType: String) -> ContentMediaAsset? {
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
             let mockData = try? Data(contentsOf: mockUserDataURL),
             let contentType = ContentType(rawValue: contentType) else {

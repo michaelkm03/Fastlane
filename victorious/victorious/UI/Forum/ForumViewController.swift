@@ -407,7 +407,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     @objc private func onClose(sender: UIButton?) {
         if sender != nil {
-            closeButton?.dependencyManager?.trackButtonEvent(.tap)
+            closeButton?.dependencyManager?.track(.tap)
         }
         
         navigationController?.dismiss(animated: true)

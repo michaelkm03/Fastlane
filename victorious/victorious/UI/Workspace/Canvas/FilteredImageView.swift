@@ -28,14 +28,14 @@ class FilteredImageView: GLKView {
             }
         }
     }
-    fileprivate var scaledImage: UIImage? {
+    private var scaledImage: UIImage? {
         didSet {
             // Get rid of the original image we no longer need it
             inputImage = nil
             setNeedsDisplay()
         }
     }
-    fileprivate var ciContext: CIContext!
+    private var ciContext: CIContext!
     
     // MARK: - Initializers
     
@@ -51,7 +51,7 @@ class FilteredImageView: GLKView {
         sharedSetup(context)
     }
             
-    fileprivate func sharedSetup(_ context: EAGLContext) {
+    private func sharedSetup(_ context: EAGLContext) {
         clipsToBounds = true
         ciContext = CIContext(eaglContext: context, options: [kCIContextWorkingColorSpace: NSNull()])
     }
@@ -73,7 +73,7 @@ class FilteredImageView: GLKView {
     
     // MARK: - Private
     
-    fileprivate func clearBackground() {
+    private func clearBackground() {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0
@@ -83,7 +83,7 @@ class FilteredImageView: GLKView {
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
     }
     
-    fileprivate func drawCIImage(_ image: CIImage) {
+    private func drawCIImage(_ image: CIImage) {
         clearBackground()
 
         // Draw visible rect
@@ -93,7 +93,7 @@ class FilteredImageView: GLKView {
         ciContext.draw(image, in: targetBounds, from: inputBounds)
     }
     
-    fileprivate func imageBoundsForContentMode(_ fromRect: CGRect, toRect: CGRect) -> CGRect {
+    private func imageBoundsForContentMode(_ fromRect: CGRect, toRect: CGRect) -> CGRect {
         switch contentMode {
         case .scaleAspectFill:
             return fromRect.v_aspectFill(toRect)

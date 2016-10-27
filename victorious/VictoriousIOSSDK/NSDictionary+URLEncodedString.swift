@@ -35,7 +35,7 @@ extension Dictionary {
     }
 }
 
-fileprivate extension String {
+private extension String {
     mutating func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
         if self.characters.count != 0 {
             self.append(keySeparator)

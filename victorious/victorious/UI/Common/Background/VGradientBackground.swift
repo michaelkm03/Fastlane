@@ -15,8 +15,8 @@ import Foundation
 
 class VGradientBackground: VBackground {
     
-    fileprivate let dependencyManager: VDependencyManager
-    fileprivate let gradientView = VLinearGradientView()
+    private let dependencyManager: VDependencyManager
+    private let gradientView = VLinearGradientView()
     
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -25,7 +25,7 @@ class VGradientBackground: VBackground {
         updateStyle()
     }
     
-    fileprivate func updateStyle() {
+    private func updateStyle() {
         gradientView.setColors( [dependencyManager.startColor, dependencyManager.endColor] )
         switch dependencyManager.direction {
         case .vertical:

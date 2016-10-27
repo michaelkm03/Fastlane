@@ -21,7 +21,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     
     // MARK: - Fetching the video
     
-    fileprivate func fetchVideo(from dependencyManager: VDependencyManager) {
+    private func fetchVideo(from dependencyManager: VDependencyManager) {
         guard let sequenceURL = dependencyManager.sequenceURL else {
             return
         }
@@ -40,7 +40,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     // MARK: - Views
     
     /// The view that displays background video.
-    fileprivate let videoView = VVideoView()
+    private let videoView = VVideoView()
     
     // MARK: - VBackground
     

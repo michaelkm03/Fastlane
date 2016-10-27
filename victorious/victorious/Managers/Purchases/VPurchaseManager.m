@@ -278,14 +278,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 #pragma mark - Restore purchases helpers
 
-- (void)restorePurchaseTransactionDidCompleteWithProductIdentifier:(NSString *)productIdentifier
-{
-    if ( self.activePurchaseRestore != nil )
-    {
-        [self.activePurchaseRestore.restoredProductIdentifiers addObject:productIdentifier];
-    }
-}
-
 - (void)purchasesDidRestore
 {
     if ( self.activePurchaseRestore != nil )
@@ -358,6 +350,8 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
+    BOOL foundValidProductToRestore = NO;
+    
     for ( SKPaymentTransaction *transaction in transactions )
     {
         switch ( transaction.transactionState )
@@ -373,7 +367,11 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
                 
             case SKPaymentTransactionStateRestored:
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-                [self restorePurchaseTransactionDidCompleteWithProductIdentifier:transaction.payment.productIdentifier];
+                
+                if ([self.fetchedProducts.allKeys containsObject:transaction.payment.productIdentifier])
+                {
+                    foundValidProductToRestore = true;
+                }
                 break;
                 
             case SKPaymentTransactionStatePurchasing:
@@ -382,6 +380,15 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
             default:
                 break;
         }
+    }
+    
+    if (foundValidProductToRestore)
+    {
+        [self purchasesDidRestore];
+    }
+    else
+    {
+        [self purchasesDidFailToRestoreWithError:[NSError errorWithDomain:@"Restored transactions don't match active SKUs, or no transactions are restored at all" code:1 userInfo:nil]];
     }
 }
 
@@ -412,16 +419,10 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     }
 }
 
-// Sent when an error is encountered while adding transactions from the user's purchase history back to the queue.
+/// Sent when an error is encountered while adding transactions from the user's purchase history back to the queue.
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error
 {
     [self purchasesDidFailToRestoreWithError:error];
-}
-
-// Sent when all transactions from the user's purchase history have successfully been added back to the queue.
-- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
-{
-    [self purchasesDidRestore];
 }
 
 @end

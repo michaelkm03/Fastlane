@@ -13,21 +13,21 @@ import VictoriousIOSSDK
 /// Uses a save button that enables/disables when the entered data is valid.
 /// Navigates away with a storyboard segue back to settings when complete.
 class EditProfileViewController: UIViewController {
-    fileprivate struct Constants {
+    private struct Constants {
         static let animationDuration: TimeInterval = 0.25
         static let errorOnScreenDuration: TimeInterval = 3.5
         static let cellDisabledAlpha: CGFloat = 0.7
     }
 
     var dependencyManager: VDependencyManager?
-    fileprivate var dataSource: EditProfileDataSource?
-    fileprivate var profilePicturePresenter: VEditProfilePicturePresenter?
-    fileprivate var keyboardManager: VKeyboardNotificationManager?
+    private var dataSource: EditProfileDataSource?
+    private var profilePicturePresenter: VEditProfilePicturePresenter?
+    private var keyboardManager: VKeyboardNotificationManager?
     
-    @IBOutlet fileprivate weak var validationErrorLabel: UILabel!
-    @IBOutlet fileprivate weak var validationView: UIView!
-    @IBOutlet fileprivate weak var validationViewTopToLayoutGuideBottomConstraint: NSLayoutConstraint!
-    @IBOutlet fileprivate weak var saveButton: UIBarButtonItem!
+    @IBOutlet private weak var validationErrorLabel: UILabel!
+    @IBOutlet private weak var validationView: UIView!
+    @IBOutlet private weak var validationViewTopToLayoutGuideBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var saveButton: UIBarButtonItem!
     // Exposed for tests since cells are registered in storybaord
     @IBOutlet weak var tableView: UITableView!
     
@@ -85,7 +85,7 @@ class EditProfileViewController: UIViewController {
         let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction fileprivate func tappedSave(_ sender: UIBarButtonItem) {
+    @IBAction private func tappedSave(_ sender: UIBarButtonItem) {
         guard let profileUpdate = dataSource?.accountUpdateDelta(), let dependencyManager = dependencyManager, let apiPath = dependencyManager.userValidationAPIPath else {
             return
         }
@@ -149,7 +149,7 @@ class EditProfileViewController: UIViewController {
     
     // MARK: - Miscellaneous Private Functions
     
-    fileprivate func setupDataSource() {
+    private func setupDataSource() {
         guard
             let dependencyManager = dependencyManager,
             let currentUser = VCurrentUser.user
@@ -169,7 +169,7 @@ class EditProfileViewController: UIViewController {
         tableView.dataSource = dataSource
     }
     
-    fileprivate func updateUI() {
+    private func updateUI() {
         guard let dataSource = self.dataSource else {
             return
         }
@@ -181,7 +181,7 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    fileprivate func presentCamera() {
+    private func presentCamera() {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectImageForEditProfile)
         profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
         profilePicturePresenter?.resultHandler = { [weak self] success, previewImage, mediaURL in
@@ -202,7 +202,7 @@ class EditProfileViewController: UIViewController {
         self.animateErrorIn()
     }
     
-    fileprivate func animateErrorIn() {
+    private func animateErrorIn() {
         UIView.animate(
             withDuration: Constants.animationDuration,
             animations: {
@@ -216,7 +216,7 @@ class EditProfileViewController: UIViewController {
         )
     }
     
-    fileprivate func animateErrorOut() {
+    private func animateErrorOut() {
         UIView.animate(withDuration: Constants.animationDuration, animations: {
             let validationViewSize = self.validationView.systemLayoutSizeFitting(self.view.bounds.size)
             self.validationViewTopToLayoutGuideBottomConstraint.constant = -validationViewSize.height

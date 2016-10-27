@@ -12,7 +12,7 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
     
     let identifier = "ActivityIndicatorCollectionCell"
     
-    weak fileprivate var cell: UICollectionViewCell? {
+    weak private var cell: UICollectionViewCell? {
         didSet {
             cell?.isHidden = hidden
         }

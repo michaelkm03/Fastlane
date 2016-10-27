@@ -19,20 +19,20 @@ class AsyncOperation<Output>: Operation, Queueable {
     
     // MARK: - KVO-able NSNotification State
     
-    fileprivate var _executing = false
-    fileprivate var _finished = false
+    private var _executing = false
+    private var _finished = false
     
-    final fileprivate func beganExecuting() {
+    final private func beganExecuting() {
         isExecuting = true
         isFinished = false
     }
     
-    final fileprivate func finishedExecuting() {
+    final private func finishedExecuting() {
         isExecuting = false
         isFinished = true
     }
     
-    final override fileprivate(set) var isExecuting: Bool {
+    final override private(set) var isExecuting: Bool {
         get {
             return _executing
         }
@@ -43,7 +43,7 @@ class AsyncOperation<Output>: Operation, Queueable {
         }
     }
     
-    final override fileprivate(set) var isFinished: Bool {
+    final override private(set) var isFinished: Bool {
         get {
             return _finished
         }
@@ -62,7 +62,7 @@ class AsyncOperation<Output>: Operation, Queueable {
         fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
     }
     
-    fileprivate(set) var result: OperationResult<Output>?
+    private(set) var result: OperationResult<Output>?
     
     // MARK: - Operation Execution
     

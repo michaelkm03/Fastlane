@@ -11,7 +11,7 @@ import Foundation
 
 class InterstitialAlertPresentationController: UIPresentationController {
     
-    fileprivate lazy var dimmingView = UIView()
+    private lazy var dimmingView = UIView()
     
     override func presentationTransitionWillBegin() {
         guard let containerView = containerView else {

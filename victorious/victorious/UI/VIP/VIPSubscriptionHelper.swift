@@ -31,16 +31,16 @@ class VIPSubscriptionHelper {
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Navigating
     
-    fileprivate weak var originViewController: UIViewController?
+    private weak var originViewController: UIViewController?
     
     // MARK: - Fetching products
     
-    fileprivate let subscriptionFetchAPIPath: APIPath
-    fileprivate var products: [VProduct]?
+    private let subscriptionFetchAPIPath: APIPath
+    private var products: [VProduct]?
     
     func fetchProducts(_ completion: @escaping ([VProduct]?) -> Void) {
         guard let request = VIPFetchSubscriptionRequest(apiPath: subscriptionFetchAPIPath) else {
@@ -92,7 +92,7 @@ class VIPSubscriptionHelper {
         }
     }
     
-    fileprivate func showSubscriptionSelectionForProducts(_ products: [VProduct]) {
+    private func showSubscriptionSelectionForProducts(_ products: [VProduct]) {
         guard
             let originViewController = originViewController,
             let selectionDependency = dependencyManager.selectionDialogDependency
@@ -115,7 +115,7 @@ class VIPSubscriptionHelper {
             switch result {
                 case .success(let selectedProduct):
                     if willShowPrompt {
-                        selectionDependency.trackButtonEvent(.tap)
+                        selectionDependency.track(.tap)
                     }
                     self?.delegate?.setIsLoading(true, title: nil)
                     self?.subscribeToProduct(selectedProduct)
@@ -126,14 +126,14 @@ class VIPSubscriptionHelper {
                     originViewController.showSubscriptionAlert(for: error as NSError)
                 case .cancelled:
                     if willShowPrompt {
-                        selectionDependency.trackButtonEvent(.cancel)
+                        selectionDependency.track(.cancel)
                     }
                     self?.delegate?.setIsLoading(false, title: nil)
             }
         }
     }
     
-    fileprivate func subscribeToProduct(_ product: VProduct) {
+    private func subscribeToProduct(_ product: VProduct) {
         guard let validationAPIPath = dependencyManager.validationAPIPath else {
             return
         }

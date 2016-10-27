@@ -29,17 +29,30 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            forName: .loggedInChanged,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            if VCurrentUser.user == nil {
+                self?.tearDown()
+            }
+            else {
+                self?.startPolling()
+            }
+        }
     }
     
     // MARK: - Dependency manager
     
-    fileprivate let dependencyManager: VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Data source
     
     let dataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
-    fileprivate var filteredStreamAPIPath: APIPath? {
+    private var filteredStreamAPIPath: APIPath? {
         didSet {
             let newAPIPath = filteredStreamAPIPath ?? dependencyManager.mainFeedAPIPath
             
@@ -57,11 +70,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    fileprivate static let pollingInterval = TimeInterval(5.0)
+    private static let pollingInterval = TimeInterval(5.0)
     
-    fileprivate var pollingTimer: VTimerManager?
+    private var pollingTimer: VTimerManager?
     
-    fileprivate func startPolling() {
+    private func startPolling() {
         pollingTimer?.invalidate()
         
         pollingTimer = VTimerManager.scheduledTimerManager(
@@ -73,14 +86,14 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         )
     }
     
-    @objc fileprivate func pollForNewContent() {
+    @objc private func pollForNewContent() {
         loadContent(.newer)
     }
     
     // MARK: - Loading content
     
     /// Loads a page of content with the given `loadingType`.
-    fileprivate func loadContent(_ loadingType: PaginatedLoadingType) {
+    private func loadContent(_ loadingType: PaginatedLoadingType) {
         let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] result in
             guard let strongSelf = self else {
                 return
@@ -118,7 +131,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     ///
     static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
     
-    fileprivate dynamic func handleUpdateStreamURLNotification(_ notification: NSNotification) {
+    private dynamic func handleUpdateStreamURLNotification(_ notification: NSNotification) {
         filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.streamAPIPath
     }
     
@@ -133,7 +146,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     func tearDown() {
-        // Nothing to tear down.
+        pollingTimer?.invalidate()
     }
     
     func addChildReceiver(_ receiver: ForumEventReceiver) {
@@ -148,11 +161,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    fileprivate(set) var isSetUp = false
+    private(set) var isSetUp = false
     
     // MARK: - ForumEventSender
     
-    fileprivate(set) weak var nextSender: ForumEventSender?
+    private(set) weak var nextSender: ForumEventSender?
     
     func send(_ event: ForumEvent) {
         nextSender?.send(event)
@@ -165,7 +178,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - ForumEventReceiver
     
-    fileprivate(set) var childEventReceivers = [ForumEventReceiver]()
+    private(set) var childEventReceivers = [ForumEventReceiver]()
     
     func receive(_ event: ForumEvent) {
         // Nothing yet.
