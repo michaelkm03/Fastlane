@@ -1,2 +1,0 @@
-# VAMS
-VAMS support programs

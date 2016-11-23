@@ -1,9 +1,0 @@
-/* Class = "UILabel"; text = "An email was sent to this address containing reset password instructions."; ObjectID = "5BC-gw-Wf8"; */
-"5BC-gw-Wf8.text" = "이 이메일로 비밀번호 초기화 방법이 적힌 이메일이 발송되었습니다.";
-
-/* Class = "UILabel"; text = "Enter Code:"; ObjectID = "La3-Ik-eVI"; */
-"La3-Ik-eVI.text" = "코드를 입력하세요:";
-
-/* Class = "UIButton"; normalTitle = "Resend Email"; ObjectID = "eDq-D3-Z26"; */
-"eDq-D3-Z26.normalTitle" = "이메일 다시 전송";
-

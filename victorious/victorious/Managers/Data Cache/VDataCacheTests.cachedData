@@ -1,1 +1,0 @@
-This file is used in the VDataCacheTests unit tests. In order to work properly it must be part of the victorious target, NOT the victoriousTests project. Please do not remove it.

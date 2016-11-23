@@ -1,9 +1,0 @@
-/* Class = "UILabel"; text = "An email was sent to this address containing reset password instructions."; ObjectID = "5BC-gw-Wf8"; */
-"5BC-gw-Wf8.text" = "Eine E-Mail wurde an diese Adresse gesendet mit Anweisungen zum Zurücksetzen deines Passworts.";
-
-/* Class = "UILabel"; text = "Enter Code:"; ObjectID = "La3-Ik-eVI"; */
-"La3-Ik-eVI.text" = "Code eingeben:";
-
-/* Class = "UIButton"; normalTitle = "Resend Email"; ObjectID = "eDq-D3-Z26"; */
-"eDq-D3-Z26.normalTitle" = "Email erneut senden";
-

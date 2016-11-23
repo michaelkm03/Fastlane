@@ -1,6 +1,0 @@
-/* Class = "UILabel"; text = "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner."; ObjectID = "1Uw-A9-zfF"; */
-"1Uw-A9-zfF.text" = "このアプリを利用している人なら誰にでもメッセージを送れます！ その人のプロフィールを開いて、画面右上の新規作成アイコンをクリックするだけ。";
-
-/* Class = "UILabel"; text = "NO MESSAGES YET"; ObjectID = "hx0-YK-T9j"; */
-"hx0-YK-T9j.text" = "まだ新着メッセージはありません";
-

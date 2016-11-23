@@ -1,8 +1,0 @@
-app_identifier ENV['BUNDLE_ID']         # The bundle identifier of your app
-team_name      "Victorious Inc."
-team_id        "82T26U698A"
-
-# apple_id       "vams@getvictorious.com" # Your Apple email address. If you don't specify this, it will user the value of FASTLANE_USER environment variable
-
-# you can even provide different app identifiers, Apple IDs and team names per lane:
-# https://github.com/KrauseFx/fastlane/blob/master/docs/Appfile.md

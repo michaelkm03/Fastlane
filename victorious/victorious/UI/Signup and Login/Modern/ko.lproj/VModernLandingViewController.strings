@@ -1,9 +1,0 @@
-/* Class = "UIButton"; normalTitle = "Sign Up with Email"; ObjectID = "6q7-og-v17"; */
-"6q7-og-v17.normalTitle" = "이메일로 가입하기";
-
-/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "lKN-X9-uiX"; */
-"lKN-X9-uiX.text" = "가입하시면 다음에 동의하시는 것입니다:";
-
-/* Class = "UIButton"; normalTitle = "Sign Up with Facebook"; ObjectID = "tTi-xz-WY3"; */
-"tTi-xz-WY3.normalTitle" = "페이스북으로 가입하기";
-

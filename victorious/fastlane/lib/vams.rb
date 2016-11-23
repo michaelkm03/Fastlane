@@ -1,7 +1,0 @@
-require 'vams/client'
-require 'vams/metadata'
-require 'vams/screenshots'
-require 'vams/submission_result'
-require 'vams/colored_logger'
-require 'vams/app_icon'
-require 'vams/build_identifier'

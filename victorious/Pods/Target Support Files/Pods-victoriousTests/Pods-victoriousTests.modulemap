@@ -1,6 +1,0 @@
-framework module Pods_victoriousTests {
-  umbrella header "Pods-victoriousTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
