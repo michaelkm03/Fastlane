@@ -1,25 +1,13 @@
-# Customise this file, documentation can be found here:
-# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
-# All available actions: https://docs.fastlane.tools/actions
-# can also be listed using the `fastlane actions` command
+FASTLANE_DIRECTORY = File.dirname(__FILE__)
+# $LOAD_PATH.unshift(FASTLANE_DIRECTORY + '/lib')
 
-# Change the syntax highlighting to Ruby
-# All lines starting with a # are ignored when running `fastlane`
-
-# If you want to automatically update fastlane if a new version is available:
-# update_fastlane
-
-# This is the minimum version number required.
-# Update this, if you use features of a newer version
 fastlane_version "2.23.0"
 
 default_platform :ios
 
 platform :ios do
   before_all do
-    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-    
-    
+	  
   end
 
   desc "Runs all the tests"
@@ -31,6 +19,8 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     # match(type: "appstore") # more information: https://codesigning.guide
+    cert
+    sigh
     gym # Build your app - more options available
     pilot
 
