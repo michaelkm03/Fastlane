@@ -5,7 +5,10 @@ update_fastlane
 fastlane_version "2.23.0"
 default_platform :ios
 
-default_platform :ios
+# Grab apply_config build script
+def apply_config(build_name:, environment:)
+	sh "cd ../ && ./VictoriousiOS/build-scripts/apply-config.sh #{build_name} -e #{environment}" 
+end
 
 platform :ios do
   before_all do
