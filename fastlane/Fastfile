@@ -18,7 +18,6 @@ default_platform :ios
 platform :ios do
   before_all do
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-    ENV["GYM_PROJECT"] = "/Users/michaelmontgomery/Projects/VictoriousiOS/victorious/victorious.victorious.xcodeproj"
     
     
   end
@@ -32,7 +31,7 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     # match(type: "appstore") # more information: https://codesigning.guide
-    gym(scheme: "release-victorious") # Build your app - more options available
+    gym # Build your app - more options available
     pilot
 
     # sh "your_script.sh"

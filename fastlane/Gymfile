@@ -1,7 +1,6 @@
 # fastlane gym --help
-scheme "release-victorious"
 # sdk "iphoneos9.0"
 
-output_directory "./Users/michaelmontgomery/Desktop/Fastlane/fastlane_built_ipa"
-GYM_WORKSPACE = "./Users/michaelmontgomery/Projects/VictoriousiOS/victorious/victorious.xcworkspace"
-GYM_PROJECT) = "./Users/michaelmontgomery/Projects/VictoriousiOS/victorious/victorious.victorious.xcodeproj"
+scheme "release-studio"
+output_directory "/fastlane_built_ipa"
+project "VictoriousiOS/victorious/victorious.xcodeproj"
