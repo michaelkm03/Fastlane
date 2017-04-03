@@ -1,7 +1,9 @@
 FASTLANE_DIRECTORY = File.dirname(__FILE__)
 # $LOAD_PATH.unshift(FASTLANE_DIRECTORY + '/lib')
 
+update_fastlane
 fastlane_version "2.23.0"
+default_platform :ios
 
 default_platform :ios
 
