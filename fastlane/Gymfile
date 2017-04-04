@@ -4,3 +4,5 @@
 scheme "release-studio"
 output_directory "/fastlane_built_ipa"
 project "VictoriousiOS/victorious/victorious.xcodeproj"
+codesigning_identity "iPhone Distribution: Jenn Im, Inc. (7RAWMSV734)"
+clean true
