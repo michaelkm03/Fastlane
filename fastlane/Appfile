@@ -1,5 +1,8 @@
 app_identifier "com.getvictorious.fashionforward" # The bundle identifier of your app
 
 apple_id "clothesencounters@getappsubmit.com" # Your Apple email address
+team_id '7RAWMSV734'
 
-team_id "7RAWMSV734"  # Developer Portal Team ID
+# To select a team for iTunes Connect use
+# itc_team_name "Company Name"
+# itc_team_id "18742801"

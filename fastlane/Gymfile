@@ -1,11 +1,8 @@
 # fastlane gym --help
-# sdk "iphoneos9.0"
 
-scheme "release-studio"
 output_directory "/fastlane_built_ipa"
 project "VictoriousiOS/victorious/victorious.xcodeproj"
-# team_id "7RAWMSV734"
-codesigning_identity "iPhone Distribution: Jenn Im, Inc. (7RAWMSV734)"
 clean true
-# xcargs "PROVISIONING_PROFILE_SPECIFIER='Automatic'"
-target "victorious"
+scheme 'release-studio'
+codesigning_identity "iPhone Distribution: Jenn Im, Inc. (7RAWMSV734)"
+provisioning_profile_path "./AppStore_com.getvictorious.fashionforward.mobileprovision"
